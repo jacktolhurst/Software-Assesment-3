@@ -16,7 +16,7 @@ def main () :
     
     con.SCREEN.fill(con.BACKGROUNDCOLOR)
     
-    grid = Grid((100,50), (255,0,0))
+    grid = Grid()
     grid.Draw()
 
     while looping :
