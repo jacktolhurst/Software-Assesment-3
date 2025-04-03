@@ -2,12 +2,26 @@ import os
 import time
 
 cells = [
-    [False, False, False, False, False, False, False, False],
-    [False, False, True, False, False, False, False, False],
-    [True, False, True, False, False, False, False, False],
-    [False, True, True, False, False, False, False, False],
-    [False, False, False, False, False, False, False, False],
-    [False, False, False, False, False, False, False, False]
+    [False, False, False, False, False, False, True, False, False, False, False, False, False, False],
+    [False, False, False, False, False, False, True, False, False, False, False, False, False, False],
+    [False, False, False, False, False, False, True, False, False, False, False, False, False, False],
+    [False, False, False, False, False, False, True, False, False, False, False, False, False, False],
+    [False, False, False, False, False, False, True, False, False, False, False, False, False, False],
+    [False, False, False, False, False, False, True, False, False, False, False, False, False, False],
+    [False, False, False, False, False, False, True, False, False, False, False, False, False, False],
+    [False, False, False, False, False, False, True, False, False, False, False, False, False, False],
+    [False, False, False, False, False, False, True, False, False, False, False, False, False, False],
+    [False, False, False, False, False, False, True, False, False, False, False, False, False, False],
+    [False, False, False, False, False, False, True, False, False, False, False, False, False, False],
+    [False, False, False, False, False, False, True, False, False, False, False, False, False, False],
+    [False, False, False, False, False, False, True, False, False, False, False, False, False, False],
+    [False, False, False, False, False, False, True, False, False, False, False, False, False, False],
+    [False, False, False, False, False, False, True, False, False, False, False, False, False, False],
+    [False, False, False, False, False, False, True, False, False, False, False, False, False, False],
+    [False, False, False, False, False, False, True, False, False, False, False, False, False, False],
+    [False, False, False, False, False, False, True, False, False, False, False, False, False, False],
+    [False, False, False, False, False, False, True, False, False, False, False, False, False, False],
+    [False, False, False, False, False, False, True, False, False, False, False, False, False, False]
 ]
 
 def FindNeighbours(grid, location):
@@ -47,4 +61,4 @@ while True:
 
     cells = new_cells  
     
-    time.sleep(1)
+    time.sleep(0.2)

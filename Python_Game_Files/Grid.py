@@ -4,12 +4,12 @@ from Cell import Cell
 
 class Grid():
     def __init__(self):
-        self.Cells = []
+        self.cells = []
     
-    def Draw(self):
-        for i in range(int(con.WINDOW_HEIGHT/con.CELLSIZE[1])):
-            for j in range(int(con.WINDOW_HEIGHT/con.CELLSIZE[0])):
-                cell = Cell((j*con.CELLSIZE[0],i*con.CELLSIZE[1]))
-                self.Cells.append(cell)
-                
-                cell.Draw()
+    def CreateCells(self):
+        cell = Cell((0,0))
+        self.cells.append(cell)
+
+    def update(self):
+        for cell in self.cells: 
+            cell.Draw()

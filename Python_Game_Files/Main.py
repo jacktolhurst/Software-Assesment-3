@@ -3,7 +3,6 @@ import pygame
 from pygame.locals import *
 import Constants as con
 from Grid import Grid
-import random
 
 pygame.init()
 
@@ -18,15 +17,13 @@ def main () :
     con.SCREEN.fill(con.BACKGROUNDCOLOR)
     
     grid = Grid()
-    grid.Draw()
+    grid.CreateCells()
 
     while looping :
         for event in pygame.event.get() :
             if event.type == QUIT :
                 pygame.quit()
                 sys.exit()
-    
-        grid.Cells[random.randint(0,len(grid.Cells))].SetState(True)
         
         pygame.display.update()
         fpsClock.tick(con.FPS)
