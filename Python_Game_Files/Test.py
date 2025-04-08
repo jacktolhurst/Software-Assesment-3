@@ -1,28 +1,6 @@
 import os
 import time
-
-cells = [
-    [False, False, False, False, False, False, True, False, False, False, False, False, False, False],
-    [False, False, False, False, False, False, True, False, False, False, False, False, False, False],
-    [False, False, False, False, False, False, True, False, False, False, False, False, False, False],
-    [False, False, False, False, False, False, True, False, False, False, False, False, False, False],
-    [False, False, False, False, False, False, True, False, False, False, False, False, False, False],
-    [False, False, False, False, False, False, True, False, False, False, False, False, False, False],
-    [False, False, False, False, False, False, True, False, False, False, False, False, False, False],
-    [False, False, False, False, False, False, True, False, False, False, False, False, False, False],
-    [False, False, False, False, False, False, True, False, False, False, False, False, False, False],
-    [False, False, False, False, False, False, True, False, False, False, False, False, False, False],
-    [False, False, False, False, False, False, True, False, False, False, False, False, False, False],
-    [False, False, False, False, False, False, True, False, False, False, False, False, False, False],
-    [False, False, False, False, False, False, True, False, False, False, False, False, False, False],
-    [False, False, False, False, False, False, True, False, False, False, False, False, False, False],
-    [False, False, False, False, False, False, True, False, False, False, False, False, False, False],
-    [False, False, False, False, False, False, True, False, False, False, False, False, False, False],
-    [False, False, False, False, False, False, True, False, False, False, False, False, False, False],
-    [False, False, False, False, False, False, True, False, False, False, False, False, False, False],
-    [False, False, False, False, False, False, True, False, False, False, False, False, False, False],
-    [False, False, False, False, False, False, True, False, False, False, False, False, False, False]
-]
+from TestLevel import cells
 
 def FindNeighbours(grid, location):
     x, y = location
@@ -50,6 +28,10 @@ def CheckCells(grid, location):
     else: 
         return alive_neighbours == 3
 
+
+os.system('cls' if os.name == 'nt' else 'clear')    
+
+speed = 1/float(input("Speed:"))
 while True:
     os.system('cls' if os.name == 'nt' else 'clear')    
     
@@ -61,4 +43,4 @@ while True:
 
     cells = new_cells  
     
-    time.sleep(0.2)
+    time.sleep(speed)
