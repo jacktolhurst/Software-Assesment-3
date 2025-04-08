@@ -21,9 +21,14 @@ def main () :
 
     while looping :
         for event in pygame.event.get() :
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_l:   
+                    grid.SetAll(True)
             if event.type == QUIT :
                 pygame.quit()
                 sys.exit()
+        
+        grid.update()
         
         pygame.display.update()
         fpsClock.tick(con.FPS)
