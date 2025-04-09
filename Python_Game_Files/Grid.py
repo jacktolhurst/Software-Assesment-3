@@ -7,10 +7,10 @@ class Grid():
         self.cells = []
     
     def CreateCells(self):
-        for i in range(10):
+        for i in range(40):
             cellsX = [] 
-            for j in range(10):
-                cell = Cell((1 + ((5 + con.CELLSIZE[0]) * j), 5 + ((5 + con.CELLSIZE[0]) * i)))
+            for j in range(40):
+                cell = Cell((con.CELLPADDING[0]  + ((con.CELLPADDING[0] + con.CELLSIZE[0]) * j), con.CELLPADDING[1] + ((con.CELLPADDING[1]  + con.CELLSIZE[0]) * i)))
                 cellsX.append(cell)
             self.cells.append(cellsX)
     

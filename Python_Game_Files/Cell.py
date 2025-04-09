@@ -17,4 +17,16 @@ class Cell():
             self.color = (0,0,0)
     
     def Draw(self):
-        pygame.draw.rect(con.SCREEN, self.color, pygame.Rect(self.pos[0], self.pos[1], con.CELLSIZE[0], con.CELLSIZE[1]))
+        zoom = con.CURRENTSCROLL
+        offset = con.SCREENPOS
+        
+        scaled_x = (self.pos[0] * zoom) + offset[0]
+        scaled_y = (self.pos[1] * zoom) + offset[1]
+        scaled_width = con.CELLSIZE[0] * zoom
+        scaled_height = con.CELLSIZE[1] * zoom
+
+        pygame.draw.rect(
+            con.SCREEN, 
+            self.color, 
+            pygame.Rect(scaled_x, scaled_y, scaled_width, scaled_height)
+        )
