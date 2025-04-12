@@ -1,7 +1,7 @@
 import sys
 import pygame
+import time
 from pygame.locals import *
-import numpy
 import Constants as con
 from Grid import Grid
 from Camera import Camera
@@ -24,23 +24,23 @@ def main () :
     grid.CreateCells()
     
     while looping :
-        events = pygame.event.get()
+        events = pygame.event.get()        
         for event in events :
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_l:   
-                    grid.SetAll(True)
-                    
+                    grid.SetSpecific({(3,3):2,(4,4):2,(5,4):2,(5,3):2,(5,2):2})
             if event.type == QUIT :
                 pygame.quit()
                 sys.exit()
-        
+
         con.SCREEN.fill(con.BACKGROUNDCOLOR)
         
         con.CAM.update(events)
         grid.update()
-        
-        
+
         pygame.display.flip()
         fpsClock.tick(con.FPS)
+        
+        time.sleep(2)
 
 main()
