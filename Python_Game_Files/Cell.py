@@ -8,12 +8,21 @@ class Cell():
         self.state = state
         self.color = (0,0,0)
         
-        if state:
+        if self.state:
             self.color = (255,255,255)
         
         self.rect = pygame.Rect(pos.x, pos.y, con.CELLSIZE.x, con.CELLSIZE.y)
+    
+    def SetState(self, state:bool):
+        self.state = state
 
     def Draw(self):
         pygame.draw.rect(con.SCREEN,
                         self.color,
                         self.rect)
+    
+    def update(self):
+        if self.state:
+            self.color = (255,255,255)
+        else:
+            self.color = (0,0,0)
