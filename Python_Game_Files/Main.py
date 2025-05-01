@@ -1,30 +1,29 @@
 import sys
 import pygame
+import Constants as con
 from pygame.locals import *
 
 pygame.init()
 
-BACKGROUND = (255, 255, 255)
+clock = pygame.time.Clock()
 
-FPS = 60
-fpsClock = pygame.time.Clock()
-WINDOW_WIDTH = 400
-WINDOW_HEIGHT = 300
-
-WINDOW = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
-pygame.display.set_caption('My Game!')
+pygame.display.set_caption('Game Of Life')
+con.SCREEN = pygame.display.set_mode((con.WINDOW_WIDTH, con.WINDOW_HEIGHT))
 
 def main () :
     looping = True
 
     while looping :
+        con.SCREEN.fill(con.BACKGROUNDCOLOR)
+        
         for event in pygame.event.get() :
             if event.type == QUIT :
                 pygame.quit()
                 sys.exit()
+                looping = False
     
-    WINDOW.fill(BACKGROUND)
-    pygame.display.update()
-    fpsClock.tick(FPS)
+        
+        pygame.display.update()
+        clock.tick(con.TICKSPEED)
 
 main()
