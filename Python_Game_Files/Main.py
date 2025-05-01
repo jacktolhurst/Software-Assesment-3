@@ -2,6 +2,8 @@ import sys
 import pygame
 import Constants as con
 from pygame.locals import *
+from pygame.math import *
+from Cell import Cell
 
 pygame.init()
 
@@ -12,6 +14,8 @@ con.SCREEN = pygame.display.set_mode((con.WINDOW_WIDTH, con.WINDOW_HEIGHT))
 
 def main () :
     looping = True
+    
+    cell = Cell(Vector2(10,10), True)
 
     while looping :
         con.SCREEN.fill(con.BACKGROUNDCOLOR)
@@ -21,7 +25,8 @@ def main () :
                 pygame.quit()
                 sys.exit()
                 looping = False
-    
+        
+        cell.Draw()
         
         pygame.display.update()
         clock.tick(con.TICKSPEED)

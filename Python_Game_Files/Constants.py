@@ -1,3 +1,5 @@
+from pygame.math import *
+
 SCREEN = None
 
 WINDOW_WIDTH = 500
@@ -6,3 +8,5 @@ WINDOW_HEIGHT = 500
 TICKSPEED = 5
 
 BACKGROUNDCOLOR = (0,0,0)
+
+CELLSIZE = Vector2(20,20)
