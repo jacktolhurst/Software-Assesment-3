@@ -17,6 +17,7 @@ def main () :
     
     grid = Grid(Vector2(20,20))
 
+    updateGrid = False
     
     looping = True
     while looping:
@@ -27,14 +28,16 @@ def main () :
                 if event.key == pygame.K_k:
                     grid.SetCell(Vector2(random.randrange(len(grid.cells)-1),random.randrange(len(grid.cells[0])-1)), True)
                 if event.key == pygame.K_p:
-                    grid.Update()
+                    updateGrid = not updateGrid
                 if event.key == pygame.K_q:
                     QuitGame()
             if event.type == QUIT:
                 QuitGame()
         
 
-        grid.UpdateCellsState()
+        if updateGrid:
+            grid.Update()
+        
         grid.DrawCells()
         
         pygame.display.update()

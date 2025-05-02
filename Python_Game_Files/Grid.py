@@ -74,11 +74,13 @@ class Grid():
         return cell.state
 
 
-    def UpdateCellsState(self):
+    def ApplyBuffer(self):
         for cellPos, cellState in self.buffer.items():
             self.cells[int(cellPos[0])][int(cellPos[1])].SetState(cellState)
 
     def DrawCells(self):
+        self.ApplyBuffer()
+        
         for cellsX in self.cells:
             for cell in cellsX:
                 cell.Draw()
@@ -87,4 +89,3 @@ class Grid():
         for cellsX in self.cells:
             for cell in cellsX:
                 self.SetCell(cell, self.CheckCellState(cell))
-        
