@@ -20,12 +20,7 @@ def main () :
     isPlaying = False
     
     looping = True
-    while looping:
-        if isPlaying:
-            con.SCREEN.fill(con.BACKGROUNDCOLORPLAY)
-        else:
-            con.SCREEN.fill(con.BACKGROUNDCOLORSTOPPED)
-        
+    while looping:        
         keys = pygame.key.get_pressed()
         if keys[pygame.K_k]:
             grid.SetCell(Vector2(random.randrange(len(grid.cells)-1),random.randrange(len(grid.cells[0])-1)), True)
@@ -35,9 +30,9 @@ def main () :
                 if event.key == pygame.K_p:
                     isPlaying = not isPlaying
                 if event.key == pygame.K_w:
-                    con.TICKSPEED = con.TICKSPEED + 5
+                    con.TICKSPEED = con.TICKSPEED + 2
                 if event.key == pygame.K_s:
-                    con.TICKSPEED = max(1, con.TICKSPEED - 5)
+                    con.TICKSPEED = max(1, con.TICKSPEED - 2)
                 if event.key == pygame.K_q:
                     QuitGame()
             if event.type == pygame.MOUSEBUTTONUP:
@@ -48,17 +43,20 @@ def main () :
             if event.type == QUIT:
                 QuitGame()
         
-        
-        
-        print(con.TICKSPEED)
         if isPlaying:
             grid.Update()
+        
+        if isPlaying:
+            con.SCREEN.fill(con.BACKGROUNDCOLORPLAY)
+        else:
+            con.SCREEN.fill(con.BACKGROUNDCOLORSTOPPED)
         
         grid.DrawCells()
         
         pygame.display.update()
         if isPlaying:
             clock.tick(con.TICKSPEED)
+            print(clock.get_fps())
         else:
             clock.tick(60)
 
