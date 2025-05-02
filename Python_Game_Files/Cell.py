@@ -15,14 +15,12 @@ class Cell():
     
     def SetState(self, state:bool):
         self.state = state
+        if self.state:
+            self.color = (255,255,255)
+        else:
+            self.color = (0,0,0)
 
     def Draw(self):
         pygame.draw.rect(con.SCREEN,
                         self.color,
                         self.rect)
-    
-    def update(self):
-        if self.state:
-            self.color = (255,255,255)
-        else:
-            self.color = (0,0,0)

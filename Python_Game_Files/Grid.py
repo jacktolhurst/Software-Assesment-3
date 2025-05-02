@@ -22,31 +22,69 @@ class Grid():
         
         return cells
     
-    def SetCell(self, pos:Vector2, state:bool):
-        self.buffer[pos] = state
     
-    def GetNeighbours(self, cellPos:Vector2):
-        coords = [-1,0,1]
-        neighbours = []
+    def SetCell(self, cell: Vector2 | Cell, state: bool):
+        if isinstance(cell, Vector2):
+            pos = cell
+        else:
+            pos = self.GetCellPosition(cell)
         
+        self.buffer[(pos.x, pos.y)] = state
+    
+    def GetCellPosition(self, target_cell: Cell):
+        for x, row in enumerate(self.cells):
+            for y, cell in enumerate(row):
+                if cell is target_cell: 
+                    return Vector2(x, y)
+        print("No such cell")
+        return None
+
+    def GetNeighbours(self, cellPos: Vector2):
+        coords = [-1, 0, 1]
+        neighbours = []
+
         for x in coords:
             for y in coords:
-                zero = False
-                if x == 0:
-                    zero = True
-                if y != 0:
-                    zero = False
+                if x == 0 and y == 0:
+                    continue 
                 
-                if not zero:
-                    neighbours.append(self.cells[x+int(cellPos.x)][y+int(cellPos.y)])
-        
+                newX = int(cellPos.x) + x
+                newY = int(cellPos.y) + y
+
+                if 0 <= newX < len(self.cells) and 0 <= newY < len(self.cells[0]):
+                    neighbours.append(self.cells[newX][newY])
+
         return neighbours
+
+    def CheckCellState(self, cell: Cell):
+        cellPos = self.GetCellPosition(cell)
+        neighbours = self.GetNeighbours(cellPos)
+
+        liveCount = sum(neighbour.state for neighbour in neighbours)
+
+        if cell.state and liveCount < 2:
+            return False
+        if cell.state and (liveCount == 2 or liveCount == 3):
+            return True
+        if cell.state and liveCount > 3:
+            return False
+        if not cell.state and liveCount == 3:
+            return True
+
+        return cell.state
+
+
+    def UpdateCellsState(self):
+        for cellPos, cellState in self.buffer.items():
+            self.cells[int(cellPos[0])][int(cellPos[1])].SetState(cellState)
 
     def DrawCells(self):
         for cellsX in self.cells:
             for cell in cellsX:
                 cell.Draw()
     
-    def UpdateCells(self):
-        for cellInfo in self.buffer:
-            self.cells[int(cellInfo.key.x)][int(cellInfo.key.y)].SetState(cellInfo.value)
+    def Update(self):
+        for cellsX in self.cells:
+            for cell in cellsX:
+                self.SetCell(cell, self.CheckCellState(cell))
+        
