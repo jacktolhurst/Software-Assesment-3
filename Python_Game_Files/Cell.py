@@ -20,6 +20,9 @@ class Cell():
         else:
             self.color = (0,0,0)
 
+    def CheckMouseCollide(self, mousePos):
+        return self.rect.collidepoint(mousePos)
+
     def Draw(self):
         pygame.draw.rect(con.SCREEN,
                         self.color,

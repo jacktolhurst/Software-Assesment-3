@@ -30,7 +30,7 @@ class Grid():
             pos = self.GetCellPosition(cell)
         
         self.buffer[(pos.x, pos.y)] = state
-    
+
     def GetCellPosition(self, target_cell: Cell):
         for x, row in enumerate(self.cells):
             for y, cell in enumerate(row):
@@ -73,6 +73,11 @@ class Grid():
 
         return cell.state
 
+    def ClickIntersection(self, mousePos):
+        for cellsX in self.cells:
+            for cell in cellsX:
+                if cell.CheckMouseCollide(mousePos):
+                    self.SetCell(cell, not cell.state)
 
     def ApplyBuffer(self):
         for cellPos, cellState in self.buffer.items():

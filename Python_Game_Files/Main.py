@@ -34,19 +34,33 @@ def main () :
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_p:
                     isPlaying = not isPlaying
+                if event.key == pygame.K_w:
+                    con.TICKSPEED = con.TICKSPEED + 5
+                if event.key == pygame.K_s:
+                    con.TICKSPEED = max(1, con.TICKSPEED - 5)
                 if event.key == pygame.K_q:
                     QuitGame()
+            if event.type == pygame.MOUSEBUTTONUP:
+                if event.button == 1:
+                    if not isPlaying:
+                        mousePos = pygame.mouse.get_pos()
+                        grid.ClickIntersection(mousePos)
             if event.type == QUIT:
                 QuitGame()
         
-
+        
+        
+        print(con.TICKSPEED)
         if isPlaying:
             grid.Update()
         
         grid.DrawCells()
         
         pygame.display.update()
-        clock.tick(con.TICKSPEED)
+        if isPlaying:
+            clock.tick(con.TICKSPEED)
+        else:
+            clock.tick(60)
 
 def QuitGame():
     pygame.quit()
