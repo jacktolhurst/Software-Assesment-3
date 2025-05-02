@@ -21,7 +21,27 @@ class Grid():
         return cells
     
     def SetCell(self, pos:Vector2, state:bool):
-        self.cells[int(pos.x)][int(pos.y)].SetState(state)
+        try:
+            self.cells[int(pos.x)][int(pos.y)].SetState(state)
+        except:
+            print("Cell does not exist")
+    
+    def GetNeighbours(self, cellPos:Vector2):
+        coords = [-1,0,1]
+        neighbours = []
+        
+        for x in coords:
+            for y in coords:
+                zero = False
+                if x == 0:
+                    zero = True
+                if y != 0:
+                    zero = False
+                
+                if not zero:
+                    neighbours.append(self.cells[x+int(cellPos.x)][y+int(cellPos.y)])
+        
+        return neighbours
 
     def DrawCells(self):
         for cellsX in self.cells:

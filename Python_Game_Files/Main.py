@@ -24,12 +24,16 @@ def main () :
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_k:
                     grid.SetCell(Vector2(10,10), True)
-                    print("hey")
+                    neighbours = grid.GetNeighbours(Vector2(10,11))
+                    for cell in neighbours:
+                        print(cell.state)
             if event.type == QUIT :
                 pygame.quit()
                 sys.exit()
                 looping = False
-                
+        
+
+        
         grid.UpdateCells()
         grid.DrawCells()
         
