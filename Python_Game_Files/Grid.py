@@ -9,6 +9,8 @@ class Grid():
         self.size = size
         
         self.cells = self.GenerateCells()
+        
+        self.buffer = {}
     
     def GenerateCells(self):
         cells = []
@@ -21,10 +23,7 @@ class Grid():
         return cells
     
     def SetCell(self, pos:Vector2, state:bool):
-        try:
-            self.cells[int(pos.x)][int(pos.y)].SetState(state)
-        except:
-            print("Cell does not exist")
+        self.buffer[pos] = state
     
     def GetNeighbours(self, cellPos:Vector2):
         coords = [-1,0,1]
@@ -49,6 +48,5 @@ class Grid():
                 cell.Draw()
     
     def UpdateCells(self):
-        for cellsX in self.cells:
-            for cell in cellsX:
-                cell.update()
+        for cellInfo in self.buffer:
+            self.cells[int(cellInfo.key.x)][int(cellInfo.key.y)].SetState(cellInfo.value)
