@@ -17,7 +17,7 @@ class Grid():
         for x in range(int(self.size.x) + 1):
             cellsX = []
             for y in range(int(self.size.y) + 1):
-                cellsX.append(Cell(Vector2(x*con.CELLSIZE.x,y*con.CELLSIZE.y)))
+                cellsX.append(Cell(Vector2(x*con.CELLGAP*con.CELLSIZE.x,y*con.CELLGAP*con.CELLSIZE.y)))
             cells.append(cellsX)
         
         return cells

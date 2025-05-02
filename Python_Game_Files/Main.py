@@ -15,27 +15,32 @@ con.SCREEN = pygame.display.set_mode((con.WINDOW_WIDTH, con.WINDOW_HEIGHT), FULL
 
 def main () :
     
-    grid = Grid(Vector2(20,20))
+    grid = Grid(con.CELLAMOUNT)
 
-    updateGrid = False
+    isPlaying = False
     
     looping = True
     while looping:
-        con.SCREEN.fill(con.BACKGROUNDCOLOR)
+        if isPlaying:
+            con.SCREEN.fill(con.BACKGROUNDCOLORPLAY)
+        else:
+            con.SCREEN.fill(con.BACKGROUNDCOLORSTOPPED)
+        
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_k]:
+            grid.SetCell(Vector2(random.randrange(len(grid.cells)-1),random.randrange(len(grid.cells[0])-1)), True)
         
         for event in pygame.event.get() :
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_k:
-                    grid.SetCell(Vector2(random.randrange(len(grid.cells)-1),random.randrange(len(grid.cells[0])-1)), True)
                 if event.key == pygame.K_p:
-                    updateGrid = not updateGrid
+                    isPlaying = not isPlaying
                 if event.key == pygame.K_q:
                     QuitGame()
             if event.type == QUIT:
                 QuitGame()
         
 
-        if updateGrid:
+        if isPlaying:
             grid.Update()
         
         grid.DrawCells()
