@@ -14,6 +14,7 @@ class Grid():
         self.size = size
         
         self.cells = self.GenerateCells()
+        self.deadCell = self.GenerateDeadCell()
         
         self.buffer = {}
     
@@ -27,6 +28,9 @@ class Grid():
         
         return cells
     
+    
+    def GenerateDeadCell(self):
+        return Cell(Vector2(0,0), False)
     
     def SetCell(self, cell: Vector2, state: bool):
         pos = cell
@@ -43,6 +47,8 @@ class Grid():
 
                 if 0 <= newX < len(self.cells) and 0 <= newY < len(self.cells[0]):
                     neighbours.append(self.cells[newX][newY])
+                else:
+                    neighbours.append(self.deadCell)
 
         return neighbours
 
@@ -64,10 +70,12 @@ class Grid():
         return cell.state
 
     def ClickIntersection(self, mousePos):
-        for cellsX in self.cells:
-            for cell in cellsX:
+        for dx in range(int(self.size.x)+1):
+            for dy in range(int(self.size.y)+1):
+                cellPos = Vector2(dx,dy)
+                cell = self.cells[dx][dy]
                 if cell.CheckMouseCollide(mousePos):
-                    self.SetCell(cell, not cell.state)
+                    self.SetCell(cellPos, not cell.state)
 
     def ApplyBuffer(self):
         for cellPos, cellState in self.buffer.items():
@@ -81,7 +89,7 @@ class Grid():
                 cell.Draw()
     
     def Update(self):
-        for dx in range(int(self.size.x)):
-            for dy in range(int(self.size.y)):
+        for dx in range(int(self.size.x)+1):
+            for dy in range(int(self.size.y)+1):
                 cellPos = Vector2(dx,dy)
                 self.SetCell(cellPos, self.CheckCellState(cellPos))
