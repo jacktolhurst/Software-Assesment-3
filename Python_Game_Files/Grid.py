@@ -56,9 +56,9 @@ class Grid():
 
         return neighbours
 
-    def CheckCellState(self, cell: Cell):
-        cellPos = self.GetCellPosition(cell)
+    def CheckCellState(self, cellPos: Vector2):
         neighbours = self.GetNeighbours(cellPos)
+        cell = self.cells[int(cellPos.x)][int(cellPos.y)]
 
         liveCount = sum(neighbour.state for neighbour in neighbours)
 
@@ -91,6 +91,7 @@ class Grid():
                 cell.Draw()
     
     def Update(self):
-        for cellsX in self.cells:
-            for cell in cellsX:
-                self.SetCell(cell, self.CheckCellState(cell))
+        for dx in range(int(self.size.x)):
+            for dy in range(int(self.size.y)):
+                cellPos = Vector2(dx,dy)
+                self.SetCell(cellPos, self.CheckCellState(cellPos))
