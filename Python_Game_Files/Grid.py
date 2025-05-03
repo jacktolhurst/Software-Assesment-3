@@ -5,6 +5,11 @@ from pygame.math import *
 from Cell import Cell
 
 class Grid():
+    possibleOffsets = [(dx, dy) 
+        for dx in (-1, 0, 1) 
+        for dy in (-1, 0, 1) 
+        if not (dx == 0 and dy == 0)]
+    
     def __init__(self, size:Vector2):
         self.size = size
         
@@ -23,33 +28,18 @@ class Grid():
         return cells
     
     
-    def SetCell(self, cell: Vector2 | Cell, state: bool):
-        if isinstance(cell, Vector2):
-            pos = cell
-        else:
-            pos = self.GetCellPosition(cell)
+    def SetCell(self, cell: Vector2, state: bool):
+        pos = cell
         
         self.buffer[(pos.x, pos.y)] = state
 
-    def GetCellPosition(self, target_cell: Cell):
-        for x, row in enumerate(self.cells):
-            for y, cell in enumerate(row):
-                if cell is target_cell: 
-                    return Vector2(x, y)
-        print("No such cell")
-        return None
-
     def GetNeighbours(self, cellPos: Vector2):
-        coords = [-1, 0, 1]
         neighbours = []
-
-        for x in coords:
-            for y in coords:
-                if x == 0 and y == 0:
-                    continue 
+        
+        for offset in Grid.possibleOffsets:
                 
-                newX = int(cellPos.x) + x
-                newY = int(cellPos.y) + y
+                newX = int(cellPos.x) + offset[0]
+                newY = int(cellPos.y) + offset[1]
 
                 if 0 <= newX < len(self.cells) and 0 <= newY < len(self.cells[0]):
                     neighbours.append(self.cells[newX][newY])
