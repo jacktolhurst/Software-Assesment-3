@@ -35,7 +35,7 @@ def main () :
                     con.TICKSPEED = max(1, con.TICKSPEED - 2)
                 if event.key == pygame.K_q:
                     QuitGame()
-            if event.type == pygame.MOUSEBUTTONUP:
+            if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     if not isPlaying:
                         mousePos = pygame.mouse.get_pos()
@@ -56,7 +56,7 @@ def main () :
         pygame.display.update()
         if isPlaying:
             clock.tick(con.TICKSPEED)
-            print(clock.get_fps())
+            # print(clock.get_fps())
         else:
             clock.tick(60)
 

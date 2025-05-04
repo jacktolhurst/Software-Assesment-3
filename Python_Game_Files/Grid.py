@@ -14,6 +14,7 @@ class Grid():
         self.size = size
         
         self.cells = self.GenerateCells()
+        self.prevPlayCells = self.cells
         self.deadCell = self.GenerateDeadCell()
         
         self.buffer = {}
