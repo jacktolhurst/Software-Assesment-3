@@ -24,45 +24,49 @@ class SandBoxLVL():
             self.Update()
     
     def Update(self):
+        lastUpdateTime = pygame.time.get_ticks()  # milliseconds
+    
         while self.looping:
-            keys = pygame.key.get_pressed()
-            if keys[pygame.K_k]:
-                self.grid.SetCell(Vector2(random.randrange(len(self.grid.cells)-1),random.randrange(len(self.grid.cells[0])-1)), True)
-            
-            for event in pygame.event.get() :
+            currTime = pygame.time.get_ticks()
+            elapsedTime = currTime - lastUpdateTime
+
+            for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_p:
                         self.isPlaying = not self.isPlaying
-                    if event.key == pygame.K_w:
-                        self.playTickSpeed = self.playTickSpeed + 2
-                    if event.key == pygame.K_s:
+                    elif event.key == pygame.K_w:
+                        self.playTickSpeed += 2
+                    elif event.key == pygame.K_s:
                         self.playTickSpeed = max(1, self.playTickSpeed - 2)
-                    if event.key == pygame.K_q:
+                    elif event.key == pygame.K_q:
                         self.Stop()
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    if event.button == 1:
-                        if not self.isPlaying:
-                            mousePos = pygame.mouse.get_pos()
-                            self.grid.ClickIntersection(mousePos)
-                if event.type == QUIT:
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    if event.button == 1 and not self.isPlaying:
+                        mousePos = pygame.mouse.get_pos()
+                        self.grid.ClickIntersection(mousePos)
+                elif event.type == QUIT:
                     con.HANDLER.QuitGame()
-            
-            if self.isPlaying:
+
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_k]:
+                self.grid.SetCell(Vector2(random.randrange(len(self.grid.cells)-1), random.randrange(len(self.grid.cells[0])-1)), True)
+
+            if self.isPlaying and elapsedTime >= (1000 / self.playTickSpeed):
                 self.grid.Update()
-            
+                lastUpdateTime = currTime
+
             if self.isPlaying:
                 con.SCREEN.fill(con.BACKGROUNDCOLORPLAY)
             else:
                 con.SCREEN.fill(con.BACKGROUNDCOLORSTOPPED)
-            
+
             self.grid.DrawCells()
-            
             pygame.display.update()
-            if self.isPlaying:
-                self.clock.tick(self.playTickSpeed)
-            else:
-                self.clock.tick(self.stoppedTickSpeed)
-        
+            
+            print(self.clock.get_fps() )
+
+            self.clock.tick(120)
+
     def Stop(self):
         if self.looping:
             self.looping = False
