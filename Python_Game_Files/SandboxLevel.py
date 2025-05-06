@@ -20,8 +20,6 @@ class SandBoxLVL():
     
     def Start(self):
         if not self.looping:
-            con.CURRENTLEVELS.append(self)
-
             self.looping = True
             self.Update()
     
@@ -68,5 +66,3 @@ class SandBoxLVL():
     def Stop(self):
         if self.looping:
             self.looping = False
-            
-            con.CURRENTLEVELS.remove(self)
