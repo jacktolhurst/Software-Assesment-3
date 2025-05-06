@@ -4,7 +4,8 @@ import random
 import Constants as con
 from pygame.locals import *
 from pygame.math import *
-from Grid import Grid
+from SandboxLevel import SandBoxLVL
+from Handler import Handler
 
 pygame.init()
 
@@ -13,55 +14,28 @@ clock = pygame.time.Clock()
 pygame.display.set_caption('Game Of Life')
 con.SCREEN = pygame.display.set_mode((con.WINDOW_WIDTH, con.WINDOW_HEIGHT), FULLSCREEN)
 
-def main () :
-    
-    grid = Grid(con.CELLAMOUNT)
+con.HANDLER = Handler()
 
-    isPlaying = False
+def main () :
+    SandBox = SandBoxLVL()
     
     looping = True
-    while looping:        
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_k]:
-            grid.SetCell(Vector2(random.randrange(len(grid.cells)-1),random.randrange(len(grid.cells[0])-1)), True)
-        
-        for event in pygame.event.get() :
+    while looping:
+        for event in pygame.event.get() :      
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_p:
-                    isPlaying = not isPlaying
-                if event.key == pygame.K_w:
-                    con.TICKSPEED = con.TICKSPEED + 2
-                if event.key == pygame.K_s:
-                    con.TICKSPEED = max(1, con.TICKSPEED - 2)
-                if event.key == pygame.K_q:
-                    QuitGame()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == 1:
-                    if not isPlaying:
-                        mousePos = pygame.mouse.get_pos()
-                        grid.ClickIntersection(mousePos)
+                    if event.key == pygame.K_t:
+                        SandBox.Start()
+                    if event.key == pygame.K_q:
+                        con.HANDLER.QuitGame()
             if event.type == QUIT:
-                QuitGame()
+                con.HANDLER.QuitGame()
         
-        if isPlaying:
-            grid.Update()
+        con.CURRENTLEVELS[len(con.CURRENTLEVELS)+1].Draw()
         
-        if isPlaying:
-            con.SCREEN.fill(con.BACKGROUNDCOLORPLAY)
-        else:
-            con.SCREEN.fill(con.BACKGROUNDCOLORSTOPPED)
-        
-        grid.DrawCells()
+        con.SCREEN.fill((10,60,20))
         
         pygame.display.update()
-        if isPlaying:
-            clock.tick(con.TICKSPEED)
-            # print(clock.get_fps())
-        else:
-            clock.tick(60)
-
-def QuitGame():
-    pygame.quit()
-    sys.exit()
+        
+        clock.tick(60)
 
 main()
