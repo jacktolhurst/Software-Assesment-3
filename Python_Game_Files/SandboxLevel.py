@@ -17,6 +17,8 @@ class SandBoxLVL():
         self.grid = Grid(con.CELLAMOUNT)
         
         self.clock = pygame.time.Clock()
+        
+        self.Start()
     
     def Start(self):
         if not self.looping:
@@ -24,32 +26,37 @@ class SandBoxLVL():
             self.Update()
     
     def Update(self):
-        lastUpdateTime = pygame.time.get_ticks()  # milliseconds
+        lastUpdateTime = pygame.time.get_ticks()
     
         while self.looping:
             currTime = pygame.time.get_ticks()
             elapsedTime = currTime - lastUpdateTime
+            
+            mousePos = pygame.mouse.get_pos()
 
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_p:
                         self.isPlaying = not self.isPlaying
-                    elif event.key == pygame.K_w:
+                    if event.key == pygame.K_w:
                         self.playTickSpeed += 2
-                    elif event.key == pygame.K_s:
+                    if event.key == pygame.K_s:
                         self.playTickSpeed = max(1, self.playTickSpeed - 2)
-                    elif event.key == pygame.K_q:
+                    if event.key == pygame.K_q:
                         self.Stop()
-                elif event.type == pygame.MOUSEBUTTONDOWN:
-                    if event.button == 1 and not self.isPlaying:
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if event.button == 1:
                         mousePos = pygame.mouse.get_pos()
-                        self.grid.ClickIntersection(mousePos)
-                elif event.type == QUIT:
+                        setState = self.grid.ClickIntersection(mousePos)
+                if event.type == QUIT:
                     con.HANDLER.QuitGame()
 
             keys = pygame.key.get_pressed()
             if keys[pygame.K_k]:
                 self.grid.SetCell(Vector2(random.randrange(len(self.grid.cells)-1), random.randrange(len(self.grid.cells[0])-1)), True)
+            
+            if pygame.mouse.get_pressed()[0]:
+                self.grid.ClickIntersection(mousePos, setState)
 
             if self.isPlaying and elapsedTime >= (1000 / self.playTickSpeed):
                 self.grid.Update()
@@ -63,8 +70,6 @@ class SandBoxLVL():
             self.grid.DrawCells()
             pygame.display.update()
             
-            print(self.clock.get_fps() )
-
             self.clock.tick(120)
 
     def Stop(self):

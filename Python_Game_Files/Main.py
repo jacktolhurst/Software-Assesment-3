@@ -17,14 +17,12 @@ con.SCREEN = pygame.display.set_mode((con.WINDOW_WIDTH, con.WINDOW_HEIGHT), FULL
 con.HANDLER = Handler()
 
 def main () :
-    SandBox = SandBoxLVL()
-    
     looping = True
     while looping:
         for event in pygame.event.get() :      
             if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_t:
-                        SandBox.Start()
+                        SandBox = SandBoxLVL()
                     if event.key == pygame.K_q:
                         con.HANDLER.QuitGame()
             if event.type == QUIT:

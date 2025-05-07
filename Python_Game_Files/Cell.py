@@ -11,6 +11,7 @@ class Cell():
         if self.state:
             self.color = (255,255,255)
         
+        self.basePos = pos
         self.rect = pygame.Rect(pos.x, pos.y, con.CELLSIZE.x, con.CELLSIZE.y)
     
     def SetState(self, state:bool):
@@ -24,6 +25,9 @@ class Cell():
         return self.rect.collidepoint(mousePos)
 
     def Draw(self):
+        self.rect.x = self.basePos.x + con.CELLOFFSETT.x
+        self.rect.y = self.basePos.y + con.CELLOFFSETT.y
+        
         pygame.draw.rect(con.SCREEN,
                         self.color,
                         self.rect)
