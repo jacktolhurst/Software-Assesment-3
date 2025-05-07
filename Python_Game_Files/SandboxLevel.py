@@ -35,7 +35,7 @@ class SandBoxLVL():
             elapsedTime = currTime - lastUpdateTime
             
             mousePos = pygame.mouse.get_pos()
-
+            
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_p:
@@ -46,6 +46,8 @@ class SandBoxLVL():
                         self.playTickSpeed = max(1, self.playTickSpeed - 2)
                     if event.key == pygame.K_q:
                         self.Stop()
+                if event.type == pygame.MOUSEWHEEL:
+                    con.CELLSCALE = clamp(con.CELLSCALE + event.y, -2, 2)
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if event.button == 1:
                         mousePos = pygame.mouse.get_pos()

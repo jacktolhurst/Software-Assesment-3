@@ -71,7 +71,7 @@ class Grid():
         return cell.state
 
     def ClickIntersection(self, mousePos, state:bool=None):
-        returnSate = None
+        returnSate = False
         for dx in range(int(self.size.x)+1):
             for dy in range(int(self.size.y)+1):
                 cellPos = Vector2(dx,dy)
