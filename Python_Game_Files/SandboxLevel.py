@@ -1,4 +1,4 @@
-import sys
+import numpy
 import pygame
 import random
 from pygame.locals import *
@@ -27,6 +27,8 @@ class SandBoxLVL():
     
     def Update(self):
         lastUpdateTime = pygame.time.get_ticks()
+        
+        prevMousePos = None
     
         while self.looping:
             currTime = pygame.time.get_ticks()
@@ -57,6 +59,8 @@ class SandBoxLVL():
             
             if pygame.mouse.get_pressed()[0]:
                 self.grid.ClickIntersection(mousePos, setState)
+            if pygame.mouse.get_pressed()[1]:
+                con.CELLOFFSETT = con.CELLOFFSETT + Vector2(tuple(numpy.subtract(mousePos, prevMousePos)))
 
             if self.isPlaying and elapsedTime >= (1000 / self.playTickSpeed):
                 self.grid.Update()
@@ -69,6 +73,8 @@ class SandBoxLVL():
 
             self.grid.DrawCells()
             pygame.display.update()
+            
+            prevMousePos = mousePos
             
             self.clock.tick(120)
 
