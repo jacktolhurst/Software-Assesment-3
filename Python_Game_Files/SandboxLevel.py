@@ -32,6 +32,9 @@ class SandBoxLVL():
         prevMousePos = None
     
         while self.looping:
+            if con.WON:
+                self.Won()
+            
             currTime = pygame.time.get_ticks()
             elapsedTime = currTime - lastUpdateTime
             
@@ -55,7 +58,7 @@ class SandBoxLVL():
 
             keys = pygame.key.get_pressed()
             if keys[pygame.K_k]:
-                self.grid.SetCell(Vector2(random.randrange(len(self.grid.cells)-1), random.randrange(len(self.grid.cells[0])-1)), State.ALIVE)
+                self.grid.SetCell(Vector2(random.randrange(len(self.grid.cells)-1), random.randrange(len(self.grid.cells[0])-1)), State.PRIZE)
             
             if pygame.mouse.get_pressed()[0]:
                 if not self.isPlaying:
@@ -86,3 +89,7 @@ class SandBoxLVL():
     def Stop(self):
         if self.looping:
             self.looping = False
+    
+    def Won(self):
+        con.Won = False
+        self.Stop()

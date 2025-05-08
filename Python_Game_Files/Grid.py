@@ -66,6 +66,9 @@ class Grid():
             return State.DEAD
         if cell.state == State.DEAD and liveCount == 3:
             return State.ALIVE
+        if cell.state == State.PRIZE and liveCount > 0:
+            con.WON = True
+            return State.ALIVE
 
         return cell.state
 

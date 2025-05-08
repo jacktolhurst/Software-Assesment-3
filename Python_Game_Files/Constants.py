@@ -17,3 +17,5 @@ CELLOFFSETT = Vector2(0,0)
 CELLSCALE = 1
 
 HANDLER = None
+
+WON = False
