@@ -2,7 +2,7 @@ import pygame
 import random
 import Constants as con
 from pygame.math import *
-from Cell import Cell
+from Cell import Cell, State
 
 class Grid():
     possibleOffsets = [(dx, dy) 
@@ -10,8 +10,9 @@ class Grid():
         for dy in (-1, 0, 1) 
         if not (dx == 0 and dy == 0)]
     
-    def __init__(self, size:Vector2):
+    def __init__(self, size:Vector2, offset:Vector2=Vector2(0,0)):
         self.size = size
+        self.offset = offset
         
         self.cells = self.GenerateCells()
         self.prevPlayCells = self.cells
@@ -24,7 +25,7 @@ class Grid():
         for x in range(int(self.size.x) + 1):
             cellsX = []
             for y in range(int(self.size.y) + 1):
-                cellsX.append(Cell(Vector2(x*con.CELLGAP*con.CELLSIZE.x,y*con.CELLGAP*con.CELLSIZE.y)))
+                cellsX.append(Cell(Vector2(x*con.CELLGAP*con.CELLSIZE.x+self.offset.x,y*con.CELLGAP*con.CELLSIZE.y+self.offset.y)))
             cells.append(cellsX)
         
         return cells
@@ -33,10 +34,8 @@ class Grid():
     def GenerateDeadCell(self):
         return Cell(Vector2(0,0), False)
 
-    def SetCell(self, cell: Vector2, state: bool):
-        pos = cell
-        
-        self.buffer[(pos.x, pos.y)] = state
+    def SetCell(self, cellPos:Vector2, state:State):
+        self.buffer[(cellPos.x, cellPos.y)] = state
 
     def GetNeighbours(self, cellPos: Vector2):
         neighbours = []
@@ -57,33 +56,34 @@ class Grid():
         neighbours = self.GetNeighbours(cellPos)
         cell = self.cells[int(cellPos.x)][int(cellPos.y)]
 
-        liveCount = sum(neighbour.state for neighbour in neighbours)
+        liveCount = sum(neighbour.state == State.ALIVE for neighbour in neighbours)
 
-        if cell.state and liveCount < 2:
-            return False
-        if cell.state and (liveCount == 2 or liveCount == 3):
-            return True
-        if cell.state and liveCount > 3:
-            return False
-        if not cell.state and liveCount == 3:
-            return True
+        if cell.state == State.ALIVE and liveCount < 2:
+            return State.DEAD
+        if cell.state == State.ALIVE and (liveCount == 2 or liveCount == 3):
+            return State.ALIVE
+        if cell.state == State.ALIVE and liveCount > 3:
+            return State.DEAD
+        if cell.state == State.DEAD and liveCount == 3:
+            return State.ALIVE
 
         return cell.state
 
-    def ClickIntersection(self, mousePos, state:bool=None):
+    def ClickIntersection(self, mousePos, state:State=State.DEAD):
         returnSate = False
         for dx in range(int(self.size.x)+1):
             for dy in range(int(self.size.y)+1):
                 cellPos = Vector2(dx,dy)
                 cell = self.cells[dx][dy]
                 if cell.CheckMouseCollide(mousePos):
-                    if state == None:
-                        self.SetCell(cellPos, not cell.state)
-                        returnSate = not cell.state
-                    else:
-                        self.SetCell(cellPos, state)
+                    self.SetCell(cellPos, state)
         
         return returnSate
+
+    def MoveCells(self):
+        for cellsX in self.cells:
+            for cell in cellsX:
+                cell.Move()
 
     def ApplyBuffer(self):
         for cellPos, cellState in self.buffer.items():
