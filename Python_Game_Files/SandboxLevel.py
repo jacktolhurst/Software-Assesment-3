@@ -58,7 +58,7 @@ class SandBoxLVL():
 
             keys = pygame.key.get_pressed()
             if keys[pygame.K_k]:
-                self.grid.SetCell(Vector2(random.randrange(len(self.grid.cells)-1), random.randrange(len(self.grid.cells[0])-1)), State.PRIZE)
+                self.grid.SetCell(Vector2(random.randrange(len(self.grid.cells)-1), random.randrange(len(self.grid.cells[0])-1)), State.UNTOUCH)
             
             if pygame.mouse.get_pressed()[0]:
                 if not self.isPlaying:
@@ -74,10 +74,7 @@ class SandBoxLVL():
                 self.grid.Update()
                 lastUpdateTime = currTime
 
-            if self.isPlaying:
-                con.SCREEN.fill(con.BACKGROUNDCOLORPLAY)
-            else:
-                con.SCREEN.fill(con.BACKGROUNDCOLORSTOPPED)
+            con.SCREEN.fill(con.BACKGROUNDCOLOR)
 
             self.grid.DrawCells()
             pygame.display.update()

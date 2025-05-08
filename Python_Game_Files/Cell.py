@@ -1,4 +1,5 @@
 import pygame
+import random
 import Constants as con
 from enum import Enum, auto
 from pygame.math import *
@@ -7,17 +8,14 @@ class State(Enum):
     DEAD = auto()
     ALIVE = auto()
     PRIZE = auto()
+    UNTOUCH = auto()
 
 class Cell():
     def __init__(self, pos: Vector2, state:State=State.DEAD):
         self.pos = pos
-        self.state = state
         self.color = (0,0,0)
-        
-        if self.state == State.ALIVE:
-            self.color = (255,255,255)
-        if self.state == State.PRIZE:
-            self.color = (255,255,0)
+        self.state = None
+        self.SetState(state)
         
         self.rect = pygame.Rect(pos.x, pos.y, con.CELLSIZE.x, con.CELLSIZE.y)
         self.basePos = pos
@@ -31,6 +29,9 @@ class Cell():
             self.color = (255,255,255)
         elif self.state == State.PRIZE:
             self.color = (255,255,0)
+        elif self.state == State.UNTOUCH:
+            rand = random.randrange(-10,10)
+            self.color = (60+rand,60+rand,60+rand)
         else:
             self.color = (0,0,0)
 

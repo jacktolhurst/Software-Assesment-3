@@ -35,7 +35,8 @@ class Grid():
         return Cell(Vector2(0,0), False)
 
     def SetCell(self, cellPos:Vector2, state:State):
-        self.buffer[(cellPos.x, cellPos.y)] = state
+        if self.cells[int(cellPos.x)][int(cellPos.y)].state != state:
+            self.buffer[(cellPos.x, cellPos.y)] = state
 
     def GetNeighbours(self, cellPos: Vector2):
         neighbours = []
@@ -60,13 +61,13 @@ class Grid():
 
         if cell.state == State.ALIVE and liveCount < 2:
             return State.DEAD
-        if cell.state == State.ALIVE and (liveCount == 2 or liveCount == 3):
+        elif cell.state == State.ALIVE and (liveCount == 2 or liveCount == 3):
             return State.ALIVE
-        if cell.state == State.ALIVE and liveCount > 3:
+        elif cell.state == State.ALIVE and liveCount > 3:
             return State.DEAD
-        if cell.state == State.DEAD and liveCount == 3:
+        elif cell.state == State.DEAD and liveCount == 3:
             return State.ALIVE
-        if cell.state == State.PRIZE and liveCount > 0:
+        elif cell.state == State.PRIZE and liveCount > 0:
             con.WON = True
             return State.ALIVE
 
@@ -78,8 +79,9 @@ class Grid():
             for dy in range(int(self.size.y)+1):
                 cellPos = Vector2(dx,dy)
                 cell = self.cells[dx][dy]
-                if cell.CheckMouseCollide(mousePos):
-                    self.SetCell(cellPos, state)
+                if cell.state != State.UNTOUCH and cell.state != State.PRIZE:
+                    if cell.CheckMouseCollide(mousePos):
+                        self.SetCell(cellPos, state)
         
         return returnSate
 
@@ -91,6 +93,7 @@ class Grid():
     def ApplyBuffer(self):
         for cellPos, cellState in self.buffer.items():
             self.cells[int(cellPos[0])][int(cellPos[1])].SetState(cellState)
+        self.buffer.clear()
 
     def DrawCells(self):
         self.ApplyBuffer()
