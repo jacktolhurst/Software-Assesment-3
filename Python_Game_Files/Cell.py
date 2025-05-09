@@ -20,7 +20,7 @@ class Cell():
         self.rect = pygame.Rect(pos.x, pos.y, con.CELLSIZE.x, con.CELLSIZE.y)
         self.basePos = pos
         self.baseScale = Vector2(self.rect.w, self.rect.h)
-        
+
         self.Move()
     
     def SetState(self, state:State):

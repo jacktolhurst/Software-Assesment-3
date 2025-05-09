@@ -1,5 +1,3 @@
-import pygame
-import random
 import Constants as con
 from pygame.math import *
 from Cell import Cell, State

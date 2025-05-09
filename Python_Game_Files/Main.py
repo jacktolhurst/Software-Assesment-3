@@ -1,6 +1,4 @@
-import sys
 import pygame
-import random
 import Constants as con
 from pygame.locals import *
 from pygame.math import *
