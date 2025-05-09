@@ -19,6 +19,7 @@ class Grid():
         self.deadCell = self.GenerateDeadCell()
         
         self.buffer = {}
+        self.activeCells = set()
     
     def GenerateCells(self):
         cells = []
@@ -35,8 +36,15 @@ class Grid():
         return Cell(Vector2(0,0), False)
 
     def SetCell(self, cellPos:Vector2, state:State):
-        if self.cells[int(cellPos.x)][int(cellPos.y)].state != state:
+        cell = self.cells[int(cellPos.x)][int(cellPos.y)]
+        if cell.state != state:
             self.buffer[(cellPos.x, cellPos.y)] = state
+            self.activeCells.add((cellPos.x, cellPos.y))
+            for offset in Grid.possibleOffsets:
+                newX = int(cellPos.x) + offset[0]
+                newY = int(cellPos.y) + offset[1]
+                if 0 <= newX < len(self.cells) and 0 <= newY < len(self.cells[0]):
+                    self.activeCells.add((newX, newY))
 
     def GetNeighbours(self, cellPos: Vector2):
         neighbours = []
@@ -53,7 +61,7 @@ class Grid():
 
         return neighbours
 
-    def CheckCellState(self, cellPos: Vector2):
+    def CheckCellState(self, cellPos:Vector2):
         neighbours = self.GetNeighbours(cellPos)
         cell = self.cells[int(cellPos.x)][int(cellPos.y)]
 
@@ -93,6 +101,7 @@ class Grid():
     def ApplyBuffer(self):
         for cellPos, cellState in self.buffer.items():
             self.cells[int(cellPos[0])][int(cellPos[1])].SetState(cellState)
+        
         self.buffer.clear()
 
     def DrawCells(self):
@@ -103,7 +112,9 @@ class Grid():
                 cell.Draw()
     
     def Update(self):
-        for dx in range(int(self.size.x)+1):
-            for dy in range(int(self.size.y)+1):
-                cellPos = Vector2(dx,dy)
-                self.SetCell(cellPos, self.CheckCellState(cellPos))
+        oldActiveCells = list(self.activeCells)
+        self.activeCells.clear()
+        
+        for cellPos in oldActiveCells:
+            cellPos = Vector2(cellPos)
+            self.SetCell(cellPos, self.CheckCellState(cellPos))
