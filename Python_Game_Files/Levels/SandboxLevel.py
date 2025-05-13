@@ -50,9 +50,6 @@ class SandBoxLVL():
                         self.playTickSpeed = max(1, self.playTickSpeed - 2)
                     if event.key == pygame.K_q:
                         self.Stop()
-                if event.type == pygame.MOUSEWHEEL:
-                    con.CELLSCALE += min(event.y,1)
-                    self.grid.MoveCells()
                 if event.type == QUIT:
                     con.HANDLER.QuitGame()
 
@@ -74,12 +71,14 @@ class SandBoxLVL():
                 self.grid.Update()
                 lastUpdateTime = currTime
 
-            con.SCREEN.fill(con.BACKGROUNDCOLOR)
+            con.SCREEN.fill((0,0,0))
 
             self.grid.DrawCells()
             pygame.display.update()
             
             prevMousePos = mousePos
+            
+            print(self.clock.get_fps())
             
             self.clock.tick(120)
 

@@ -19,7 +19,6 @@ class Cell():
         
         self.rect = pygame.Rect(pos.x, pos.y, con.CELLSIZE.x, con.CELLSIZE.y)
         self.basePos = pos
-        self.baseScale = Vector2(self.rect.w, self.rect.h)
 
         self.Move()
     
@@ -41,9 +40,6 @@ class Cell():
     def Move(self):
         self.rect.x = (self.basePos.x + con.CELLOFFSETT.x)
         self.rect.y = (self.basePos.y + con.CELLOFFSETT.y)
-        
-        self.rect.w = self.baseScale.x + con.CELLSCALE
-        self.rect.h = self.baseScale.y + con.CELLSCALE
 
     def Draw(self):
         pygame.draw.rect(con.SCREEN,

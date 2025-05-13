@@ -1,8 +1,10 @@
 import pygame
+import asyncio
 import Constants as con
 from pygame.locals import *
 from pygame.math import *
-from SandboxLevel import SandBoxLVL
+from Levels.SandboxLevel import SandBoxLVL
+from Levels.TechnicalLevel import TechnicalLVL
 from Handler import Handler
 
 pygame.init()
@@ -14,13 +16,15 @@ con.SCREEN = pygame.display.set_mode((con.WINDOW_WIDTH, con.WINDOW_HEIGHT), FULL
 
 con.HANDLER = Handler()
 
-def main () :
+async def main () :
     looping = True
     while looping:
         for event in pygame.event.get() :      
             if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_s:
+                        sandBoxLVL = SandBoxLVL()
                     if event.key == pygame.K_t:
-                        SandBox = SandBoxLVL()
+                        techLVL = TechnicalLVL()
                     if event.key == pygame.K_q:
                         con.HANDLER.QuitGame()
             if event.type == QUIT:
@@ -31,5 +35,6 @@ def main () :
         pygame.display.update()
         
         clock.tick(60)
+        await asyncio.sleep(0)
 
-main()
+asyncio.run(main())
