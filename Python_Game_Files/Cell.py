@@ -2,7 +2,7 @@ import pygame
 import random
 import Constants as con
 from enum import Enum, auto
-from pygame.math import *
+from pygame.math import Vector2
 
 class State(Enum):
     DEAD = auto()

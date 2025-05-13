@@ -6,6 +6,7 @@ from pygame.math import *
 import Constants as con
 from Grid import Grid
 from Cell import State
+from UI import UI
 
 class SandBoxLVL():
     def __init__(self):
@@ -19,10 +20,14 @@ class SandBoxLVL():
         
         self.clock = pygame.time.Clock()
         
+        self.UIs = []
+        
         self.Start()
     
     def Start(self):
         if not self.looping:
+            self.UIs.append(UI(Vector2(200,200), Vector2(20,20)))
+            
             self.looping = True
             self.Update()
     
@@ -71,14 +76,23 @@ class SandBoxLVL():
                 self.grid.Update()
                 lastUpdateTime = currTime
 
-            con.SCREEN.fill((0,0,0))
 
-            self.grid.DrawCells()
+            self.DrawEverything()
             pygame.display.update()
             
             prevMousePos = mousePos
             
             self.clock.tick(120)
+
+    def DrawEverything(self):
+        con.SCREEN.fill((0,0,0))
+        
+        self.grid.DrawCells()
+        
+        for UI in self.UIs:
+            UI.Draw()
+        
+        pygame.display.update()
 
     def Stop(self):
         if self.looping:
