@@ -78,8 +78,6 @@ class SandBoxLVL():
             
             prevMousePos = mousePos
             
-            print(self.clock.get_fps())
-            
             self.clock.tick(120)
 
     def Stop(self):

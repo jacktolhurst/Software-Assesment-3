@@ -12,12 +12,13 @@ class Grid():
         self.size = size
         self.offset = offset
         
+        self.buffer = {}
+        self.activeCells = set()
+        self.stationaryCells = set()
+        
         self.cells = self.GenerateCells()
         self.prevPlayCells = self.cells
-        self.deadCell = self.GenerateDeadCell()
-        
-        self.buffer = {(1,2): State.ALIVE}
-        self.activeCells = set()
+
         
         self.DrawCells()
     
@@ -26,25 +27,30 @@ class Grid():
         for x in range(int(self.size.x) + 1):
             cellsX = []
             for y in range(int(self.size.y) + 1):
-                cellsX.append(Cell(Vector2(x*con.CELLGAP*con.CELLSIZE.x+self.offset.x,y*con.CELLGAP*con.CELLSIZE.y+self.offset.y)))
+                cellPos = Vector2(x*con.CELLGAP*con.CELLSIZE.x+self.offset.x,y*con.CELLGAP*con.CELLSIZE.y+self.offset.y)
+                cell = Cell(cellPos, State.DEAD)
+                if x == 0 or y == 0 or x == int(self.size.x) or y == int(self.size.y):
+                    cell.SetState(State.UNTOUCH)
+                    self.stationaryCells.add((x, y))
+                cellsX.append(cell)
             cells.append(cellsX)
         
         return cells
     
     
-    def GenerateDeadCell(self):
-        return Cell(Vector2(0,0), False)
-
     def SetCell(self, cellPos:Vector2, state:State):
         cell = self.cells[int(cellPos.x)][int(cellPos.y)]
         if cell.state != state:
             self.buffer[(cellPos.x, cellPos.y)] = state
-            self.activeCells.add((cellPos.x, cellPos.y))
-            for offset in Grid.possibleOffsets:
-                newX = int(cellPos.x) + offset[0]
-                newY = int(cellPos.y) + offset[1]
-                if 0 <= newX < len(self.cells) and 0 <= newY < len(self.cells[0]):
-                    self.activeCells.add((newX, newY))
+            if state == State.ALIVE or state == State.DEAD:
+                self.activeCells.add((cellPos.x, cellPos.y))
+                for offset in Grid.possibleOffsets:
+                    newX = int(cellPos.x) + offset[0]
+                    newY = int(cellPos.y) + offset[1]
+                    if 0 <= newX < len(self.cells) and 0 <= newY < len(self.cells[0]):
+                        self.activeCells.add((newX, newY))
+            else:
+                self.stationaryCells.add((cellPos.x, cellPos.y))
 
     def GetNeighbours(self, cellPos: Vector2):
         neighbours = []
@@ -56,8 +62,6 @@ class Grid():
 
                 if 0 <= newX < len(self.cells) and 0 <= newY < len(self.cells[0]):
                     neighbours.append(self.cells[newX][newY])
-                else:
-                    neighbours.append(self.deadCell)
 
         return neighbours
 
@@ -106,6 +110,9 @@ class Grid():
         self.ApplyBuffer()
         
         for cellPos in self.activeCells:
+            self.cells[int(cellPos[0])][int(cellPos[1])].Draw()
+        
+        for cellPos in self.stationaryCells:
             self.cells[int(cellPos[0])][int(cellPos[1])].Draw()
     
     def Update(self):
