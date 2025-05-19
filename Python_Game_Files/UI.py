@@ -10,34 +10,26 @@ class UI:
         
         self.state = state
         
-        self.rect = type.rect
-        self.rect.x = pos.x
-        self.rect.y = pos.y
-        self.rect.w = size.x
-        self.rect.h = size.y
+        self.rect = pygame.Rect(pos.x, pos.y, size.x, size.y)
+        self.vertices = type.GetVertices(self.rect)
         
         self.width = width
         
-        self.borderRadius = type.borderRadius
-    
     def SetState(self, newState):
         self.state = newState
     
     def Draw(self):
-        pygame.draw.rect(con.SCREEN,
-                self.color,
-                self.rect,
-                self.width,
-                self.borderRadius)
+        pygame.draw.polygon(con.SCREEN, self.color, self.vertices, self.width)
 
 class Quad:
-    rect = pygame.Rect(0, 0, 0, 0)
-    borderRadius = 0
+    @staticmethod
+    def GetVertices(rect:pygame.Rect):
+        return [(rect.x, rect.y), (rect.x + rect.w, rect.y), (rect.x + rect.w, rect.y + rect.h), (rect.x, rect.y + rect.h)]
 
-class RoundedQuad:
-    rect = pygame.Rect(0, 0, 0, 0)
-    borderRadius = 20
+class Triangle:
+    @staticmethod
+    def GetVertices(rect:pygame.Rect):
+        return [(rect.x + rect.w/2, rect.y), (rect.x, rect.y + rect.h), (rect.x + rect.w, rect.y + rect.h)]
 
 class Circle:
-    rect = pygame.Rect(0, 0, 0, 0)
     borderRadius = 50
