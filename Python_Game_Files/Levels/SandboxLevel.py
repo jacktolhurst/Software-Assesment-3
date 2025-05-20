@@ -25,9 +25,10 @@ class SandBoxLVL():
     
     def Start(self):
         if not self.looping:
-            self.UIs["Square"] = UI(Quad, Vector2(20,20), Vector2(200,200), (100,100,100), True)
+            self.UIs["PlayStopSquare"] = UI(Quad, Vector2(20,20), Vector2(200,200), (100,100,100))
             self.UIs["StopSymbol"] = UI(Hexagon, Vector2(70,70), Vector2(100,100), (255,0,0), False)
             self.UIs["PlaySymbol"] = UI(TriangleRight, Vector2(70,70), Vector2(100,100), (0,255,0), False)
+            self.UIs["SliderBackground"] = UI(Quad, Vector2(500,500), Vector2(100,100), (20,20,20))
             
             self.looping = True
             self.Update()
@@ -59,6 +60,14 @@ class SandBoxLVL():
                         self.isPlaying = not self.isPlaying
                     if event.key == pygame.K_q:
                         self.Stop()
+                if event.type == pygame.MOUSEBUTTONUP:
+                    for Name, UI in self.UIs.items():
+                        if not UI.state:
+                            continue
+                        if Name == "PlaySymbol" and UI.rect.collidepoint(mousePos):
+                            self.isPlaying = True
+                        elif Name == "StopSymbol" and UI.rect.collidepoint(mousePos):
+                            self.isPlaying = False
                 if event.type == QUIT:
                     con.HANDLER.QuitGame()
 
