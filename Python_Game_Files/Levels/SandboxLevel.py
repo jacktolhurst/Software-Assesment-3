@@ -26,9 +26,8 @@ class SandBoxLVL():
     def Start(self):
         if not self.looping:
             self.UIs["Square"] = UI(Quad, Vector2(20,20), Vector2(200,200), (100,100,100), True)
-            self.UIs["Triange"] = UI(Triangle, Vector2(20,20), Vector2(200,200), (255,100,100), True)
-            # self.UIs["StopSymbol"] = UI(RoundedQuad, Vector2(70,70), Vector2(100,100), (255,0,0), False)
-            # self.UIs["PlaySymbol"] = UI(Circle, Vector2(70,70), Vector2(100,100), (0,255,0), False)
+            self.UIs["StopSymbol"] = UI(Hexagon, Vector2(70,70), Vector2(100,100), (255,0,0), False)
+            self.UIs["PlaySymbol"] = UI(TriangleRight, Vector2(70,70), Vector2(100,100), (0,255,0), False)
             
             self.looping = True
             self.Update()
@@ -42,12 +41,12 @@ class SandBoxLVL():
             if con.WON:
                 self.Won()
             
-            # if self.isPlaying:
-            #     self.UIs["StopSymbol"].state = True
-            #     self.UIs["PlaySymbol"].state = False
-            # else:
-            #     self.UIs["StopSymbol"].state = False
-            #     self.UIs["PlaySymbol"].state = True
+            if self.isPlaying:
+                self.UIs["StopSymbol"].state = True
+                self.UIs["PlaySymbol"].state = False
+            else:
+                self.UIs["StopSymbol"].state = False
+                self.UIs["PlaySymbol"].state = True
             
             currTime = pygame.time.get_ticks()
             elapsedTime = currTime - lastUpdateTime

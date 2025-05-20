@@ -1,3 +1,4 @@
+import math
 import pygame
 import Constants as con
 from pygame.math import Vector2
@@ -24,12 +25,105 @@ class UI:
 class Quad:
     @staticmethod
     def GetVertices(rect:pygame.Rect):
-        return [(rect.x, rect.y), (rect.x + rect.w, rect.y), (rect.x + rect.w, rect.y + rect.h), (rect.x, rect.y + rect.h)]
+        return [
+            (rect.x, rect.y),
+            (rect.x + rect.w, rect.y),
+            (rect.x + rect.w, rect.y + rect.h),
+            (rect.x, rect.y + rect.h)
+            ]
 
-class Triangle:
+class TriangleUp:
     @staticmethod
     def GetVertices(rect:pygame.Rect):
-        return [(rect.x + rect.w/2, rect.y), (rect.x, rect.y + rect.h), (rect.x + rect.w, rect.y + rect.h)]
+        return [
+            (rect.x + rect.w/2, rect.y),
+            (rect.x, rect.y + rect.h),
+            (rect.x + rect.w, rect.y + rect.h)
+            ]
+
+class TriangleDown:
+    @staticmethod
+    def GetVertices(rect: pygame.Rect):
+        return [
+            (rect.x, rect.y),                     
+            (rect.x + rect.w, rect.y),            
+            (rect.x + rect.w / 2, rect.y + rect.h)
+            ]
+
+class TriangleLeft:
+    @staticmethod
+    def GetVertices(rect: pygame.Rect):
+        return [
+            (rect.x + rect.w, rect.y),          
+            (rect.x + rect.w, rect.y + rect.h),    
+            (rect.x, rect.y + rect.h / 2)         
+            ]
+
+class TriangleRight:
+    @staticmethod
+    def GetVertices(rect: pygame.Rect):
+        return [
+            (rect.x, rect.y),                   
+            (rect.x, rect.y + rect.h),             
+            (rect.x + rect.w, rect.y + rect.h / 2)  
+            ]
+
+class Pentagon:
+    @staticmethod
+    def GetVertices(rect: pygame.Rect):
+        cx = rect.x + rect.w / 2
+        cy = rect.y + rect.h / 2
+        radius = min(rect.w, rect.h) / 2
+
+        return [
+            (
+                cx + radius * math.cos(2 * math.pi * i / 5),
+                cy + radius * math.sin(2 * math.pi * i / 5)
+            )
+            for i in range(5)
+            ]
+
+class Hexagon:
+    @staticmethod
+    def GetVertices(rect: pygame.Rect):
+        cx = rect.x + rect.w / 2
+        cy = rect.y + rect.h / 2
+        radius = min(rect.w, rect.h) / 2
+
+        return [
+            (
+                cx + radius * math.cos(2 * math.pi * i / 6),
+                cy + radius * math.sin(2 * math.pi * i / 6)
+            )
+            for i in range(6)
+            ]
+
+class Octagon:
+    @staticmethod
+    def GetVertices(rect: pygame.Rect):
+        cx = rect.x + rect.w / 2
+        cy = rect.y + rect.h / 2
+        radius = min(rect.w, rect.h) / 2
+
+        return [
+            (
+                cx + radius * math.cos(2 * math.pi * i / 8),
+                cy + radius * math.sin(2 * math.pi * i / 8)
+            )
+            for i in range(8)
+            ]
 
 class Circle:
-    borderRadius = 50
+    @staticmethod
+    def GetVertices(rect: pygame.Rect):
+        cx = rect.x + rect.w / 2
+        cy = rect.y + rect.h / 2
+        radius = min(rect.w, rect.h) / 2
+
+        return [
+            (
+                cx + radius * math.cos(2 * math.pi * i / 32),
+                cy + radius * math.sin(2 * math.pi * i / 32)
+            )
+            for i in range(32)
+            ]
