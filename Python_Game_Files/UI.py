@@ -6,18 +6,35 @@ from pygame.math import Vector2
 class UI:
     def __init__(self, type, pos:Vector2, size:Vector2, color:tuple, state:bool=True, width:int=0):
         self.pos = pos
+        self.size = size
+        
+        self.type = type
         
         self.color = color
         
         self.state = state
         
-        self.rect = pygame.Rect(pos.x, pos.y, size.x, size.y)
-        self.vertices = type.GetVertices(self.rect)
-        
         self.width = width
         
+        self.rect = None
+        self.vertices = None
+        
+        self.ResetRect()
+    
+    def MoveSet(self, newPos:Vector2):
+        self.pos = newPos
+        self.ResetRect()
+    
+    def MoveAdd(self, addedPos:Vector2):
+        self.pos = self.pos + addedPos
+        self.ResetRect()
+    
     def SetState(self, newState):
         self.state = newState
+    
+    def ResetRect(self):
+        self.rect = pygame.Rect(self.pos.x, self.pos.y, self.size.x, self.size.y)
+        self.vertices = self.type.GetVertices(self.rect)
     
     def Draw(self):
         pygame.draw.polygon(con.SCREEN, self.color, self.vertices, self.width)

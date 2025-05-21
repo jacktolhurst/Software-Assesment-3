@@ -28,26 +28,30 @@ class SandBoxLVL():
             self.UIs["PlayStopSquare"] = UI(Quad, Vector2(20,20), Vector2(200,200), (100,100,100))
             self.UIs["StopSymbol"] = UI(Hexagon, Vector2(70,70), Vector2(100,100), (255,0,0), False)
             self.UIs["PlaySymbol"] = UI(TriangleRight, Vector2(70,70), Vector2(100,100), (0,255,0), False)
-            self.UIs["SliderBackground"] = UI(Quad, Vector2(500,500), Vector2(100,100), (20,20,20))
+            self.UIs["SliderSquare"] = UI(Quad, Vector2(880,1020), Vector2(400,50), (100,100,100))
+            self.UIs["SliderBackground"] = UI(Quad, Vector2(905,1025), Vector2(350,40), (50,50,50))
+            self.UIs["SliderNotch"] = UI(Circle, Vector2(900,1025), Vector2(40,40), (255,255,255))
             
             self.looping = True
             self.Update()
     
     def Update(self):
-        lastUpdateTime = pygame.time.get_ticks()
+        lastUpdateTime = pygame.time.get_ticks()       
         
         prevMousePos = None
+        
+        touchingSlider = False
     
         while self.looping:
             if con.WON:
                 self.Won()
             
             if self.isPlaying:
-                self.UIs["StopSymbol"].state = True
-                self.UIs["PlaySymbol"].state = False
+                self.UIs["StopSymbol"].SetState(True)
+                self.UIs["PlaySymbol"].SetState(False)
             else:
-                self.UIs["StopSymbol"].state = False
-                self.UIs["PlaySymbol"].state = True
+                self.UIs["StopSymbol"].SetState(False)
+                self.UIs["PlaySymbol"].SetState(True) 
             
             currTime = pygame.time.get_ticks()
             elapsedTime = currTime - lastUpdateTime
@@ -60,27 +64,28 @@ class SandBoxLVL():
                         self.isPlaying = not self.isPlaying
                     if event.key == pygame.K_q:
                         self.Stop()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if self.UIs["SliderNotch"].rect.collidepoint(mousePos):
+                        touchingSlider = True
                 if event.type == pygame.MOUSEBUTTONUP:
-                    for Name, UI in self.UIs.items():
-                        if not UI.state:
-                            continue
-                        if Name == "PlaySymbol" and UI.rect.collidepoint(mousePos):
-                            self.isPlaying = True
-                        elif Name == "StopSymbol" and UI.rect.collidepoint(mousePos):
-                            self.isPlaying = False
+                    if self.UIs["PlaySymbol"].rect.collidepoint(mousePos) and self.UIs["PlaySymbol"].state:
+                        self.isPlaying = True
+                    elif self.UIs["StopSymbol"].rect.collidepoint(mousePos) and self.UIs["StopSymbol"].state:
+                        self.isPlaying = False
+                    
+                    if not self.UIs["SliderNotch"].rect.collidepoint(mousePos):
+                        touchingSlider = False
                 if event.type == QUIT:
                     con.HANDLER.QuitGame()
 
-            keys = pygame.key.get_pressed()
-            if keys[pygame.K_k]:
-                self.grid.SetCell(Vector2(random.randrange(len(self.grid.cells)-1), random.randrange(len(self.grid.cells[0])-1)), State.UNTOUCH)
-            if keys[pygame.K_w]:
-                self.tickSpeed = min(self.tickSpeed + 0.1, 120)
-            if keys[pygame.K_s]:
-                self.tickSpeed = max(1, self.tickSpeed - 0.1)
-            
+            keys = pygame.key.get_pressed()            
             if pygame.mouse.get_pressed()[0]:
-                if not self.isPlaying:
+                if self.isPlaying:
+                    if touchingSlider:
+                        if not mousePos[0] <= 885 and not  mousePos[0] >= 1235:
+                            self.UIs["SliderNotch"].MoveSet(Vector2(mousePos[0], self.UIs["SliderNotch"].pos.y))
+                            self.tickSpeed = clamp((self.UIs["SliderNotch"].pos.x - 880)/5, 1, 120)
+                else:
                     self.grid.ClickIntersection(mousePos, State.ALIVE)
             if pygame.mouse.get_pressed()[1]:
                 con.CELLOFFSETT = con.CELLOFFSETT + Vector2(tuple(numpy.subtract(mousePos, prevMousePos)))
