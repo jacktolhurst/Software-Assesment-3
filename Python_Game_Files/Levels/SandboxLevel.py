@@ -80,12 +80,11 @@ class SandBoxLVL():
 
             keys = pygame.key.get_pressed()            
             if pygame.mouse.get_pressed()[0]:
-                if self.isPlaying:
-                    if touchingSlider:
-                        if not mousePos[0] <= 885 and not  mousePos[0] >= 1235:
-                            self.UIs["SliderNotch"].MoveSet(Vector2(mousePos[0], self.UIs["SliderNotch"].pos.y))
-                            self.tickSpeed = clamp((self.UIs["SliderNotch"].pos.x - 880)/5, 1, 120)
-                else:
+                if touchingSlider:
+                    if not mousePos[0] <= 885 and not  mousePos[0] >= 1235:
+                        self.UIs["SliderNotch"].MoveSet(Vector2(mousePos[0], self.UIs["SliderNotch"].pos.y))
+                        self.tickSpeed = clamp((self.UIs["SliderNotch"].pos.x - 880)/5, 1, 120)
+                elif not self.isPlaying:
                     self.grid.ClickIntersection(mousePos, State.ALIVE)
             if pygame.mouse.get_pressed()[1]:
                 con.CELLOFFSETT = con.CELLOFFSETT + Vector2(tuple(numpy.subtract(mousePos, prevMousePos)))
