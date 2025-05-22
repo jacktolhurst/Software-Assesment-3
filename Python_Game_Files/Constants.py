@@ -1,13 +1,14 @@
 from pygame.math import *
 
 SCREEN = None
+SCREENRECT = None
 
 WINDOW_WIDTH = 3840 
 WINDOW_HEIGHT = 2160 
 
 TICKSPEED = 5
 
-CELLAMOUNT = Vector2(200,200)
+CELLAMOUNT = Vector2(20,20)
 CELLSIZE = Vector2(20,20)
 CELLGAP = 1
 CELLOFFSETT = Vector2(0,0)

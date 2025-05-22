@@ -19,6 +19,8 @@ class Cell():
         
         self.rect = pygame.Rect(pos.x, pos.y, con.CELLSIZE.x, con.CELLSIZE.y)
         self.basePos = pos
+        
+        self.onScreen = False
 
         self.Move()
     
@@ -36,12 +38,17 @@ class Cell():
 
     def CheckMouseCollide(self, mousePos):
         return self.rect.collidepoint(mousePos)
+
+    def IsOnScreen(self):
+        self.onScreen =  self.rect.colliderect(con.SCREENRECT)
+        return self.onScreen
     
     def Move(self):
         self.rect.x = (self.basePos.x + con.CELLOFFSETT.x)
         self.rect.y = (self.basePos.y + con.CELLOFFSETT.y)
 
     def Draw(self):
-        pygame.draw.rect(con.SCREEN,
-                        self.color,
-                        self.rect)
+        if self.onScreen:
+            pygame.draw.rect(con.SCREEN,
+                            self.color,
+                            self.rect)

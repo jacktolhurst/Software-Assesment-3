@@ -18,8 +18,10 @@ class Grid():
         
         self.cells = self.GenerateCells()
         self.prevPlayCells = self.cells
-
         
+        self.onScreenCells = {}
+
+        self.MoveCells()
         self.DrawCells()
     
     def GenerateCells(self):
@@ -86,19 +88,25 @@ class Grid():
         return cell.state
 
     def ClickIntersection(self, mousePos, state:State=State.DEAD):
-        for dx in range(int(self.size.x)+1):
-            for dy in range(int(self.size.y)+1):
-                cellPos = Vector2(dx,dy)
-                cell = self.cells[dx][dy]
-                if cell.state != State.UNTOUCH and cell.state != State.PRIZE:
-                    if cell.CheckMouseCollide(mousePos):
-                        self.SetCell(cellPos, state)
-                        break
+        for cell, cellPos in self.onScreenCells.items():
+            if cell.state != State.UNTOUCH and cell.state != State.PRIZE:
+                if cell.CheckMouseCollide(mousePos):
+                    self.SetCell(cellPos, state)
+                    break
 
     def MoveCells(self):
+        onScreenCellsNew = {}
+        posX = 0
         for cellsX in self.cells:
+            posY = 0 
             for cell in cellsX:
-                cell.Move()
+                if cell.IsOnScreen():
+                    cell.Move()
+                    onScreenCellsNew[cell] = Vector2(posX, posY)
+                posY += 1
+            posX += 1
+        
+        self.onScreenCells = onScreenCellsNew
 
     def ApplyBuffer(self):
         for cellPos, cellState in self.buffer.items():
