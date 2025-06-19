@@ -62,22 +62,28 @@ class SandBoxLVL():
             mousePos = pygame.mouse.get_pos()
             
             for event in pygame.event.get():
+                if event.type == pygame.MOUSEWHEEL:
+                    con.CELLSIZE += event.y
+                    self.grid.MoveCells()
+                
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_p:
                         self.isPlaying = not self.isPlaying
                     if event.key == pygame.K_q:
                         self.Stop()
+                        
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if self.UIs["SliderNotch"].rect.collidepoint(mousePos):
                         touchingSlider = True
+
                 if event.type == pygame.MOUSEBUTTONUP:
                     if self.UIs["PlaySymbol"].rect.collidepoint(mousePos) and self.UIs["PlaySymbol"].state:
                         self.isPlaying = True
                     elif self.UIs["StopSymbol"].rect.collidepoint(mousePos) and self.UIs["StopSymbol"].state:
                         self.isPlaying = False
-                    
                     if not self.UIs["SliderNotch"].rect.collidepoint(mousePos):
                         touchingSlider = False
+                
                 if event.type == QUIT:
                     con.HANDLER.QuitGame()
 

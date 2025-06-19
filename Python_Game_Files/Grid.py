@@ -29,7 +29,7 @@ class Grid():
         for x in range(int(self.size.x) + 1):
             cellsX = []
             for y in range(int(self.size.y) + 1):
-                cellPos = Vector2(x*con.CELLGAP*con.CELLSIZE.x+self.offset.x,y*con.CELLGAP*con.CELLSIZE.y+self.offset.y)
+                cellPos = Vector2(x*con.CELLGAP*con.CELLSIZE+self.offset.x,y*con.CELLGAP*con.CELLSIZE+self.offset.y)
                 cell = Cell(cellPos, State.DEAD)
                 if x == 0 or y == 0 or x == int(self.size.x) or y == int(self.size.y):
                     cell.SetState(State.UNTOUCH)

@@ -17,8 +17,9 @@ class Cell():
         self.state = None
         self.SetState(state)
         
-        self.rect = pygame.Rect(pos.x, pos.y, con.CELLSIZE.x, con.CELLSIZE.y)
+        self.rect = pygame.Rect(pos.x, pos.y, con.CELLSIZE, con.CELLSIZE)
         self.basePos = pos
+        self.baseSize = con.CELLSIZE
         
         self.onScreen = False
 
@@ -44,8 +45,11 @@ class Cell():
         return self.onScreen
     
     def Move(self):
-        self.rect.x = (self.basePos.x + con.CELLOFFSETT.x)
-        self.rect.y = (self.basePos.y + con.CELLOFFSETT.y)
+        self.rect.x = int(self.basePos.x * (con.CELLSIZE/20) + con.CELLOFFSETT.x)
+        self.rect.y = int(self.basePos.y * (con.CELLSIZE/20) + con.CELLOFFSETT.y)
+        
+        self.rect.w = con.CELLSIZE
+        self.rect.h = con.CELLSIZE
 
     def Draw(self):
         if self.onScreen:
