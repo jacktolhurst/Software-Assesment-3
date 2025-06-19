@@ -58,7 +58,6 @@ class Grid():
         neighbours = []
         
         for offset in Grid.possibleOffsets:
-                
                 newX = int(cellPos.x) + offset[0]
                 newY = int(cellPos.y) + offset[1]
 
@@ -100,8 +99,8 @@ class Grid():
         for cellsX in self.cells:
             posY = 0 
             for cell in cellsX:
+                cell.Move()
                 if cell.IsOnScreen():
-                    cell.Move()
                     onScreenCellsNew[cell] = Vector2(posX, posY)
                 posY += 1
             posX += 1

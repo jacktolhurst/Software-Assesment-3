@@ -31,6 +31,7 @@ class SandBoxLVL():
             self.UIs["SliderSquare"] = UI(Quad, Vector2(880,1020), Vector2(400,50), (100,100,100))
             self.UIs["SliderBackground"] = UI(Quad, Vector2(905,1025), Vector2(350,40), (50,50,50))
             self.UIs["SliderNotch"] = UI(Circle, Vector2(900,1025), Vector2(40,40), (255,255,255))
+            # self.UIs["SliderText"] = UI(Text, Vector2(900,1025), Vector2(40,40), (255,255,255))
             
             self.looping = True
             self.Update()
@@ -84,14 +85,13 @@ class SandBoxLVL():
                     if not mousePos[0] <= 885 and not  mousePos[0] >= 1235:
                         self.UIs["SliderNotch"].MoveSet(Vector2(mousePos[0], self.UIs["SliderNotch"].pos.y))
                         self.tickSpeed = clamp((self.UIs["SliderNotch"].pos.x - 880)/5, 1, 120)
-                elif not self.isPlaying:
+                else:
                     self.grid.ClickIntersection(mousePos, State.ALIVE)
             if pygame.mouse.get_pressed()[1]:
                 con.CELLOFFSETT = con.CELLOFFSETT + Vector2(tuple(numpy.subtract(mousePos, prevMousePos)))
                 self.grid.MoveCells()
             if pygame.mouse.get_pressed()[2]:
-                if not self.isPlaying:
-                    self.grid.ClickIntersection(mousePos, State.DEAD)
+                self.grid.ClickIntersection(mousePos, State.DEAD)
 
             if self.isPlaying and elapsedTime >= (1000 / self.tickSpeed):
                 self.grid.Update()

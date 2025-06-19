@@ -15,16 +15,11 @@ class UI:
         
         self.rect = None
         
-        if self.type.objType == "Shape":
-            self.width = width
+        self.width = width
 
-            self.vertices = None
+        self.vertices = None
 
-            self.ResetRect()
-        elif self.type.objType == "Text":
-            self.text = self.type.font.render('GeeksForGeeks', True, self.color)
-            self.rect = self.text.get_rect()
-            self.rect.center = (self.pos.x // 2, self.pos.y // 2)
+        self.ResetRect()
     
     def MoveSet(self, newPos:Vector2):
         self.pos = newPos
@@ -38,20 +33,13 @@ class UI:
         self.state = newState
     
     def ResetRect(self):
-        if self.type.objType == "Shape":
-            self.rect = pygame.Rect(self.pos.x, self.pos.y, self.size.x, self.size.y)
-            self.vertices = self.type.GetVertices(self.rect)
-        elif self.type.objType == "Text":
-            self.rect.center = (self.pos.x // 2, self.pos.y // 2)
+        self.rect = pygame.Rect(self.pos.x, self.pos.y, self.size.x, self.size.y)
+        self.vertices = self.type.GetVertices(self.rect)
     
     def Draw(self):
-        if self.type.objType == "Shape":
-            pygame.draw.polygon(con.SCREEN, self.color, self.vertices, self.width)
-        elif self.type.objType == "Text":
-            con.SCREEN.blit(self.text, self.rect)
+        pygame.draw.polygon(con.SCREEN, self.color, self.vertices, self.width)
 
 class Quad:
-    objType = "Shape"
     @staticmethod
     def GetVertices(rect:pygame.Rect):
         return [
@@ -62,7 +50,6 @@ class Quad:
             ]
 
 class TriangleUp:
-    objType = "Shape"
     @staticmethod
     def GetVertices(rect:pygame.Rect):
         return [
@@ -72,7 +59,6 @@ class TriangleUp:
             ]
 
 class TriangleDown:
-    objType = "Shape"
     @staticmethod
     def GetVertices(rect: pygame.Rect):
         return [
@@ -82,7 +68,6 @@ class TriangleDown:
             ]
 
 class TriangleLeft:
-    objType = "Shape"
     @staticmethod
     def GetVertices(rect: pygame.Rect):
         return [
@@ -92,7 +77,6 @@ class TriangleLeft:
             ]
 
 class TriangleRight:
-    objType = "Shape"
     @staticmethod
     def GetVertices(rect: pygame.Rect):
         return [
@@ -102,7 +86,6 @@ class TriangleRight:
             ]
 
 class Pentagon:
-    objType = "Shape"
     @staticmethod
     def GetVertices(rect: pygame.Rect):
         cx = rect.x + rect.w / 2
@@ -118,7 +101,6 @@ class Pentagon:
             ]
 
 class Hexagon:
-    objType = "Shape"
     @staticmethod
     def GetVertices(rect: pygame.Rect):
         cx = rect.x + rect.w / 2
@@ -134,7 +116,6 @@ class Hexagon:
             ]
 
 class Octagon:
-    objType = "Shape"
     @staticmethod
     def GetVertices(rect: pygame.Rect):
         cx = rect.x + rect.w / 2
@@ -150,7 +131,6 @@ class Octagon:
             ]
 
 class Circle:
-    objType = "Shape"
     @staticmethod
     def GetVertices(rect: pygame.Rect):
         cx = rect.x + rect.w / 2
@@ -164,10 +144,3 @@ class Circle:
             )
             for i in range(32)
             ]
-
-class Text:
-    objType = "Text"
-    def __init__(self, text:str):
-        self.text = text
-        
-        self.font = pygame.font.Font('freesansbold.ttf', 32)
