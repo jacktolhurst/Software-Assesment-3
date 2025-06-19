@@ -10,13 +10,14 @@ from UI import *
 from Text import *
 
 class SandBoxLVL():
-    def __init__(self):
+    def __init__(self, gridSize:Vector2):
         self.looping = False
         self.isPlaying = False
         
         self.tickSpeed = 9
         
-        self.grid = Grid(con.CELLAMOUNT)
+        self.gridSize = gridSize
+        self.grid = Grid(gridSize)
         
         self.clock = pygame.time.Clock()
         

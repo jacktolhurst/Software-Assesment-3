@@ -22,7 +22,7 @@ async def main () :
         for event in pygame.event.get() :      
             if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_s:
-                        sandBoxLVL = SandBoxLVL()
+                        sandBoxLVL = SandBoxLVL(Vector2(100,100))
                     if event.key == pygame.K_q:
                         con.HANDLER.QuitGame()
             if event.type == QUIT:
