@@ -7,13 +7,14 @@ import Constants as con
 from Grid import Grid
 from Cell import State
 from UI import *
+from Text import *
 
 class SandBoxLVL():
     def __init__(self):
         self.looping = False
         self.isPlaying = False
         
-        self.tickSpeed = 10
+        self.tickSpeed = 9
         
         self.grid = Grid(con.CELLAMOUNT)
         
@@ -31,7 +32,7 @@ class SandBoxLVL():
             self.UIs["SliderSquare"] = UI(Quad, Vector2(880,1020), Vector2(400,50), (100,100,100))
             self.UIs["SliderBackground"] = UI(Quad, Vector2(905,1025), Vector2(350,40), (50,50,50))
             self.UIs["SliderNotch"] = UI(Circle, Vector2(900,1025), Vector2(40,40), (255,255,255))
-            # self.UIs["SliderText"] = UI(Text, Vector2(900,1025), Vector2(40,40), (255,255,255))
+            self.UIs["SliderText"] = Text("Test", 'freesansbold.ttf', Vector2(900,1000), 20, (255,255,255))
             
             self.looping = True
             self.Update()
@@ -97,6 +98,7 @@ class SandBoxLVL():
                 self.grid.Update()
                 lastUpdateTime = currTime
 
+            self.UIs["SliderText"].ChangeText("Tickspeed: " + str(int(self.tickSpeed)))
 
             self.DrawEverything()
             pygame.display.update()

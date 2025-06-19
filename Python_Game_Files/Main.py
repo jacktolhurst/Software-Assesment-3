@@ -3,8 +3,7 @@ import asyncio
 import Constants as con
 from pygame.locals import *
 from pygame.math import *
-from Levels.SandboxLevel import SandBoxLVL
-from Levels.TechnicalLevel import TechnicalLVL
+from SandboxLevel import SandBoxLVL
 from Handler import Handler
 
 pygame.init()
@@ -24,8 +23,6 @@ async def main () :
             if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_s:
                         sandBoxLVL = SandBoxLVL()
-                    if event.key == pygame.K_t:
-                        techLVL = TechnicalLVL()
                     if event.key == pygame.K_q:
                         con.HANDLER.QuitGame()
             if event.type == QUIT:

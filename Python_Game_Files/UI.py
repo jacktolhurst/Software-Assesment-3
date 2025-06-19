@@ -13,10 +13,9 @@ class UI:
         
         self.state = state
         
-        self.rect = None
-        
         self.width = width
 
+        self.rect = None
         self.vertices = None
 
         self.ResetRect()
