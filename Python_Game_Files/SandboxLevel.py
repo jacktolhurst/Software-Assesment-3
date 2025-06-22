@@ -33,7 +33,8 @@ class SandBoxLVL():
             self.UIs["SliderSquare"] = UI(Quad, Vector2(880,1020), Vector2(400,50), (100,100,100))
             self.UIs["SliderBackground"] = UI(Quad, Vector2(905,1025), Vector2(350,40), (50,50,50))
             self.UIs["SliderNotch"] = UI(Circle, Vector2(900,1025), Vector2(40,40), (255,255,255))
-            self.UIs["SliderText"] = Text("Test", 'freesansbold.ttf', Vector2(900,1000), 20, (255,255,255))
+            self.UIs["SliderText"] = Text("TickSpeed", 'freesansbold.ttf', Vector2(930,1000), 20, (255,255,255))
+            self.UIs["InputText"] = InputText("test", 'freesansbold.ttf', Vector2(900,800), 30, (255,255,255), (100,100,100))
             
             self.looping = True
             self.Update()
@@ -63,9 +64,10 @@ class SandBoxLVL():
             
             for event in pygame.event.get():
                 if event.type == pygame.MOUSEWHEEL:
-                    con.CELLSIZE += event.y
-                    self.grid.MoveCells()
-                
+                    if 0 < con.CELLSIZE + event.y < 100:
+                        con.CELLSIZE += event.y
+                        self.grid.MoveCells()
+
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_p:
                         self.isPlaying = not self.isPlaying
@@ -75,7 +77,7 @@ class SandBoxLVL():
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if self.UIs["SliderNotch"].rect.collidepoint(mousePos):
                         touchingSlider = True
-
+                    
                 if event.type == pygame.MOUSEBUTTONUP:
                     if self.UIs["PlaySymbol"].rect.collidepoint(mousePos) and self.UIs["PlaySymbol"].state:
                         self.isPlaying = True
@@ -83,6 +85,8 @@ class SandBoxLVL():
                         self.isPlaying = False
                     if not self.UIs["SliderNotch"].rect.collidepoint(mousePos):
                         touchingSlider = False
+                    if self.UIs["InputText"].rect.collidepoint(mousePos):
+                        self.UIs["InputText"].ChangeColor((random.randint(0,255),random.randint(0,255),random.randint(0,255)))
                 
                 if event.type == QUIT:
                     con.HANDLER.QuitGame()
@@ -93,7 +97,8 @@ class SandBoxLVL():
                     if not mousePos[0] <= 885 and not  mousePos[0] >= 1235:
                         self.UIs["SliderNotch"].MoveSet(Vector2(mousePos[0], self.UIs["SliderNotch"].pos.y))
                         self.tickSpeed = clamp((self.UIs["SliderNotch"].pos.x - 880)/5, 1, 120)
-                else:
+                UIRects = [ui.rect for ui in self.UIs.values() if ui.state]
+                if not any(rect.collidepoint(mousePos) for rect in UIRects):
                     self.grid.ClickIntersection(mousePos, State.ALIVE)
             if pygame.mouse.get_pressed()[1]:
                 con.CELLOFFSETT = con.CELLOFFSETT + Vector2(tuple(numpy.subtract(mousePos, prevMousePos)))

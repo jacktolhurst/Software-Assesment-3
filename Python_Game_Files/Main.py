@@ -28,6 +28,8 @@ async def main () :
             if event.type == QUIT:
                 con.HANDLER.QuitGame()
         
+        sandBoxLVL = None
+        
         con.SCREEN.fill((10,60,20))
         
         pygame.display.update()
