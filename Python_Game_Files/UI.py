@@ -6,11 +6,15 @@ from pygame.math import Vector2
 class UI:
     def __init__(self, type, relativePos:Vector2, relativeSize:Vector2, color:tuple, state:bool=True, width:int=0):
         self.screenWidth, self.screenHeight = pygame.display.get_surface().get_size()
+        self.screenRatio = self.screenWidth/self.screenHeight
         
         self.type = type
         
-        self.relativePos =  Vector2(min(relativePos.x/1.7,100)/100,min(relativePos.y,100)/100) 
-        self.relativeSize = Vector2(min(relativeSize.x/1.7,100)/100,min(relativeSize.y,100)/100)
+        self.origionalRelativePos = relativePos
+        self.origionalRelativeSize = relativeSize
+        
+        self.relativePos =  Vector2(min(self.origionalRelativePos.x/self.screenRatio,100)/100,min(self.origionalRelativePos.y,100)/100) 
+        self.relativeSize = Vector2(min(self.origionalRelativeSize.x/self.screenRatio,100)/100,min(self.origionalRelativeSize.y,100)/100)
         self.color = color
         
         self.state = state
@@ -23,22 +27,22 @@ class UI:
         self.ResetRect()
     
     def MoveSet(self, newPos:Vector2):
-        self.relativePos = Vector2(min(newPos.x,100)/100,min(newPos.y,100)/100)
+        self.origionalRelativePos = newPos
         
         self.ResetRect()
     
     def MoveAdd(self, addedPos:Vector2):
-        self.relativePos = self.relativePos + Vector2(min(addedPos.x,100)/100,min(addedPos.y,100)/100)
+        self.origionalRelativePos = self.origionalRelativePos + addedPos
         
         self.ResetRect()
     
     def SizeSet(self, newSize:Vector2):
-        self.relativeSize = Vector2(min(newSize.x,100)/100,min(newSize.y,100)/100)
+        self.origionalRelativeSize = newSize
         
         self.ResetRect()
     
     def SizeAdd(self, addedSize:Vector2):
-        self.relativeSize = self.relativeSize + Vector2(min(addedSize.x,100)/100,min(addedSize.y,100)/100)
+        self.origionalRelativeSize = self.origionalRelativeSize + addedSize
         
         self.ResetRect()
     
@@ -60,6 +64,10 @@ class UI:
     
     def ResetRect(self):
         self.screenWidth, self.screenHeight = pygame.display.get_surface().get_size()
+        self.screenRatio = self.screenWidth/self.screenHeight
+        
+        self.relativePos =  Vector2(min(self.origionalRelativePos.x/self.screenRatio,100)/100,min(self.origionalRelativePos.y,100)/100) 
+        self.relativeSize = Vector2(min(self.origionalRelativeSize.x/self.screenRatio,100)/100,min(self.origionalRelativeSize.y,100)/100)
         
         absX = self.relativePos.x * self.screenWidth
         absY = self.relativePos.y * self.screenHeight
