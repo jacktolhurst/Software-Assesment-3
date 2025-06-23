@@ -34,7 +34,6 @@ class SandBoxLVL():
             self.UIs["SliderBackground"] = UI(Quad, Vector2(905,1025), Vector2(350,40), (50,50,50))
             self.UIs["SliderNotch"] = UI(Circle, Vector2(900,1025), Vector2(40,40), (255,255,255))
             self.UIs["SliderText"] = Text("TickSpeed", 'freesansbold.ttf', Vector2(930,1000), 20, (255,255,255))
-            self.UIs["InputText"] = InputText("test", 'freesansbold.ttf', Vector2(900,800), 30, (255,255,255), (100,100,100))
             
             self.looping = True
             self.Update()
@@ -45,6 +44,7 @@ class SandBoxLVL():
         prevMousePos = None
         
         touchingSlider = False
+        
     
         while self.looping:
             if con.WON:
@@ -85,8 +85,6 @@ class SandBoxLVL():
                         self.isPlaying = False
                     if not self.UIs["SliderNotch"].rect.collidepoint(mousePos):
                         touchingSlider = False
-                    if self.UIs["InputText"].rect.collidepoint(mousePos):
-                        self.UIs["InputText"].ChangeColor((random.randint(0,255),random.randint(0,255),random.randint(0,255)))
                 
                 if event.type == QUIT:
                     con.HANDLER.QuitGame()

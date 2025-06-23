@@ -47,10 +47,13 @@ class InputText():
         self.state = state
         
         self.font = pygame.font.Font(font, size)
-        self.text = self.font.render(textStr, True, color, bgColor)
+        self.text = self.font.render(textStr, True, color)
         self.rect = self.text.get_rect()
+        self.bgRect = pygame.Rect(pos.x-35, pos.y-15, (size/2)*(len(textStr)+1),size)
         self.rect.center = pos
     
+    def GetText(self):
+        return self.textStr
     
     def MoveSet(self, newPos:Vector2):
         self.pos = newPos
@@ -70,10 +73,15 @@ class InputText():
         
     def ChangeBGColor(self, newBGColor:tuple):
         self.bgColor = newBGColor
-        self.text = self.font.render(self.textStr, True, self.Color, newBGColor)
-        
-    def ResetRect(self):
+    
+    def ClickIntersection(self, mousePos:Vector2):
+        return self.bgRect.collidepoint(mousePos)
+    
+    def ResetTextRect(self):
         self.rect = self.text.get_rect()
     
     def Draw(self):
+        pygame.draw.rect(con.SCREEN,
+                    self.bgColor,
+                    self.bgRect)
         con.SCREEN.blit(self.text, self.rect)
