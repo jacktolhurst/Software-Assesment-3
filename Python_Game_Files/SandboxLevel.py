@@ -28,12 +28,11 @@ class SandBoxLVL():
     
     def Start(self):
         if not self.looping:
-            self.UIs["PlayStopSquare"] = UI(Quad, Vector2(1,1), Vector2(200,200), (100,100,100))
-            self.UIs["StopSymbol"] = UI(Hexagon, Vector2(3,4), Vector2(100,100), (255,0,0), False)
-            self.UIs["PlaySymbol"] = UI(TriangleRight, Vector2(3,4), Vector2(100,100), (0,255,0), False)
-            self.UIs["SliderSquare"] = UI(Quad, Vector2(880,1020), Vector2(400,50), (100,100,100))
-            self.UIs["SliderBackground"] = UI(Quad, Vector2(905,1025), Vector2(350,40), (50,50,50))
-            self.UIs["SliderNotch"] = UI(Circle, Vector2(900,1025), Vector2(40,40), (255,255,255))
+            self.UIs["PlayStopSquare"] = UI(Quad, Vector2(1,1), Vector2(20,20), (100,100,100))
+            self.UIs["PlaySymbol"] = UI(TriangleRight, Vector2(6,6), Vector2(10,10), (0,255,0))
+            self.UIs["SliderSquare"] = UI(Quad, Vector2(52.5,90), Vector2(45,7.5), (100,100,100))
+            self.UIs["SliderBackground"] = UI(Quad, Vector2(55,91.25), Vector2(40,5), (50,50,50))
+            self.UIs["SliderNotch"] = UI(Circle, Vector2(55,91.25), Vector2(5,5), (255,255,255))
             self.UIs["SliderText"] = Text("TickSpeed", 'freesansbold.ttf', Vector2(930,1000), 20, (255,255,255))
             
             self.looping = True
@@ -52,11 +51,11 @@ class SandBoxLVL():
                 self.Won()
             
             if self.isPlaying:
-                self.UIs["StopSymbol"].SetState(True)
-                self.UIs["PlaySymbol"].SetState(False)
+                self.UIs["PlaySymbol"].ChangeColor((255,0,0))
+                self.UIs["PlaySymbol"].ChangeShape(Hexagon)
             else:
-                self.UIs["StopSymbol"].SetState(False)
-                self.UIs["PlaySymbol"].SetState(True) 
+                self.UIs["PlaySymbol"].ChangeColor((0,255,0))
+                self.UIs["PlaySymbol"].ChangeShape(TriangleRight)
             
             currTime = pygame.time.get_ticks()
             elapsedTime = currTime - lastUpdateTime
@@ -82,10 +81,9 @@ class SandBoxLVL():
                         touchingSlider = True
                     
                 if event.type == pygame.MOUSEBUTTONUP:
-                    if self.UIs["PlaySymbol"].rect.collidepoint(mousePos) and self.UIs["PlaySymbol"].state:
-                        self.isPlaying = True
-                    elif self.UIs["StopSymbol"].rect.collidepoint(mousePos) and self.UIs["StopSymbol"].state:
-                        self.isPlaying = False
+                    if self.UIs["PlaySymbol"].rect.collidepoint(mousePos):
+                        self.isPlaying = not self.isPlaying
+                        
                     if not self.UIs["SliderNotch"].rect.collidepoint(mousePos):
                         touchingSlider = False
                 
@@ -96,8 +94,8 @@ class SandBoxLVL():
             if pygame.mouse.get_pressed()[0]:
                 if touchingSlider:
                     if not mousePos[0] <= 885 and not  mousePos[0] >= 1235:
-                        self.UIs["SliderNotch"].MoveSet(Vector2(mousePos[0], self.UIs["SliderNotch"].pos.y))
-                        self.tickSpeed = clamp((self.UIs["SliderNotch"].pos.x - 880)/5, 1, 120)
+                        self.UIs["SliderNotch"].MoveSet(Vector2(mousePos[0], self.UIs["SliderNotch"].GetPos().y))
+                        self.tickSpeed = clamp((self.UIs["SliderNotch"].GetPos().x - 880)/5, 1, 120)
                 UIRects = [ui.rect for ui in self.UIs.values() if ui.state]
                 if not any(rect.collidepoint(mousePos) for rect in UIRects):
                     self.grid.ClickIntersection(mousePos, State.ALIVE)

@@ -4,13 +4,13 @@ import Constants as con
 from pygame.math import Vector2
 
 class UI:
-    def __init__(self, type, relativePos:Vector2, size:Vector2, color:tuple, state:bool=True, width:int=0):
+    def __init__(self, type, relativePos:Vector2, relativeSize:Vector2, color:tuple, state:bool=True, width:int=0):
         self.screenWidth, self.screenHeight = pygame.display.get_surface().get_size()
         
         self.type = type
         
-        self.relativePos =  Vector2(min(relativePos.x,100)/100,min(relativePos.y,100)/100)
-        self.size = size
+        self.relativePos =  Vector2(min(relativePos.x/1.7,100)/100,min(relativePos.y,100)/100) 
+        self.relativeSize = Vector2(min(relativeSize.x/1.7,100)/100,min(relativeSize.y,100)/100)
         self.color = color
         
         self.state = state
@@ -23,26 +23,56 @@ class UI:
         self.ResetRect()
     
     def MoveSet(self, newPos:Vector2):
-        self.relativePos = newPos
+        self.relativePos = Vector2(min(newPos.x,100)/100,min(newPos.y,100)/100)
+        
         self.ResetRect()
     
     def MoveAdd(self, addedPos:Vector2):
-        self.relativePos = self.relativePos + addedPos
+        self.relativePos = self.relativePos + Vector2(min(addedPos.x,100)/100,min(addedPos.y,100)/100)
+        
+        self.ResetRect()
+    
+    def SizeSet(self, newSize:Vector2):
+        self.relativeSize = Vector2(min(newSize.x,100)/100,min(newSize.y,100)/100)
+        
+        self.ResetRect()
+    
+    def SizeAdd(self, addedSize:Vector2):
+        self.relativeSize = self.relativeSize + Vector2(min(addedSize.x,100)/100,min(addedSize.y,100)/100)
+        
+        self.ResetRect()
+    
+    def ChangeColor(self, newColor:tuple):
+        self.color = newColor
+        
+        self.ResetRect()
+    
+    def ChangeShape(self, newType):
+        self.type = newType
+        
         self.ResetRect()
     
     def SetState(self, newState):
         self.state = newState
     
+    def GetPos(self) -> Vector2:
+        return Vector2(self.screenWidth * self.relativePos.x, self.screenHeight * self.relativePos.y)
+    
     def ResetRect(self):
         self.screenWidth, self.screenHeight = pygame.display.get_surface().get_size()
-        abs_x = self.relativePos.x * self.screenWidth
-        abs_y = self.relativePos.y * self.screenHeight
+        
+        absX = self.relativePos.x * self.screenWidth
+        absY = self.relativePos.y * self.screenHeight
+        absW = self.relativeSize.x * self.screenWidth
+        absH = self.relativeSize.y * self.screenHeight
     
-        self.rect = pygame.Rect(abs_x, abs_y, self.size.x, self.size.y)
+        self.rect = pygame.Rect(absX, absY, absW, absH)
         self.vertices = self.type.GetVertices(self.rect)
     
     def Draw(self):
         if self.screenWidth is not pygame.display.get_surface().get_size()[0] and self.screenHeight is not pygame.display.get_surface().get_size()[1]:
+            con.WINDOW_WIDTH, con.WINDOW_HEIGHT = pygame.display.get_surface().get_size()
+            
             self.ResetRect()
             
         pygame.draw.polygon(con.SCREEN, self.color, self.vertices, self.width)
