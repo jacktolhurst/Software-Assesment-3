@@ -6,6 +6,7 @@ from pygame.math import *
 import Constants as con
 from Grid import Grid, GridAttributes
 from Cell import State
+from Settings import SettingsMenu
 from UI import *
 from Text import *
 
@@ -27,9 +28,9 @@ class SandBoxLVL():
     
     def Start(self):
         if not self.looping:
-            self.UIs["PlayStopSquare"] = UI(Quad, Vector2(20,20), Vector2(200,200), (100,100,100))
-            self.UIs["StopSymbol"] = UI(Hexagon, Vector2(70,70), Vector2(100,100), (255,0,0), False)
-            self.UIs["PlaySymbol"] = UI(TriangleRight, Vector2(70,70), Vector2(100,100), (0,255,0), False)
+            self.UIs["PlayStopSquare"] = UI(Quad, Vector2(1,1), Vector2(200,200), (100,100,100))
+            self.UIs["StopSymbol"] = UI(Hexagon, Vector2(3,4), Vector2(100,100), (255,0,0), False)
+            self.UIs["PlaySymbol"] = UI(TriangleRight, Vector2(3,4), Vector2(100,100), (0,255,0), False)
             self.UIs["SliderSquare"] = UI(Quad, Vector2(880,1020), Vector2(400,50), (100,100,100))
             self.UIs["SliderBackground"] = UI(Quad, Vector2(905,1025), Vector2(350,40), (50,50,50))
             self.UIs["SliderNotch"] = UI(Circle, Vector2(900,1025), Vector2(40,40), (255,255,255))
@@ -71,6 +72,8 @@ class SandBoxLVL():
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_p:
                         self.isPlaying = not self.isPlaying
+                    if event.key == pygame.K_s:
+                        settingsMenu = SettingsMenu()
                     if event.key == pygame.K_q:
                         self.Stop()
                         

@@ -4,10 +4,12 @@ import Constants as con
 from pygame.math import Vector2
 
 class UI:
-    def __init__(self, type, pos:Vector2, size:Vector2, color:tuple, state:bool=True, width:int=0):
+    def __init__(self, type, relativePos:Vector2, size:Vector2, color:tuple, state:bool=True, width:int=0):
+        self.screenWidth, self.screenHeight = pygame.display.get_surface().get_size()
+        
         self.type = type
         
-        self.pos = pos
+        self.relativePos =  Vector2(min(relativePos.x,100)/100,min(relativePos.y,100)/100)
         self.size = size
         self.color = color
         
@@ -21,21 +23,28 @@ class UI:
         self.ResetRect()
     
     def MoveSet(self, newPos:Vector2):
-        self.pos = newPos
+        self.relativePos = newPos
         self.ResetRect()
     
     def MoveAdd(self, addedPos:Vector2):
-        self.pos = self.pos + addedPos
+        self.relativePos = self.relativePos + addedPos
         self.ResetRect()
     
     def SetState(self, newState):
         self.state = newState
     
     def ResetRect(self):
-        self.rect = pygame.Rect(self.pos.x, self.pos.y, self.size.x, self.size.y)
+        self.screenWidth, self.screenHeight = pygame.display.get_surface().get_size()
+        abs_x = self.relativePos.x * self.screenWidth
+        abs_y = self.relativePos.y * self.screenHeight
+    
+        self.rect = pygame.Rect(abs_x, abs_y, self.size.x, self.size.y)
         self.vertices = self.type.GetVertices(self.rect)
     
     def Draw(self):
+        if self.screenWidth is not pygame.display.get_surface().get_size()[0] and self.screenHeight is not pygame.display.get_surface().get_size()[1]:
+            self.ResetRect()
+            
         pygame.draw.polygon(con.SCREEN, self.color, self.vertices, self.width)
 
 class Quad:

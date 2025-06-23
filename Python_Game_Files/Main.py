@@ -4,7 +4,6 @@ import Constants as con
 from pygame.locals import *
 from pygame.math import *
 from SandboxLevel import SandBoxLVL
-from Settings import SettingsMenu
 from Handler import Handler
 
 pygame.init()
@@ -24,8 +23,6 @@ async def main () :
             if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_g:
                         sandBoxLVL = SandBoxLVL(Vector2(100,100))
-                    if event.key == pygame.K_s:
-                        settingsLVL = SettingsMenu()
                     if event.key == pygame.K_q:
                         con.HANDLER.QuitGame()
             if event.type == QUIT:
