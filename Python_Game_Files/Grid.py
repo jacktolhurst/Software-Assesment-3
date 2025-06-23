@@ -8,7 +8,7 @@ class Grid():
         for dy in (-1, 0, 1) 
         if not (dx == 0 and dy == 0)]
     
-    def __init__(self, size:Vector2, offset:Vector2=Vector2(0,0)):
+    def __init__(self, gridAttributes, size:Vector2, offset:Vector2=Vector2(0,0)):
         self.size = size
         self.offset = offset
         
@@ -20,6 +20,8 @@ class Grid():
         self.prevPlayCells = self.cells
         
         self.onScreenCells = {}
+        
+        self.gridAttributes = gridAttributes
 
         self.MoveCells()
         self.DrawCells()
@@ -72,16 +74,13 @@ class Grid():
 
         liveCount = sum(neighbour.state == State.ALIVE for neighbour in neighbours)
 
-        if cell.state == State.ALIVE and liveCount < 2:
+        if cell.state == State.ALIVE and liveCount < self.gridAttributes.underPopulationThreshold:
             return State.DEAD
-        elif cell.state == State.ALIVE and (liveCount == 2 or liveCount == 3):
+        elif cell.state == State.ALIVE and (liveCount == self.gridAttributes.survivalMin or liveCount == self.gridAttributes.survivalMax):
             return State.ALIVE
-        elif cell.state == State.ALIVE and liveCount > 3:
+        elif cell.state == State.ALIVE and liveCount > self.gridAttributes.overpopulationThreshold:
             return State.DEAD
-        elif cell.state == State.DEAD and liveCount == 3:
-            return State.ALIVE
-        elif cell.state == State.PRIZE and liveCount > 0:
-            con.WON = True
+        elif cell.state == State.DEAD and liveCount == self.gridAttributes.reproductionCount:
             return State.ALIVE
 
         return cell.state
@@ -116,11 +115,11 @@ class Grid():
     def DrawCells(self):
         self.ApplyBuffer()
         
-        for cellPos in self.activeCells:
-            self.cells[int(cellPos[0])][int(cellPos[1])].Draw()
         
-        for cellPos in self.stationaryCells:
-            self.cells[int(cellPos[0])][int(cellPos[1])].Draw()
+        
+        for cellsX in self.cells:
+            for cell in cellsX:
+                cell.Draw()
     
     def Update(self):
         oldActiveCells = list(self.activeCells)
@@ -129,3 +128,11 @@ class Grid():
         for cellPos in oldActiveCells:
             cellPos = Vector2(cellPos)
             self.SetCell(cellPos, self.CheckCellState(cellPos))
+
+class GridAttributes():
+    def __init__(self, underPopulationThreshold:int=2, survivalMin:int=2, survivalMax:int=3, overpopulationThreshold:int=3, reproductionCount:int=3):
+        self.underPopulationThreshold = underPopulationThreshold
+        self.survivalMin = survivalMin
+        self.survivalMax = survivalMax
+        self.overpopulationThreshold = overpopulationThreshold
+        self.reproductionCount = reproductionCount

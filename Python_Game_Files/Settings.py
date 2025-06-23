@@ -37,9 +37,8 @@ class SettingsMenu():
                             userText = inputText.GetText()
                             if event.key == pygame.K_BACKSPACE:
                                 userText = userText[:-1]
-                            else:
-                                if event.unicode.isdigit():
-                                    userText += event.unicode
+                            elif event.unicode.isdigit() and (len(userText)+1) < 3:
+                                userText += event.unicode
                             inputText.ChangeText(userText)
                         
                     if event.type == pygame.MOUSEBUTTONUP:

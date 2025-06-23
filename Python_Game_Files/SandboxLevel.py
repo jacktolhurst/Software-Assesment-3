@@ -4,7 +4,7 @@ import random
 from pygame.locals import *
 from pygame.math import *
 import Constants as con
-from Grid import Grid
+from Grid import Grid, GridAttributes
 from Cell import State
 from UI import *
 from Text import *
@@ -17,7 +17,7 @@ class SandBoxLVL():
         self.tickSpeed = 9
         
         self.gridSize = gridSize
-        self.grid = Grid(gridSize)
+        self.grid = Grid(GridAttributes(), gridSize)
         
         self.clock = pygame.time.Clock()
         
