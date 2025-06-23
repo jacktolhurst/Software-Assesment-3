@@ -24,7 +24,6 @@ class SettingsMenu():
         
         def Update(self):
             inputText = None
-            userText = ""
             
             while self.looping:
                 mousePos = pygame.mouse.get_pos()
@@ -35,9 +34,9 @@ class SettingsMenu():
                             self.Stop()
                         
                         if inputText != None:
+                            userText = inputText.GetText()
                             if event.key == pygame.K_BACKSPACE:
                                 userText = userText[:-1]
-                                inputText.ChangeText(userText)
                             else:
                                 if event.unicode.isdigit():
                                     userText += event.unicode
@@ -47,11 +46,9 @@ class SettingsMenu():
                         if inputText != None:
                             if not inputText.ClickIntersection(mousePos):
                                 inputText = None
-                                userText = ""
                         else:
                             if self.UIs["InputText"].ClickIntersection(mousePos):
                                 inputText = self.UIs["InputText"]
-                                userText = self.UIs["InputText"].GetText()
                     if event.type == QUIT:
                         con.HANDLER.QuitGame()
                 
