@@ -12,6 +12,8 @@ from Text import *
 
 class SandBoxLVL():
     def __init__(self, gridSize:Vector2):
+        self.screenWidth, self.screenHeight = pygame.display.get_surface().get_size()
+        
         self.looping = False
         self.isPlaying = False
         
@@ -35,7 +37,7 @@ class SandBoxLVL():
             self.UIs["SliderSquare"] = UI(Quad, Vector2(52.5,90), Vector2(45,7.5), (100,100,100))
             self.UIs["SliderBackground"] = UI(Quad, Vector2(55,91.25), Vector2(40,5), (50,50,50))
             self.UIs["SliderNotch"] = UI(Circle, Vector2(55,91.25), Vector2(5,5), (255,255,255))
-            self.UIs["SliderText"] = Text("TickSpeed", 'freesansbold.ttf', Vector2(930,1000), 20, (255,255,255))
+            self.UIs["SliderText"] = Text("TickSpeed", 'freesansbold.ttf', Vector2(1,1), 20, (255,255,255))
             
             self.looping = True
             self.Update()
@@ -126,13 +128,26 @@ class SandBoxLVL():
             self.clock.tick(120)
 
     def DrawEverything(self):
+
+        
         con.SCREEN.fill((0,0,0))
         
         self.grid.DrawCells()
         
-        for Name, UI in self.UIs.items():
-            if UI.state:
-                UI.Draw()
+        if self.screenWidth != pygame.display.get_surface().get_size()[0] or self.screenHeight != pygame.display.get_surface().get_size()[1]:
+            self.screenWidth, self.screenHeight = pygame.display.get_surface().get_size()
+            con.WINDOW_WIDTH = con.SCREENRECT.w = self.screenWidth
+            con.WINDOW_HEIGHT = con.SCREENRECT.h = self.screenHeight
+            self.ResetScreen()
+            
+            for Name, UI in self.UIs.items():
+                if UI.state:
+                    UI.ResetRect()
+                    UI.Draw()
+        else:
+            for Name, UI in self.UIs.items():
+                if UI.state:
+                    UI.Draw()
     
     def ResetScreen(self):
         self.grid.MoveCells()

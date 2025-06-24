@@ -13,19 +13,25 @@ class Text():
         
         return Vector2(relativeX, relativeY)
 
-    def __init__(self, textStr:str, font:str, pos:Vector2, size:int, color:tuple, state:bool=True):
+    def __init__(self, textStr:str, font:str, relativePos:Vector2, relativeSize:int, color:tuple, state:bool=True):
+        self.screenWidth, self.screenHeight = pygame.display.get_surface().get_size()
+        self.screenRatio = self.screenWidth/self.screenHeight
+        
         self.textStr = textStr
         
-        self.pos = pos
-        self.size = size
+        self.origionalRelativePos = relativePos
+        self.origionalRelativeSize = relativeSize
+        self.relativePos =  Vector2(min(self.origionalRelativePos.x/self.screenRatio,100)/100,min(self.origionalRelativePos.y,100)/100)
+        self.relativeSize = min(self.origionalRelativeSize/self.screenRatio,100)
         
         self.color = color
         self.state = state
         
-        self.font = pygame.font.Font(font, size)
-        self.text = self.font.render(textStr, True, color)
-        self.rect = self.text.get_rect()
-        self.rect.center = pos
+        self.fontStr = font
+        self.font = None
+        self.text = None
+        self.rect = None
+        self.ResetRect()
     
     
     def MoveSet(self, newPos:Vector2):
@@ -41,7 +47,20 @@ class Text():
         self.text = self.font.render(newTextStr, True, self.color)
     
     def ResetRect(self):
+        self.screenWidth, self.screenHeight = pygame.display.get_surface().get_size()
+        self.screenRatio = self.screenWidth/self.screenHeight
+        self.relativeSize = int(min(self.origionalRelativeSize/self.screenRatio,100))
+        
+        self.relativePos = Vector2(min(self.origionalRelativePos.x/self.screenRatio,100)/100,min(self.origionalRelativePos.y,100)/100)
+        
+        absX = self.relativePos.x * self.screenWidth
+        absY = self.relativePos.y * self.screenHeight
+        absPos = Vector2(absX, absY)
+        
+        self.font = pygame.font.Font(self.fontStr, self.relativeSize)
+        self.text = self.font.render(self.textStr, True, self.color)
         self.rect = self.text.get_rect()
+        self.rect.center = absPos
     
     def Draw(self):
         con.SCREEN.blit(self.text, self.rect)

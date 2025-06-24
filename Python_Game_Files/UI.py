@@ -90,13 +90,6 @@ class UI:
         self.vertices = self.type.GetVertices(self.rect)
     
     def Draw(self):
-        if self.screenWidth != pygame.display.get_surface().get_size()[0] or self.screenHeight != pygame.display.get_surface().get_size()[1]:
-            con.WINDOW_WIDTH, con.WINDOW_HEIGHT = pygame.display.get_surface().get_size()
-            con.SCREENRECT.w, con.SCREENRECT.h = pygame.display.get_surface().get_size()
-            con.HANDLER.ResetScreen()
-            
-            self.ResetRect()
-        
         pygame.draw.polygon(con.SCREEN, self.color, self.vertices, self.width)
 
 class Quad:
