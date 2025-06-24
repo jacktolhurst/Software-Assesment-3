@@ -92,14 +92,19 @@ class SandBoxLVL():
                 if event.type == QUIT:
                     con.HANDLER.QuitGame()
 
-            keys = pygame.key.get_pressed()            
             if pygame.mouse.get_pressed()[0]:
                 if touchingSlider:
-                    if not mousePos[0] <= 885 and not  mousePos[0] >= 1235:
-                        self.UIs["SliderNotch"].MoveSet(Vector2(mousePos[0], self.UIs["SliderNotch"].GetPos().y))
-                        self.tickSpeed = clamp((self.UIs["SliderNotch"].GetPos().x - 880)/5, 1, 120)
+                    newSliderPos = UI.RealPosToPercent(Vector2(mousePos[0], mousePos[1]))
+                    newSliderPos.y = self.UIs["SliderNotch"].origionalRelativePos.y
+                    newSliderPos.x = max(min(newSliderPos.x, 92), 52)
+                    
+                    self.tickSpeed = (newSliderPos.x - 51) * 1.5
+                    
+                    self.UIs["SliderNotch"].MoveSet(newSliderPos)
+                    
+                
                 UIRects = [ui.rect for ui in self.UIs.values() if ui.state]
-                if not any(rect.collidepoint(mousePos) for rect in UIRects):
+                if not any(rect.collidepoint(mousePos) for rect in UIRects) and not touchingSlider:
                     self.grid.ClickIntersection(mousePos, State.ALIVE)
             if pygame.mouse.get_pressed()[1]:
                 con.CELLOFFSETT = con.CELLOFFSETT + Vector2(tuple(numpy.subtract(mousePos, prevMousePos)))

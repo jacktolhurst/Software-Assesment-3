@@ -53,8 +53,7 @@ class SettingsMenu():
                     if event.type == QUIT:
                         con.HANDLER.QuitGame()
                 
-                self.DrawSolids()
-                self.DrawUI()
+                self.DrawEverything()
                 pygame.display.update()
                 
                 self.clock.tick(120)

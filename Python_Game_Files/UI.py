@@ -4,6 +4,15 @@ import Constants as con
 from pygame.math import Vector2
 
 class UI:
+    def RealPosToPercent(realPos:Vector2):
+        screenWidth, screenHeight = pygame.display.get_surface().get_size()
+        screenRatio = screenWidth/screenHeight
+        
+        relativeX = ((realPos.x / screenWidth)*screenRatio) * 100
+        relativeY = (realPos.y / screenHeight) * 100
+        
+        return Vector2(relativeX, relativeY)
+    
     def __init__(self, type, relativePos:Vector2, relativeSize:Vector2, color:tuple, state:bool=True, width:int=0):
         self.screenWidth, self.screenHeight = pygame.display.get_surface().get_size()
         self.screenRatio = self.screenWidth/self.screenHeight
@@ -62,6 +71,8 @@ class UI:
     def GetPos(self) -> Vector2:
         return Vector2(self.screenWidth * self.relativePos.x, self.screenHeight * self.relativePos.y)
     
+
+
     def ResetRect(self):
         self.screenWidth, self.screenHeight = pygame.display.get_surface().get_size()
         self.screenRatio = self.screenWidth/self.screenHeight
