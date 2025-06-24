@@ -28,6 +28,8 @@ class SandBoxLVL():
     
     def Start(self):
         if not self.looping:
+            con.CURRSCREEN = self
+            
             self.UIs["PlayStopSquare"] = UI(Quad, Vector2(1,1), Vector2(20,20), (100,100,100))
             self.UIs["PlaySymbol"] = UI(TriangleRight, Vector2(6,6), Vector2(10,10), (0,255,0))
             self.UIs["SliderSquare"] = UI(Quad, Vector2(52.5,90), Vector2(45,7.5), (100,100,100))
@@ -126,8 +128,9 @@ class SandBoxLVL():
         for Name, UI in self.UIs.items():
             if UI.state:
                 UI.Draw()
-        
-        pygame.display.update()
+    
+    def ResetScreen(self):
+        self.grid.MoveCells()
 
     def Stop(self):
         if self.looping:

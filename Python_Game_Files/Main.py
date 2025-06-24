@@ -30,7 +30,6 @@ async def main () :
                 con.HANDLER.QuitGame()
         
         sandBoxLVL = None
-        settingsLVL = None
         
         con.SCREEN.fill((10,60,20))
         

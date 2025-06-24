@@ -16,6 +16,8 @@ class SettingsMenu():
         
         def Start(self):
             if not self.looping:
+                con.CURRSCREEN = self
+                
                 self.UIs["InputText"] = InputText("test", 'freesansbold.ttf', Vector2(900,800), 30, (255,255,255), (100,100,100))
                 
                 self.looping = True
@@ -51,18 +53,21 @@ class SettingsMenu():
                     if event.type == QUIT:
                         con.HANDLER.QuitGame()
                 
-                self.DrawEverything()
+                self.DrawSolids()
+                self.DrawUI()
+                pygame.display.update()
                 
                 self.clock.tick(120)
         
         def DrawEverything(self):
             con.SCREEN.fill((0,0,0))
-
+            
             for Name, UI in self.UIs.items():
                 if UI.state:
                     UI.Draw()
-
-            pygame.display.update()
+                    
+        def ResetScreen(self):
+            pass
         
         def Stop(self):
             if self.looping:
