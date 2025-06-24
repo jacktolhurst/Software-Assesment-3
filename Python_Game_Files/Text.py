@@ -2,12 +2,23 @@ import pygame
 import Constants as con
 from pygame.math import Vector2
 
-class Text():    
+class Text():
+    @staticmethod
+    def RealPosToPercent(realPos:Vector2):
+        screenWidth, screenHeight = pygame.display.get_surface().get_size()
+        screenRatio = screenWidth/screenHeight
+        
+        relativeX = ((realPos.x / screenWidth)*screenRatio) * 100
+        relativeY = (realPos.y / screenHeight) * 100
+        
+        return Vector2(relativeX, relativeY)
+
     def __init__(self, textStr:str, font:str, pos:Vector2, size:int, color:tuple, state:bool=True):
         self.textStr = textStr
         
         self.pos = pos
         self.size = size
+        
         self.color = color
         self.state = state
         

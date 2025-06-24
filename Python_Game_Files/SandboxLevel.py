@@ -96,9 +96,9 @@ class SandBoxLVL():
                 if touchingSlider:
                     newSliderPos = UI.RealPosToPercent(Vector2(mousePos[0], mousePos[1]))
                     newSliderPos.y = self.UIs["SliderNotch"].origionalRelativePos.y
-                    newSliderPos.x = max(min(newSliderPos.x, 92), 52)
+                    newSliderPos.x = max(min(newSliderPos.x, 92), 53)
                     
-                    self.tickSpeed = (newSliderPos.x - 51) * 1.5
+                    self.tickSpeed = (newSliderPos.x - 52) * 1.5
                     
                     self.UIs["SliderNotch"].MoveSet(newSliderPos)
                     
