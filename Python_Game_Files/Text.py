@@ -23,7 +23,6 @@ class Text():
         self.origionalRelativeSize = relativeSize
         self.relativePos =  Vector2(min(self.origionalRelativePos.x/self.screenRatio,100)/100,min(self.origionalRelativePos.y,100)/100)
         self.relativeSize = int((((self.origionalRelativeSize/2))+((self.origionalRelativeSize/2)*self.screenHeight))/200) 
-        print(self.relativeSize)
             
         self.color = color
         self.state = state
@@ -51,9 +50,9 @@ class Text():
         self.screenWidth, self.screenHeight = pygame.display.get_surface().get_size()
         self.screenRatio = self.screenWidth/self.screenHeight
         
-        self.relativeSize = int((((self.origionalRelativeSize/2))+((self.origionalRelativeSize/2)*self.screenHeight))/100) 
+        self.relativeSize = int((((self.origionalRelativeSize/2))+((self.origionalRelativeSize/2)*self.screenHeight))/200) 
         
-        self.relativePos = Vector2(min(self.origionalRelativePos.x/self.screenRatio,100)/100,min(self.origionalRelativePos.y,100)/200)
+        self.relativePos = Vector2(min(self.origionalRelativePos.x/self.screenRatio,100)/100,min(self.origionalRelativePos.y,100)/100)
         
         absX = self.relativePos.x * self.screenWidth
         absY = self.relativePos.y * self.screenHeight
@@ -62,7 +61,7 @@ class Text():
         self.font = pygame.font.Font(self.fontStr, self.relativeSize)
         self.text = self.font.render(self.textStr, True, self.color)
         self.rect = self.text.get_rect()
-        self.rect.center = absPos
+        self.rect.topleft = absPos
     
     def Draw(self):
         con.SCREEN.blit(self.text, self.rect)

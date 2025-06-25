@@ -37,7 +37,8 @@ class SandBoxLVL():
             self.UIs["SliderSquare"] = UI(Quad, Vector2(52.5,90), Vector2(45,7.5), (100,100,100))
             self.UIs["SliderBackground"] = UI(Quad, Vector2(55,91.25), Vector2(40,5), (50,50,50))
             self.UIs["SliderNotch"] = UI(Circle, Vector2(55,91.25), Vector2(5,5), (255,255,255))
-            self.UIs["SliderText"] = Text("TickSpeed", 'freesansbold.ttf', Vector2(1,1), 20, (255,255,255))
+            self.UIs["SliderText"] = Text("TickSpeed", 'freesansbold.ttf', Vector2(53,87), 10, (255,255,255))
+            self.UIs["FPSCount"] = Text("FPS", 'freesansbold.ttf', Vector2(100,0), 10, (255,255,255))
             
             self.looping = True
             self.Update()
@@ -84,16 +85,17 @@ class SandBoxLVL():
                     if self.UIs["SliderNotch"].rect.collidepoint(mousePos):
                         touchingSlider = True
                     
+                    
                 if event.type == pygame.MOUSEBUTTONUP:
                     if self.UIs["PlaySymbol"].rect.collidepoint(mousePos):
                         self.isPlaying = not self.isPlaying
-                        
-                    if not self.UIs["SliderNotch"].rect.collidepoint(mousePos):
+                    
+                    if event.button == 1: 
                         touchingSlider = False
                 
                 if event.type == QUIT:
                     con.HANDLER.QuitGame()
-
+                
             if pygame.mouse.get_pressed()[0]:
                 if touchingSlider:
                     newSliderPos = UI.RealPosToPercent(Vector2(mousePos[0], mousePos[1]))
