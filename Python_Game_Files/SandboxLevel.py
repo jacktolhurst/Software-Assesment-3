@@ -26,6 +26,9 @@ class SandBoxLVL():
         
         self.UIs = {}
         
+        self.FPSList = []
+        
+        
         self.Start()
     
     def Start(self):
@@ -38,7 +41,8 @@ class SandBoxLVL():
             self.UIs["SliderBackground"] = UI(Quad, Vector2(55,91.25), Vector2(40,5), (50,50,50))
             self.UIs["SliderNotch"] = UI(Circle, Vector2(55,91.25), Vector2(5,5), (255,255,255))
             self.UIs["SliderText"] = Text("TickSpeed", 'freesansbold.ttf', Vector2(53,87), 10, (255,255,255))
-            self.UIs["FPSCount"] = Text("FPS", 'freesansbold.ttf', Vector2(100,0), 10, (255,255,255))
+            self.UIs["FPSCount"] = Text("FPS", 'freesansbold.ttf', Vector2(160,90), 10, (255,255,255))
+            self.UIs["AverageCount"] = Text("Average", 'freesansbold.ttf', Vector2(160,95), 10, (255,255,255))
             
             self.looping = True
             self.Update()
@@ -121,6 +125,12 @@ class SandBoxLVL():
                 lastUpdateTime = currTime
 
             self.UIs["SliderText"].ChangeText("Tickspeed: " + str(int(self.tickSpeed)))
+            
+            currFPS = int(self.clock.get_fps())
+            self.FPSList.insert(0,int(currFPS))
+            self.FPSList = self.FPSList[:20]
+            self.UIs["FPSCount"].ChangeText("FPS: " + str(currFPS))
+            self.UIs["AverageCount"].ChangeText("Average: " + str(int(sum(self.FPSList) / len(self.FPSList))))
 
             self.DrawEverything()
             pygame.display.update()
@@ -132,7 +142,7 @@ class SandBoxLVL():
     def DrawEverything(self):
 
         
-        con.SCREEN.fill((0,0,0))
+        con.SCREEN.fill((50,0,0))
         
         self.grid.DrawCells()
         
