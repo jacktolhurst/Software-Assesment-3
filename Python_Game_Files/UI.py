@@ -7,9 +7,8 @@ class UI:
     @staticmethod
     def RealPosToPercent(realPos:Vector2):
         screenWidth, screenHeight = pygame.display.get_surface().get_size()
-        screenRatio = screenWidth/screenHeight
         
-        relativeX = ((realPos.x / screenWidth)*screenRatio) * 100
+        relativeX = (realPos.x / screenWidth) * 100
         relativeY = (realPos.y / screenHeight) * 100
         
         return Vector2(relativeX, relativeY)
@@ -22,8 +21,6 @@ class UI:
         
         self.origionalRelativePos = relativePos
         self.origionalRelativeSize = relativeSize
-        self.relativePos =  Vector2(min(self.origionalRelativePos.x/self.screenRatio,100)/100,min(self.origionalRelativePos.y,100)/100) 
-        self.relativeSize = Vector2(min(self.origionalRelativeSize.x/self.screenRatio,100)/100,min(self.origionalRelativeSize.y,100)/100)
         
         self.color = color
         
@@ -75,19 +72,22 @@ class UI:
 
     def ResetRect(self):
         self.screenWidth, self.screenHeight = pygame.display.get_surface().get_size()
-        self.screenRatio = self.screenWidth/self.screenHeight
-        
-        self.relativePos =  Vector2(min(self.origionalRelativePos.x/self.screenRatio,100)/100,min(self.origionalRelativePos.y,100)/100) 
-        self.relativeSize = Vector2(min(self.origionalRelativeSize.x/self.screenRatio,100)/100,min(self.origionalRelativeSize.y,100)/100)
-        
-        absX = self.relativePos.x * self.screenWidth
-        absY = self.relativePos.y * self.screenHeight
-        absW = self.relativeSize.x * self.screenWidth
-        absH = self.relativeSize.y * self.screenHeight
     
+        fx = self.origionalRelativePos.x  / 100.0
+        fy = self.origionalRelativePos.y  / 100.0
+        sx = self.origionalRelativeSize.x / 100.0
+        sy = self.origionalRelativeSize.y / 100.0
+
+        base = min(self.screenWidth, self.screenHeight)
+
+        absX = fx * base
+        absY = fy * base
+        absW = sx * base
+        absH = sy * base
+
         self.rect = pygame.Rect(absX, absY, absW, absH)
         self.vertices = self.type.GetVertices(self.rect)
-    
+
     def Draw(self):
         pygame.draw.polygon(con.SCREEN, self.color, self.vertices, self.width)
 

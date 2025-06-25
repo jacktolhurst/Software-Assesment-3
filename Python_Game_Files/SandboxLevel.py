@@ -41,8 +41,8 @@ class SandBoxLVL():
             self.UIs["SliderBackground"] = UI(Quad, Vector2(55,91.25), Vector2(40,5), (50,50,50))
             self.UIs["SliderNotch"] = UI(Circle, Vector2(55,91.25), Vector2(5,5), (255,255,255))
             self.UIs["SliderText"] = Text("TickSpeed", 'freesansbold.ttf', Vector2(53,87), 10, (255,255,255))
-            self.UIs["FPSCount"] = Text("FPS", 'freesansbold.ttf', Vector2(160,90), 10, (255,255,255))
-            self.UIs["AverageCount"] = Text("Average", 'freesansbold.ttf', Vector2(160,95), 10, (255,255,255))
+            self.UIs["FPSCount"] = Text("FPS", 'freesansbold.ttf', Vector2(80,90), 10, (255,255,255))
+            self.UIs["AverageCount"] = Text("Average", 'freesansbold.ttf', Vector2(80,95), 10, (255,255,255))
             
             self.looping = True
             self.Update()
