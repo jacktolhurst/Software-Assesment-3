@@ -61,10 +61,8 @@ class SettingsMenu():
         def DrawEverything(self):
             con.SCREEN.fill((0,0,0))
             
-            for Name, UI in self.UIs.items():
-                if UI.state:
-                    UI.Draw()
-                    
+            con.HANDLER.DrawUI(self, self.UIs)
+        
         def ResetScreen(self):
             pass
         

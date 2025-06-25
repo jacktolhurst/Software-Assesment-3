@@ -22,8 +22,9 @@ class Text():
         self.origionalRelativePos = relativePos
         self.origionalRelativeSize = relativeSize
         self.relativePos =  Vector2(min(self.origionalRelativePos.x/self.screenRatio,100)/100,min(self.origionalRelativePos.y,100)/100)
-        self.relativeSize = min(self.origionalRelativeSize/self.screenRatio,100)
-        
+        self.relativeSize = int((((self.origionalRelativeSize/2))+((self.origionalRelativeSize/2)*self.screenHeight))/200) 
+        print(self.relativeSize)
+            
         self.color = color
         self.state = state
         
@@ -49,9 +50,10 @@ class Text():
     def ResetRect(self):
         self.screenWidth, self.screenHeight = pygame.display.get_surface().get_size()
         self.screenRatio = self.screenWidth/self.screenHeight
-        self.relativeSize = int(min(self.origionalRelativeSize/self.screenRatio,100))
         
-        self.relativePos = Vector2(min(self.origionalRelativePos.x/self.screenRatio,100)/100,min(self.origionalRelativePos.y,100)/100)
+        self.relativeSize = int((((self.origionalRelativeSize/2))+((self.origionalRelativeSize/2)*self.screenHeight))/100) 
+        
+        self.relativePos = Vector2(min(self.origionalRelativePos.x/self.screenRatio,100)/100,min(self.origionalRelativePos.y,100)/200)
         
         absX = self.relativePos.x * self.screenWidth
         absY = self.relativePos.y * self.screenHeight

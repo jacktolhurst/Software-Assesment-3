@@ -134,20 +134,7 @@ class SandBoxLVL():
         
         self.grid.DrawCells()
         
-        if self.screenWidth != pygame.display.get_surface().get_size()[0] or self.screenHeight != pygame.display.get_surface().get_size()[1]:
-            self.screenWidth, self.screenHeight = pygame.display.get_surface().get_size()
-            con.WINDOW_WIDTH = con.SCREENRECT.w = self.screenWidth
-            con.WINDOW_HEIGHT = con.SCREENRECT.h = self.screenHeight
-            self.ResetScreen()
-            
-            for Name, UI in self.UIs.items():
-                if UI.state:
-                    UI.ResetRect()
-                    UI.Draw()
-        else:
-            for Name, UI in self.UIs.items():
-                if UI.state:
-                    UI.Draw()
+        con.HANDLER.DrawUI(self, self.UIs)
     
     def ResetScreen(self):
         self.grid.MoveCells()

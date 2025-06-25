@@ -73,7 +73,6 @@ class UI:
         return Vector2(self.screenWidth * self.relativePos.x, self.screenHeight * self.relativePos.y)
     
 
-
     def ResetRect(self):
         self.screenWidth, self.screenHeight = pygame.display.get_surface().get_size()
         self.screenRatio = self.screenWidth/self.screenHeight
