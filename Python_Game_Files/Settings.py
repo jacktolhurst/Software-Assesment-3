@@ -18,7 +18,7 @@ class SettingsMenu():
             if not self.looping:
                 con.CURRSCREEN = self
                 
-                self.UIs["InputText"] = InputText("test", 'freesansbold.ttf', Vector2(900,800), 30, (255,255,255), (100,100,100))
+                self.UIs["InputText"] = InputText("test", 'freesansbold.ttf', Vector2(1,1), 30, (255,255,255), (100,100,100))
                 
                 self.looping = True
                 
@@ -34,22 +34,11 @@ class SettingsMenu():
                     if event.type == pygame.KEYDOWN:
                         if event.key == pygame.K_q:
                             self.Stop()
-                        
-                        if inputText != None:
-                            userText = inputText.GetText()
-                            if event.key == pygame.K_BACKSPACE:
-                                userText = userText[:-1]
-                            elif event.unicode.isdigit() and (len(userText)+1) < 3:
-                                userText += event.unicode
-                            inputText.ChangeText(userText)
-                        
+                            
                     if event.type == pygame.MOUSEBUTTONUP:
-                        if inputText != None:
-                            if not inputText.ClickIntersection(mousePos):
-                                inputText = None
-                        else:
-                            if self.UIs["InputText"].ClickIntersection(mousePos):
-                                inputText = self.UIs["InputText"]
+                        if self.UIs["InputText"].CheckCollidePoint(mousePos):
+                            inputText = self.UIs["InputText"]
+                    
                     if event.type == QUIT:
                         con.HANDLER.QuitGame()
                 

@@ -5,6 +5,7 @@ from pygame.locals import *
 from pygame.math import *
 from SandboxLevel import SandBoxLVL
 from Handler import Handler
+from Settings import SettingsMenu
 
 pygame.init()
 
@@ -24,12 +25,15 @@ async def main () :
             if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_g:
                         sandBoxLVL = SandBoxLVL(Vector2(100,100))
+                    if event.key == pygame.K_s:
+                        settings = SettingsMenu()
                     if event.key == pygame.K_q:
                         con.HANDLER.QuitGame()
             if event.type == QUIT:
                 con.HANDLER.QuitGame()
         
         sandBoxLVL = None
+        settings = None
         
         con.SCREEN.fill((10,60,20))
         
