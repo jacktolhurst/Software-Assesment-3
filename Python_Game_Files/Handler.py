@@ -1,6 +1,7 @@
 import sys
 import pygame
 import Constants as con
+from pygame.math import Vector2
 
 class Handler():
     def __init__(self):
@@ -25,3 +26,9 @@ class Handler():
     def QuitGame(self):
         pygame.quit()
         sys.exit()
+    
+    @staticmethod
+    def TupleMagnitude(pos: tuple[float, float]) -> float:
+        numA, numB = pos
+        
+        return Vector2(numA, numB).magnitude()

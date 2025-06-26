@@ -24,6 +24,8 @@ class SandBoxLVL():
         
         self.clock = pygame.time.Clock()
         
+        self.generation = 0
+        
         self.UIs = {}
         
         self.FPSList = []
@@ -37,12 +39,14 @@ class SandBoxLVL():
             
             self.UIs["PlayStopSquare"] = UI(Quad, Vector2(1,1), Vector2(20,20), (100,100,100))
             self.UIs["PlaySymbol"] = UI(TriangleRight, Vector2(6,6), Vector2(10,10), (0,255,0))
-            self.UIs["SliderSquare"] = UI(Quad, Vector2(52.5,90), Vector2(45,7.5), (100,100,100))
+            self.UIs["SliderSquare"] = UI(Quad, Vector2(52, 90), Vector2(45,7.5), (100,100,100))
             self.UIs["SliderBackground"] = UI(Quad, Vector2(55,91.25), Vector2(40,5), (50,50,50))
             self.UIs["SliderNotch"] = UI(Circle, Vector2(55,91.25), Vector2(5,5), (255,255,255))
             self.UIs["SliderText"] = Text("TickSpeed", 'freesansbold.ttf', Vector2(53,87), 10, (255,255,255))
-            self.UIs["FPSCount"] = Text("FPS", 'freesansbold.ttf', Vector2(80,90), 10, (255,255,255))
-            self.UIs["AverageCount"] = Text("Average", 'freesansbold.ttf', Vector2(80,95), 10, (255,255,255))
+            self.UIs["FPSCount"] = Text("FPS", 'freesansbold.ttf', Vector2(100,90), 10, (255,255,255))
+            self.UIs["AverageCount"] = Text("Average", 'freesansbold.ttf', Vector2(100,95), 10, (255,255,255))
+            self.UIs["UnstableWarning"] = Text("Unstable!", 'freesansbold.ttf', Vector2(85,87), 10, (255,0,0), False)
+            self.UIs["GenerationCount"] = Text("Generation: 0", 'freesansbold.ttf', Vector2(120,95), 10, (255,255,255))
             
             self.looping = True
             self.Update()
@@ -53,8 +57,7 @@ class SandBoxLVL():
         prevMousePos = None
         
         touchingSlider = False
-        
-    
+
         while self.looping:
             if con.WON:
                 self.Won()
@@ -113,7 +116,12 @@ class SandBoxLVL():
                 
                 UIRects = [ui.rect for ui in self.UIs.values() if ui.state]
                 if not any(rect.collidepoint(mousePos) for rect in UIRects) and not touchingSlider:
-                    self.grid.ClickIntersection(mousePos, State.ALIVE)
+                    if abs((con.HANDLER.TupleMagnitude(mousePos) - con.HANDLER.TupleMagnitude(prevMousePos))) < 40-self.tickSpeed and self.isPlaying:
+                        self.grid.ClickIntersection(mousePos, State.ALIVE)
+                    
+                    elif not self.isPlaying:
+                        self.grid.ClickIntersection(mousePos, State.ALIVE)
+            
             if pygame.mouse.get_pressed()[1]:
                 con.CELLOFFSETT = con.CELLOFFSETT + Vector2(tuple(numpy.subtract(mousePos, prevMousePos)))
                 self.grid.MoveCells()
@@ -122,15 +130,24 @@ class SandBoxLVL():
 
             if self.isPlaying and elapsedTime >= (1000 / self.tickSpeed):
                 self.grid.Update()
+                
+                self.generation += 1
+                self.UIs["GenerationCount"].ChangeText("Generation: " + str(self.generation))
+                
                 lastUpdateTime = currTime
 
             self.UIs["SliderText"].ChangeText("Tickspeed: " + str(int(self.tickSpeed)))
             
             currFPS = int(self.clock.get_fps())
             self.FPSList.insert(0,int(currFPS))
-            self.FPSList = self.FPSList[:20]
+            self.FPSList = self.FPSList[:100]
             self.UIs["FPSCount"].ChangeText("FPS: " + str(currFPS))
             self.UIs["AverageCount"].ChangeText("Average: " + str(int(sum(self.FPSList) / len(self.FPSList))))
+            
+            if self.tickSpeed >= 40 or currFPS <= 30:
+                self.UIs["UnstableWarning"].SetState(True)
+            else:
+                self.UIs["UnstableWarning"].SetState(False)
 
             self.DrawEverything()
             pygame.display.update()
@@ -140,8 +157,6 @@ class SandBoxLVL():
             self.clock.tick(120)
 
     def DrawEverything(self):
-
-        
         con.SCREEN.fill((50,0,0))
         
         self.grid.DrawCells()

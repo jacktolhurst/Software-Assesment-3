@@ -7,8 +7,9 @@ class UI:
     @staticmethod
     def RealPosToPercent(realPos:Vector2):
         screenWidth, screenHeight = pygame.display.get_surface().get_size()
+        screenRatio = screenWidth/screenHeight
         
-        relativeX = (realPos.x / screenWidth) * 100
+        relativeX = (realPos.x / screenWidth) * 100 * screenRatio
         relativeY = (realPos.y / screenHeight) * 100
         
         return Vector2(relativeX, relativeY)
