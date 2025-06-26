@@ -12,16 +12,23 @@ from Text import *
 
 class SandBoxLVL():
     def __init__(self, gridSize:Vector2):
-        self.screenWidth, self.screenHeight = pygame.display.get_surface().get_size()
+        self.gridSize = gridSize
         
+        self.Setup()
+        self.Start()
+        
+    def Setup(self):
         self.looping = False
         self.isPlaying = False
         self.skipGeneration = False
         
+        con.CELLOFFSETT = Vector2(0,0)
+        con.CELLSIZE = 20
+
+        
         self.tickSpeed = 9
         
-        self.gridSize = gridSize
-        self.grid = Grid(GridAttributes(), gridSize)
+        self.grid = Grid(GridAttributes(), self.gridSize)
         
         self.clock = pygame.time.Clock()
         
@@ -30,20 +37,21 @@ class SandBoxLVL():
         self.UIs = {}
         
         self.FPSList = []
-        
-        
-        self.Start()
     
     def Start(self):
         if not self.looping:
             con.CURRSCREEN = self
             
-            self.UIs["SymbolBackground"] = UI(Quad, Vector2(1,1), Vector2(23,12), (100,100,100))
+            self.UIs["SymbolBackground"] = UI(Quad, Vector2(1,1), Vector2(34,12), (100,100,100))
             self.UIs["PlaySymbolBackground"] = UI(Quad, Vector2(2,2), Vector2(10,10), (50,50,50))
             self.UIs["PlaySymbol"] = UI(TriangleRight, self.UIs["PlaySymbolBackground"].GetPosPercent()+Vector2(1.5,1.5), self.UIs["PlaySymbolBackground"].GetSizePercent()-Vector2(3,3), (0,255,0))
             self.UIs["SkipSymbolBackground"] = UI(Quad, Vector2(13,2), Vector2(10,10), (50,50,50))
             self.UIs["SkipSymbolTriangle"] = UI(TriangleRight, self.UIs["SkipSymbolBackground"].GetPosPercent()+Vector2(1.5,1.5), self.UIs["SkipSymbolBackground"].GetSizePercent()-Vector2(3,3), (200,255,200))
             self.UIs["SkipSymbolSquare"] = UI(Quad, self.UIs["SkipSymbolTriangle"].GetPosPercent()+Vector2(6,0), Vector2(1.5,7), (200,255,200))
+            self.UIs["RestartSymbolBackground"] = UI(Quad, Vector2(24,2), Vector2(10,10), (50,50,50))
+            self.UIs["RestartSymbolOuter"] = UI(Circle, self.UIs["RestartSymbolBackground"].GetPosPercent()+Vector2(1,1), self.UIs["RestartSymbolBackground"].GetSizePercent()-Vector2(2,2), (0,0,255))
+            self.UIs["RestartSymbolInner"] = UI(Circle, self.UIs["RestartSymbolBackground"].GetPosPercent()+Vector2(2,2), self.UIs["RestartSymbolBackground"].GetSizePercent()-Vector2(4,4), self.UIs["RestartSymbolBackground"].GetColor())
+            self.UIs["RestartSymbolInnerSquare"] = UI(Quad, self.UIs["RestartSymbolBackground"].GetPosPercent()+Vector2(3,0), self.UIs["RestartSymbolBackground"].GetSizePercent()-Vector2(6,6), self.UIs["RestartSymbolBackground"].GetColor())
             self.UIs["SliderSquare"] = UI(Quad, Vector2(52, 90), Vector2(46,7.5), (100,100,100))
             self.UIs["SliderBackground"] = UI(Quad, Vector2(55,91.25), Vector2(40,5), (50,50,50))
             self.UIs["SliderNotch"] = UI(Circle, Vector2(55,91.25), Vector2(5,5), (255,255,255))
@@ -105,6 +113,10 @@ class SandBoxLVL():
                     if self.UIs["SkipSymbolBackground"].CheckCollidePoint(mousePos):
                         self.skipGeneration = True
                         self.isPlaying = True
+                    if self.UIs["RestartSymbolBackground"].CheckCollidePoint(mousePos):
+                        self.Restart()
+                        pygame.time.wait(10)
+                        return
                     
                     if event.button == 1: 
                         touchingSlider = False
@@ -121,7 +133,7 @@ class SandBoxLVL():
                     self.tickSpeed = (newSliderPos.x - 52) * 1.5
                     
                     self.UIs["SliderNotch"].MoveSet(newSliderPos)
-                    self.UIs["SliderNotch"].ChangeColor((255,min(255-((newSliderPos.x-85)*8),255),min(255-((newSliderPos.x-85)*8),255)))
+                    self.UIs["SliderNotch"].ChangeColor((255,min(255-((newSliderPos.x-85)*20),255),min(255-((newSliderPos.x-85)*20),255)))
                 
                 UIRects = [ui.GetRect() for ui in self.UIs.values() if ui.state]
                 if not any(rect.collidepoint(mousePos) for rect in UIRects) and not touchingSlider:
@@ -174,7 +186,11 @@ class SandBoxLVL():
     
     def ResetScreen(self):
         self.grid.MoveCells()
+    
+    def Restart(self):
+        self.looping = False
+        self.Setup()
+        self.Start()
 
     def Stop(self):
-        if self.looping:
-            self.looping = False
+        self.looping = False
