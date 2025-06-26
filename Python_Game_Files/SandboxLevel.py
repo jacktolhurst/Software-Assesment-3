@@ -22,12 +22,11 @@ class SandBoxLVL():
         self.isPlaying = False
         self.skipGeneration = False
         
+        self.tickSpeed = 10
+        
         con.CELLOFFSETT = Vector2(0,0)
         con.CELLSIZE = 20
 
-        
-        self.tickSpeed = 9
-        
         self.grid = Grid(GridAttributes(), self.gridSize)
         
         self.clock = pygame.time.Clock()
@@ -51,10 +50,11 @@ class SandBoxLVL():
             self.UIs["RestartSymbolBackground"] = UI(Quad, Vector2(24,2), Vector2(10,10), (50,50,50))
             self.UIs["RestartSymbolOuter"] = UI(Circle, self.UIs["RestartSymbolBackground"].GetPosPercent()+Vector2(1,1), self.UIs["RestartSymbolBackground"].GetSizePercent()-Vector2(2,2), (0,0,255))
             self.UIs["RestartSymbolInner"] = UI(Circle, self.UIs["RestartSymbolBackground"].GetPosPercent()+Vector2(2,2), self.UIs["RestartSymbolBackground"].GetSizePercent()-Vector2(4,4), self.UIs["RestartSymbolBackground"].GetColor())
-            self.UIs["RestartSymbolInnerSquare"] = UI(Quad, self.UIs["RestartSymbolBackground"].GetPosPercent()+Vector2(3,0), self.UIs["RestartSymbolBackground"].GetSizePercent()-Vector2(6,6), self.UIs["RestartSymbolBackground"].GetColor())
+            self.UIs["RestartSymbolInnerCircle"] = UI(Circle, self.UIs["RestartSymbolBackground"].GetPosPercent()+Vector2(2,0), self.UIs["RestartSymbolBackground"].GetSizePercent()-Vector2(7,6), self.UIs["RestartSymbolBackground"].GetColor())
+            self.UIs["RestartSymbolOuterSquare"] = UI(Quad, self.UIs["RestartSymbolBackground"].GetPosPercent()+Vector2(4,0.25), Vector2(1,2.5), self.UIs["RestartSymbolOuter"].GetColor())
             self.UIs["SliderSquare"] = UI(Quad, Vector2(52, 90), Vector2(46,7.5), (100,100,100))
             self.UIs["SliderBackground"] = UI(Quad, Vector2(55,91.25), Vector2(40,5), (50,50,50))
-            self.UIs["SliderNotch"] = UI(Circle, Vector2(55,91.25), Vector2(5,5), (255,255,255))
+            self.UIs["SliderNotch"] = UI(Circle, Vector2(60,91.25), Vector2(5,5), (255,255,255))
             
             self.UIs["SliderText"] = Text("TickSpeed", 'freesansbold.ttf', Vector2(53,87), 10, (255,255,255))
             self.UIs["FPSCount"] = Text("FPS", 'freesansbold.ttf', Vector2(100,90), 10, (255,255,255))
