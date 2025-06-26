@@ -87,7 +87,7 @@ class Grid():
 
     def ClickIntersection(self, mousePos, state:State=State.DEAD):
         for cell, cellPos in self.onScreenCells.items():
-            if cell.state != State.UNTOUCH and cell.state != State.PRIZE:
+            if cell.state != State.UNTOUCH:
                 if cell.CheckMouseCollide(mousePos):
                     self.SetCell(cellPos, state)
                     break

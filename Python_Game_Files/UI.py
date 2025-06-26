@@ -70,6 +70,9 @@ class UI:
     def CheckCollidePoint(self, point) -> bool:
         return self.rect.collidepoint(point)
     
+    def GetColor(self) -> tuple[float,float,float]:
+        return self.color
+    
     def GetPosPercent(self) -> Vector2:
         return self.originalRelativePos
     

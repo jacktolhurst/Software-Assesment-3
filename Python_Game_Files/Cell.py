@@ -7,7 +7,6 @@ from pygame.math import Vector2
 class State(Enum):
     DEAD = auto()
     ALIVE = auto()
-    PRIZE = auto()
     UNTOUCH = auto()
 
 class Cell():
@@ -28,14 +27,12 @@ class Cell():
     def SetState(self, state:State):
         self.state = state
         if self.state == State.ALIVE:
-            self.color = (255,255,255)
-        elif self.state == State.PRIZE:
-            self.color = (255,255,0)
+            self.color = con.CELLALIVECOLOR
         elif self.state == State.UNTOUCH:
             rand = random.randrange(-10,10)
-            self.color = (60+rand,60+rand,60+rand)
+            self.color = (con.HANDLER.Clamp(con.CELLUNTOUCHCOLOR[0]+rand,0,255),con.HANDLER.Clamp(con.CELLUNTOUCHCOLOR[1]+rand,0,255),con.HANDLER.Clamp(con.CELLUNTOUCHCOLOR[2]+rand,0,255))
         else:
-            self.color = (0,0,0)
+            self.color = con.CELLDEADCOLOR
 
     def CheckMouseCollide(self, mousePos):
         return self.rect.collidepoint(mousePos)

@@ -116,12 +116,12 @@ class SandBoxLVL():
                 if touchingSlider:
                     newSliderPos = UI.RealPosToPercent(Vector2(mousePos[0], mousePos[1]))
                     newSliderPos.y = self.UIs["SliderNotch"].GetPosPercent().y
-                    newSliderPos.x = max(min(newSliderPos.x, 92), 53)
+                    newSliderPos.x = con.HANDLER.Clamp(newSliderPos.x, 53, 92)
                     
                     self.tickSpeed = (newSliderPos.x - 52) * 1.5
                     
                     self.UIs["SliderNotch"].MoveSet(newSliderPos)
-                    
+                    self.UIs["SliderNotch"].ChangeColor((255,min(255-((newSliderPos.x-85)*8),255),min(255-((newSliderPos.x-85)*8),255)))
                 
                 UIRects = [ui.GetRect() for ui in self.UIs.values() if ui.state]
                 if not any(rect.collidepoint(mousePos) for rect in UIRects) and not touchingSlider:

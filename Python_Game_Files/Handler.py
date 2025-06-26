@@ -32,3 +32,7 @@ class Handler():
         numA, numB = pos
         
         return Vector2(numA, numB).magnitude()
+
+    @staticmethod
+    def Clamp(arg:int|float, minArg:int|float, maxArg:int|float) -> int|float:
+        return min(max(arg, minArg), maxArg)
