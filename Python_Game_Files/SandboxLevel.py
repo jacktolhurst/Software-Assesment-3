@@ -16,6 +16,7 @@ class SandBoxLVL():
         
         self.looping = False
         self.isPlaying = False
+        self.skipGeneration = False
         
         self.tickSpeed = 9
         
@@ -37,11 +38,16 @@ class SandBoxLVL():
         if not self.looping:
             con.CURRSCREEN = self
             
-            self.UIs["PlayStopSquare"] = UI(Quad, Vector2(1,1), Vector2(20,20), (100,100,100))
-            self.UIs["PlaySymbol"] = UI(TriangleRight, Vector2(6,6), Vector2(10,10), (0,255,0))
-            self.UIs["SliderSquare"] = UI(Quad, Vector2(52, 90), Vector2(45,7.5), (100,100,100))
+            self.UIs["SymbolBackground"] = UI(Quad, Vector2(1,1), Vector2(23,12), (100,100,100))
+            self.UIs["PlaySymbolBackground"] = UI(Quad, Vector2(2,2), Vector2(10,10), (50,50,50))
+            self.UIs["PlaySymbol"] = UI(TriangleRight, self.UIs["PlaySymbolBackground"].GetPosPercent()+Vector2(1.5,1.5), self.UIs["PlaySymbolBackground"].GetSizePercent()-Vector2(3,3), (0,255,0))
+            self.UIs["SkipSymbolBackground"] = UI(Quad, Vector2(13,2), Vector2(10,10), (50,50,50))
+            self.UIs["SkipSymbolTriangle"] = UI(TriangleRight, self.UIs["SkipSymbolBackground"].GetPosPercent()+Vector2(1.5,1.5), self.UIs["SkipSymbolBackground"].GetSizePercent()-Vector2(3,3), (200,255,200))
+            self.UIs["SkipSymbolSquare"] = UI(Quad, self.UIs["SkipSymbolTriangle"].GetPosPercent()+Vector2(6,0), Vector2(1.5,7), (200,255,200))
+            self.UIs["SliderSquare"] = UI(Quad, Vector2(52, 90), Vector2(46,7.5), (100,100,100))
             self.UIs["SliderBackground"] = UI(Quad, Vector2(55,91.25), Vector2(40,5), (50,50,50))
             self.UIs["SliderNotch"] = UI(Circle, Vector2(55,91.25), Vector2(5,5), (255,255,255))
+            
             self.UIs["SliderText"] = Text("TickSpeed", 'freesansbold.ttf', Vector2(53,87), 10, (255,255,255))
             self.UIs["FPSCount"] = Text("FPS", 'freesansbold.ttf', Vector2(100,90), 10, (255,255,255))
             self.UIs["AverageCount"] = Text("Average", 'freesansbold.ttf', Vector2(100,95), 10, (255,255,255))
@@ -58,9 +64,10 @@ class SandBoxLVL():
         
         touchingSlider = False
 
-        while self.looping:
-            if con.WON:
-                self.Won()
+        while self.looping:    
+            if self.skipGeneration:
+                self.isPlaying = False
+                self.skipGeneration = False
             
             if self.isPlaying:
                 self.UIs["PlaySymbol"].ChangeColor((255,0,0))
@@ -89,13 +96,15 @@ class SandBoxLVL():
                         self.Stop()
                         
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    if self.UIs["SliderNotch"].rect.collidepoint(mousePos):
+                    if self.UIs["SliderNotch"].CheckCollidePoint(mousePos):
                         touchingSlider = True
                     
-                    
                 if event.type == pygame.MOUSEBUTTONUP:
-                    if self.UIs["PlaySymbol"].rect.collidepoint(mousePos):
+                    if self.UIs["PlaySymbolBackground"].CheckCollidePoint(mousePos):
                         self.isPlaying = not self.isPlaying
+                    if self.UIs["SkipSymbolBackground"].CheckCollidePoint(mousePos):
+                        self.skipGeneration = True
+                        self.isPlaying = True
                     
                     if event.button == 1: 
                         touchingSlider = False
@@ -106,7 +115,7 @@ class SandBoxLVL():
             if pygame.mouse.get_pressed()[0]:
                 if touchingSlider:
                     newSliderPos = UI.RealPosToPercent(Vector2(mousePos[0], mousePos[1]))
-                    newSliderPos.y = self.UIs["SliderNotch"].origionalRelativePos.y
+                    newSliderPos.y = self.UIs["SliderNotch"].GetPosPercent().y
                     newSliderPos.x = max(min(newSliderPos.x, 92), 53)
                     
                     self.tickSpeed = (newSliderPos.x - 52) * 1.5
@@ -114,12 +123,12 @@ class SandBoxLVL():
                     self.UIs["SliderNotch"].MoveSet(newSliderPos)
                     
                 
-                UIRects = [ui.rect for ui in self.UIs.values() if ui.state]
+                UIRects = [ui.GetRect() for ui in self.UIs.values() if ui.state]
                 if not any(rect.collidepoint(mousePos) for rect in UIRects) and not touchingSlider:
-                    if abs((con.HANDLER.TupleMagnitude(mousePos) - con.HANDLER.TupleMagnitude(prevMousePos))) < 40-self.tickSpeed and self.isPlaying:
-                        self.grid.ClickIntersection(mousePos, State.ALIVE)
-                    
-                    elif not self.isPlaying:
+                    if  self.isPlaying:
+                        if abs((con.HANDLER.TupleMagnitude(mousePos) - con.HANDLER.TupleMagnitude(prevMousePos))) < 50-self.tickSpeed:
+                            self.grid.ClickIntersection(mousePos, State.ALIVE)
+                    else:
                         self.grid.ClickIntersection(mousePos, State.ALIVE)
             
             if pygame.mouse.get_pressed()[1]:
@@ -144,7 +153,7 @@ class SandBoxLVL():
             self.UIs["FPSCount"].ChangeText("FPS: " + str(currFPS))
             self.UIs["AverageCount"].ChangeText("Average: " + str(int(sum(self.FPSList) / len(self.FPSList))))
             
-            if self.tickSpeed >= 40 or currFPS <= 30:
+            if currFPS <= self.tickSpeed and self.isPlaying or self.tickSpeed >= 50:
                 self.UIs["UnstableWarning"].SetState(True)
             else:
                 self.UIs["UnstableWarning"].SetState(False)
@@ -169,7 +178,3 @@ class SandBoxLVL():
     def Stop(self):
         if self.looping:
             self.looping = False
-    
-    def Won(self):
-        con.Won = False
-        self.Stop()

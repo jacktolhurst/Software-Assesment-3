@@ -63,6 +63,10 @@ class Text():
         self.textStr = newTextStr
         self.text = self.font.render(newTextStr, True, self.color)
     
+    def GetRect(self) -> pygame.Rect:
+        return self.rect
+
+    
     def ResetRect(self):                
         
         self.screenWidth, self.screenHeight = pygame.display.get_surface().get_size()

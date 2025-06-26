@@ -20,8 +20,8 @@ class UI:
         
         self.type = type
         
-        self.origionalRelativePos = relativePos
-        self.origionalRelativeSize = relativeSize
+        self.originalRelativePos = relativePos
+        self.originalRelativeSize = relativeSize
         
         self.color = color
         
@@ -35,22 +35,22 @@ class UI:
         self.ResetRect()
     
     def MoveSet(self, newPos:Vector2):
-        self.origionalRelativePos = newPos
+        self.originalRelativePos = newPos
         
         self.ResetRect()
     
     def MoveAdd(self, addedPos:Vector2):
-        self.origionalRelativePos = self.origionalRelativePos + addedPos
+        self.originalRelativePos = self.originalRelativePos + addedPos
         
         self.ResetRect()
     
     def SizeSet(self, newSize:Vector2):
-        self.origionalRelativeSize = newSize
+        self.originalRelativeSize = newSize
         
         self.ResetRect()
     
     def SizeAdd(self, addedSize:Vector2):
-        self.origionalRelativeSize = self.origionalRelativeSize + addedSize
+        self.originalRelativeSize = self.originalRelativeSize + addedSize
         
         self.ResetRect()
     
@@ -67,17 +67,25 @@ class UI:
     def SetState(self, newState):
         self.state = newState
     
-    def GetPos(self) -> Vector2:
-        return Vector2(self.screenWidth * self.relativePos.x, self.screenHeight * self.relativePos.y)
+    def CheckCollidePoint(self, point) -> bool:
+        return self.rect.collidepoint(point)
     
+    def GetPosPercent(self) -> Vector2:
+        return self.originalRelativePos
+    
+    def GetSizePercent(self) -> Vector2:
+        return self.originalRelativeSize
+    
+    def GetRect(self) -> pygame.Rect:
+        return self.rect
 
     def ResetRect(self):
         self.screenWidth, self.screenHeight = pygame.display.get_surface().get_size()
     
-        fx = self.origionalRelativePos.x  / 100.0
-        fy = self.origionalRelativePos.y  / 100.0
-        sx = self.origionalRelativeSize.x / 100.0
-        sy = self.origionalRelativeSize.y / 100.0
+        fx = self.originalRelativePos.x  / 100.0
+        fy = self.originalRelativePos.y  / 100.0
+        sx = self.originalRelativeSize.x / 100.0
+        sy = self.originalRelativeSize.y / 100.0
 
         base = min(self.screenWidth, self.screenHeight)
 
@@ -101,6 +109,7 @@ class Quad:
             (rect.x + rect.w, rect.y + rect.h),
             (rect.x, rect.y + rect.h)
             ]
+
 
 class TriangleUp:
     @staticmethod
