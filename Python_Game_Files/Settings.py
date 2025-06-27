@@ -14,6 +14,8 @@ class SettingsMenu():
             
             self.clock = pygame.time.Clock()
             
+            self.FPSList = []
+            
             self.Start()
         
         def Start(self):
@@ -22,6 +24,9 @@ class SettingsMenu():
                 
                 self.inputUIs["InputText"] = Text("test", 'freesansbold.ttf', Vector2(1,1), 30, (255,255,255), (20,30,40,255))
                 self.inputUIs["InputText2"] = Text("test", 'freesansbold.ttf', Vector2(1,11), 30, (255,255,255), (20,30,40,255))
+                
+                self.UIs["FPSCount"] = Text("FPS", 'freesansbold.ttf', Vector2(100,90), 10, (255,255,255))
+                self.UIs["AverageCount"] = Text("Average", 'freesansbold.ttf', Vector2(100,95), 10, (255,255,255))
                 
                 self.looping = True
                 
@@ -63,6 +68,12 @@ class SettingsMenu():
                     if event.type == QUIT:
                         con.HANDLER.QuitGame()
                 
+                
+                currFPS = int(self.clock.get_fps())
+                self.FPSList.insert(0,int(currFPS))
+                self.FPSList = self.FPSList[:100]
+                self.UIs["FPSCount"].ChangeText("FPS: " + str(currFPS))
+                self.UIs["AverageCount"].ChangeText("Average: " + str(int(sum(self.FPSList) / len(self.FPSList))))
                 
                 self.DrawEverything()
                 pygame.display.update()
