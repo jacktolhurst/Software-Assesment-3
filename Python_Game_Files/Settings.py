@@ -11,6 +11,7 @@ class SettingsMenu():
             self.looping = False
             self.UIs = {}
             self.inputUIs = {}
+            self.inputNumUIs = {}
             
             self.clock = pygame.time.Clock()
             
@@ -22,11 +23,12 @@ class SettingsMenu():
             if not self.looping:
                 con.CURRSCREEN = self
                 
-                self.inputUIs["InputText"] = Text("test", 'freesansbold.ttf', Vector2(1,1), 30, (255,255,255), (20,30,40,255))
-                self.inputUIs["InputText2"] = Text("test", 'freesansbold.ttf', Vector2(1,11), 30, (255,255,255), (20,30,40,255))
-                
+                self.UIs["InputText"] = Text("test", 'freesansbold.ttf', Vector2(1,1), 30, (255,255,255), (20,30,40,255))
+                self.UIs["InputText2"] = Text("12", 'freesansbold.ttf', Vector2(1,11), 30, (255,255,255), (20,30,40,255), 4, True)
                 self.UIs["FPSCount"] = Text("FPS", 'freesansbold.ttf', Vector2(100,90), 10, (255,255,255))
                 self.UIs["AverageCount"] = Text("Average", 'freesansbold.ttf', Vector2(100,95), 10, (255,255,255))
+                
+                self.inputUIs = {name: ui for name, ui in self.UIs.items() if name.startswith("Input")}
                 
                 self.looping = True
                 
@@ -49,8 +51,6 @@ class SettingsMenu():
                             inputText.ChangeText(inputText.GetText() + event.unicode)
                         
                     if event.type == pygame.MOUSEBUTTONUP:
-                        
-                        
                         for ui in self.inputUIs.values():
                             ui.ChangeBgColor(ui.GetInitialBgColor())
 
@@ -84,7 +84,6 @@ class SettingsMenu():
             con.SCREEN.fill((200,0,0))
             
             con.HANDLER.DrawUI(self, self.UIs)
-            con.HANDLER.DrawUI(self, self.inputUIs)
         
         def ResetScreen(self):
             pass

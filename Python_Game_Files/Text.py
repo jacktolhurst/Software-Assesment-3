@@ -3,7 +3,7 @@ import Constants as con
 from pygame.math import Vector2
 
 class Text():
-    def __init__(self, textStr:str, font:str, relativePos:Vector2, relativeSize:int, color:tuple, bgColor:tuple=(0,0,0,0), padding:int=4, state:bool=True):
+    def __init__(self, textStr:str, font:str, relativePos:Vector2, relativeSize:int, color:tuple, bgColor:tuple=(0,0,0,0), maxStrLength:int=1000, numOnly:bool=False, state:bool=True):
         self.screenWidth, self.screenHeight = pygame.display.get_surface().get_size()
         self.screenRatio = self.screenWidth/self.screenHeight
         
@@ -15,7 +15,8 @@ class Text():
         self.color = color
         self.bgColor = bgColor
         self.initialBgColor = bgColor
-        self.padding = padding
+        self.maxStrLength = maxStrLength
+        self.numOnly = numOnly
         self.state = state
         
         self.fontStr = font
@@ -58,7 +59,12 @@ class Text():
         self.ResetRect()
     
     def ChangeText(self, newTextStr:str):
-        self.textStr = newTextStr
+        if len(self.textStr) < self.maxStrLength:
+            if self.numOnly:
+                if newTextStr.isdigit():
+                    self.textStr = newTextStr
+            else:
+                self.textStr = newTextStr
         
         self.ResetRect()
     
@@ -111,7 +117,7 @@ class Text():
         
         textW, textH = self.font.size(self.textStr)   
         
-        self.bgRect = pygame.Rect(pos.x, pos.y,max(textW+self.padding, 35),textH+self.padding)
+        self.bgRect = pygame.Rect(pos.x, pos.y,max(textW+4, 35),textH+4)
         self.bgSurf = pygame.Surface(pygame.Rect(self.bgRect).size, pygame.SRCALPHA)
         self.bgSurf.fill(self.bgColor)
     
