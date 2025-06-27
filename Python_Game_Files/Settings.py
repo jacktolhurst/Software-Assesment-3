@@ -1,4 +1,5 @@
 import pygame
+import numpy
 from pygame.locals import *
 from pygame.math import *
 import Constants as con
@@ -44,12 +45,20 @@ class SettingsMenu():
                         
                     if event.type == pygame.MOUSEBUTTONUP:
                         
-                        for inputName, inputUI in self.inputUIs.items():
-                            if inputUI.CheckCollidePoint(mousePos):
-                                inputText = inputUI
-                                break
-                            else:
-                                inputText = None
+                        
+                        for ui in self.inputUIs.values():
+                            ui.ChangeBgColor(ui.GetInitialBgColor())
+
+                        selected = next(
+                            (ui for ui in self.inputUIs.values() if ui.CheckCollidePoint(mousePos)),
+                            None
+                        )
+
+                        if selected:
+                            selected.ChangeBgColor(con.SELECTEDUICOLOR)
+                            inputText = selected
+                        else:
+                            inputText = None
                     
                     if event.type == QUIT:
                         con.HANDLER.QuitGame()

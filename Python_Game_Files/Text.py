@@ -14,6 +14,7 @@ class Text():
         
         self.color = color
         self.bgColor = bgColor
+        self.initialBgColor = bgColor
         self.padding = padding
         self.state = state
         
@@ -51,6 +52,11 @@ class Text():
         
         self.ResetRect()
     
+    def ChangeBgColor(self, newBgColor:tuple):
+        self.bgColor = newBgColor
+        
+        self.ResetRect()
+    
     def ChangeText(self, newTextStr:str):
         self.textStr = newTextStr
         
@@ -67,6 +73,12 @@ class Text():
     
     def GetColor(self) -> tuple[float,float,float]:
         return self.color
+    
+    def GetBgColor(self) -> tuple[float,float,float]:
+        return self.bgColor
+    
+    def GetInitialBgColor(self) -> tuple[float,float,float]:
+        return self.initialBgColor
     
     def GetPosPercent(self) -> Vector2:
         return self.originalRelativePos
