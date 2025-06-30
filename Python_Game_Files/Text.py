@@ -9,8 +9,8 @@ class Text():
         
         self.textStr = textStr
         
-        self.origionalRelativePos = relativePos
-        self.origionalRelativeSize = relativeSize
+        self.originalRelativePos = relativePos
+        self.originalRelativeSize = relativeSize
         
         self.color = color
         self.bgColor = bgColor
@@ -38,12 +38,12 @@ class Text():
         
         self.ResetRect()
     
-    def SizeSet(self, newSize:Vector2):
+    def SizeSet(self, newSize:int):
         self.originalRelativeSize = newSize
         
         self.ResetRect()
     
-    def SizeAdd(self, addedSize:Vector2):
+    def SizeAdd(self, addedSize:int):
         self.originalRelativeSize = self.originalRelativeSize + addedSize
         
         self.ResetRect()
@@ -59,13 +59,13 @@ class Text():
         self.ResetRect()
     
     def ChangeText(self, newTextStr:str):
-        if len(self.textStr) < self.maxStrLength:
+        if len(newTextStr) <= self.maxStrLength:
             if self.numOnly:
-                if newTextStr.isdigit():
+                if newTextStr.isdigit() or newTextStr == "":
                     self.textStr = newTextStr
             else:
                 self.textStr = newTextStr
-        
+    
         self.ResetRect()
     
     def SetState(self, newState):
@@ -73,6 +73,9 @@ class Text():
     
     def CheckCollidePoint(self, point) -> bool:
         return self.bgRect.collidepoint(point)
+    
+    def GetSizePercent(self) -> int:
+        return self.originalRelativeSize
     
     def GetText(self) -> str:
         return self.textStr
@@ -89,18 +92,17 @@ class Text():
     def GetPosPercent(self) -> Vector2:
         return self.originalRelativePos
     
-    def GetSizePercent(self) -> Vector2:
-        return self.originalRelativeSize
-    
     def GetRect(self) -> pygame.Rect:
         return self.rect
 
+    def GetBgRect(self) -> pygame.Rect:
+        return self.bgRect
     
     def ResetRect(self):                
         self.screenWidth, self.screenHeight = pygame.display.get_surface().get_size()
     
-        fx = self.origionalRelativePos.x  / 100.0
-        fy = self.origionalRelativePos.y  / 100.0
+        fx = self.originalRelativePos.x  / 100.0
+        fy = self.originalRelativePos.y  / 100.0
 
         base = min(self.screenWidth, self.screenHeight)
 
@@ -108,7 +110,7 @@ class Text():
         absY = fy * base
         pos = Vector2(absX, absY)
         
-        relativeSize = int((((self.origionalRelativeSize/2))+((self.origionalRelativeSize/2)*self.screenHeight))/200) 
+        relativeSize = int((((self.originalRelativeSize/2))+((self.originalRelativeSize/2)*self.screenHeight))/200) 
         
         self.font = pygame.font.Font(self.fontStr, relativeSize)
         self.text = self.font.render(self.textStr, True, self.color)
@@ -117,7 +119,8 @@ class Text():
         
         textW, textH = self.font.size(self.textStr)   
         
-        self.bgRect = pygame.Rect(pos.x, pos.y,max(textW+4, 35),textH+4)
+        minWidth = int(base * 0.035) 
+        self.bgRect = pygame.Rect(pos.x, pos.y, max(textW + 4, minWidth), textH + 4)
         self.bgSurf = pygame.Surface(pygame.Rect(self.bgRect).size, pygame.SRCALPHA)
         self.bgSurf.fill(self.bgColor)
     

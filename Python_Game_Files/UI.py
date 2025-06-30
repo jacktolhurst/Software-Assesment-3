@@ -5,14 +5,23 @@ from pygame.math import Vector2
 
 class UI:
     @staticmethod
-    def RealPosToPercent(realPos:Vector2):
+    def RealPosToPercent(realPos:Vector2) -> Vector2:
         screenWidth, screenHeight = pygame.display.get_surface().get_size()
-        screenRatio = screenWidth/screenHeight
         
-        relativeX = (realPos.x / screenWidth) * 100 * screenRatio
+        relativeX = (realPos.x / screenWidth) * 100
         relativeY = (realPos.y / screenHeight) * 100
         
         return Vector2(relativeX, relativeY)
+    
+    @staticmethod
+    def RealSizeToPercent(realSize:Vector2) -> Vector2:
+        screenWidth, screenHeight = pygame.display.get_surface().get_size()
+        base = min(screenWidth, screenHeight)
+
+        percentWidth = (realSize.x / base) * 100
+        percentHeight = (realSize.y / base) * 100
+
+        return Vector2(percentWidth, percentHeight)
     
     def __init__(self, type, relativePos:Vector2, relativeSize:Vector2, color:tuple, state:bool=True, width:int=0):
         self.screenWidth, self.screenHeight = pygame.display.get_surface().get_size()
@@ -153,16 +162,17 @@ class TriangleRight:
 class Pentagon:
     @staticmethod
     def GetVertices(rect: pygame.Rect):
-        cx = rect.x + rect.w / 2
-        cy = rect.y + rect.h / 2
-        radius = min(rect.w, rect.h) / 2
+            cx = rect.x + rect.w / 2
+            cy = rect.y + rect.h / 2
+            radius = min(rect.w, rect.h) / 2
+            angle_offset = -math.pi / 2 
 
-        return [
-            (
-                cx + radius * math.cos(2 * math.pi * i / 5),
-                cy + radius * math.sin(2 * math.pi * i / 5)
-            )
-            for i in range(5)
+            return [
+                (
+                    cx + radius * math.cos(2 * math.pi * i / 5 + angle_offset),
+                    cy + radius * math.sin(2 * math.pi * i / 5 + angle_offset)
+                )
+                for i in range(5)
             ]
 
 class Hexagon:

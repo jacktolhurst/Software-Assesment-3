@@ -12,9 +12,9 @@ pygame.init()
 clock = pygame.time.Clock()
 
 pygame.display.set_caption('Game Of Life')
-con.SCREEN = pygame.display.set_mode((con.WINDOW_WIDTH, con.WINDOW_HEIGHT), FULLSCREEN)
-# con.SCREEN = pygame.display.set_mode((con.WINDOW_WIDTH, con.WINDOW_HEIGHT), pygame.RESIZABLE)
-con.SCREENRECT = pygame.Rect(0,0,con.WINDOW_WIDTH, con.WINDOW_HEIGHT)
+con.SCREEN = pygame.display.set_mode((con.WINDOWWIDTH, con.WINDOWHEIGHT), FULLSCREEN)
+# con.SCREEN = pygame.display.set_mode((con.WINDOWWIDTH, con.WINDOWHEIGHT), pygame.RESIZABLE)
+con.SCREENRECT = pygame.Rect(0,0,con.WINDOWWIDTH, con.WINDOWHEIGHT)
 
 con.HANDLER = Handler()
 

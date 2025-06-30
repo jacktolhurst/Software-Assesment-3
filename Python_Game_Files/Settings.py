@@ -28,6 +28,8 @@ class SettingsMenu():
                 self.UIs["FPSCount"] = Text("FPS", 'freesansbold.ttf', Vector2(100,90), 10, (255,255,255))
                 self.UIs["AverageCount"] = Text("Average", 'freesansbold.ttf', Vector2(100,95), 10, (255,255,255))
                 
+                self.UIs["QuitButton"] = UI(Circle, Vector2(120,80), Vector2(20,20), (255,0,0))
+                
                 self.inputUIs = {name: ui for name, ui in self.UIs.items() if name.startswith("Input")}
                 
                 self.looping = True
@@ -45,29 +47,43 @@ class SettingsMenu():
                         if event.key == pygame.K_q and inputText is None:
                             self.Stop()
                         
-                        if event.key == pygame.K_BACKSPACE:
-                            inputText.ChangeText(inputText.GetText()[:-1])
-                        elif inputText is not None:
-                            inputText.ChangeText(inputText.GetText() + event.unicode)
+                        if inputText is not None:                            
+                            if event.key == pygame.K_BACKSPACE:
+                                inputText.ChangeText(inputText.GetText()[:-1])
+                            elif event.key == pygame.K_DELETE:
+                                inputText.ChangeText(inputText.GetText()[:-1])
+                            elif event.key == pygame.K_RETURN:
+                                inputText.ChangeBgColor(inputText.GetInitialBgColor())
+                                inputText = None
+                            else:
+                                inputText.ChangeText(inputText.GetText() + event.unicode)
                         
                     if event.type == pygame.MOUSEBUTTONUP:
-                        for ui in self.inputUIs.values():
-                            ui.ChangeBgColor(ui.GetInitialBgColor())
-
-                        selected = next(
-                            (ui for ui in self.inputUIs.values() if ui.CheckCollidePoint(mousePos)),
-                            None
-                        )
-
-                        if selected:
-                            selected.ChangeBgColor(con.SELECTEDUICOLOR)
-                            inputText = selected
+                        if self.UIs["QuitButton"].CheckCollidePoint(mousePos):
+                            self.Stop()
                         else:
-                            inputText = None
+                            for ui in self.inputUIs.values():
+                                ui.ChangeBgColor(ui.GetInitialBgColor())
+
+                            selected = next(
+                                (ui for ui in self.inputUIs.values() if ui.CheckCollidePoint(mousePos)),
+                                None
+                            )
+
+                            if selected:
+                                selected.ChangeBgColor(con.SELECTEDUICOLOR)
+                                inputText = selected
+                            else:
+                                inputText = None
                     
                     if event.type == QUIT:
                         con.HANDLER.QuitGame()
                 
+                if inputText is not None:
+                    cursor = pygame.cursors.compile(pygame.cursors.textmarker_strings)
+                    pygame.mouse.set_cursor((8, 16), (0, 0), *cursor)
+                else:
+                    pygame.mouse.set_cursor(*pygame.cursors.arrow)
                 
                 currFPS = int(self.clock.get_fps())
                 self.FPSList.insert(0,int(currFPS))
@@ -81,7 +97,7 @@ class SettingsMenu():
                 self.clock.tick(120)
         
         def DrawEverything(self):
-            con.SCREEN.fill((200,0,0))
+            con.SCREEN.fill((0,0,255))
             
             con.HANDLER.DrawUI(self, self.UIs)
         
