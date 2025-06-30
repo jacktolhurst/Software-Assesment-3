@@ -7,8 +7,9 @@ class UI:
     @staticmethod
     def RealPosToPercent(realPos:Vector2) -> Vector2:
         screenWidth, screenHeight = pygame.display.get_surface().get_size()
+        screenRatio = screenWidth/screenHeight
         
-        relativeX = (realPos.x / screenWidth) * 100
+        relativeX = (realPos.x / screenWidth) * 100 * screenRatio
         relativeY = (realPos.y / screenHeight) * 100
         
         return Vector2(relativeX, relativeY)
@@ -77,7 +78,10 @@ class UI:
         self.state = newState
     
     def CheckCollidePoint(self, point) -> bool:
-        return self.rect.collidepoint(point)
+        if self.state:
+            return self.rect.collidepoint(point)
+        else:
+            return False
     
     def GetColor(self) -> tuple[float,float,float]:
         return self.color

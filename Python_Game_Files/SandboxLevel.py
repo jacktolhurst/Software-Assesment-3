@@ -14,6 +14,8 @@ class SandBoxLVL():
     def __init__(self, gridSize:Vector2):
         self.gridSize = gridSize
         
+        self.gridAttributes = None
+        
         self.Setup()
         self.Start()
         
@@ -27,15 +29,13 @@ class SandBoxLVL():
         con.CELLOFFSETT = Vector2(0,0)
         con.CELLSIZE = 20
 
-        self.grid = Grid(GridAttributes(), self.gridSize)
+        self.grid = Grid(self.gridAttributes, self.gridSize)
         
         self.clock = pygame.time.Clock()
         
         self.generation = 0
         
         self.UIs = {}
-        
-        self.FPSList = []
     
     def Start(self):
         if not self.looping:
@@ -55,12 +55,16 @@ class SandBoxLVL():
             self.UIs["SliderSquare"] = UI(Quad, Vector2(52, 90), Vector2(46,7.5), (100,100,100))
             self.UIs["SliderBackground"] = UI(Quad, Vector2(55,91.25), Vector2(40,5), (50,50,50))
             self.UIs["SliderNotch"] = UI(Circle, Vector2(60,91.25), Vector2(5,5), (255,255,255))
+            self.UIs["SettingsBackgroundOuter"] = UI(Quad, Vector2(165,1), Vector2(12,12), (100,100,100))
+            self.UIs["SettingsBackgroundInner"] = UI(Quad, self.UIs["SettingsBackgroundOuter"].GetPosPercent()+Vector2(1,1), self.UIs["SettingsBackgroundOuter"].GetSizePercent()-Vector2(2,2), (50,50,50))
+            self.UIs["SettingscircleOuter"] = UI(Circle, self.UIs["SettingsBackgroundOuter"].GetPosPercent()+Vector2(2,2), self.UIs["SettingsBackgroundOuter"].GetSizePercent()-Vector2(4,4), (75,75,75))
+            self.UIs["SettingscircleInner"] = UI(Circle, self.UIs["SettingsBackgroundOuter"].GetPosPercent()+Vector2(3,3), self.UIs["SettingsBackgroundOuter"].GetSizePercent()-Vector2(6,6), (50,50,50))
+            
             
             self.UIs["SliderText"] = Text("TickSpeed", 'freesansbold.ttf', Vector2(53,87), 10, (255,255,255))
-            self.UIs["FPSCount"] = Text("FPS", 'freesansbold.ttf', Vector2(100,90), 10, (255,255,255))
-            self.UIs["AverageCount"] = Text("Average", 'freesansbold.ttf', Vector2(100,95), 10, (255,255,255))
-            self.UIs["UnstableWarning"] = Text("Unstable!", 'freesansbold.ttf', Vector2(85,87), 10, (255,0,0), (0,0,0,255), 0, False)
-            self.UIs["GenerationCount"] = Text("Generation: 0", 'freesansbold.ttf', Vector2(120,95), 10, (255,255,255)) 
+            self.UIs["FPSCount"] = Text("FPS", 'freesansbold.ttf', Vector2(1,95), 10, (255,255,255))
+            self.UIs["UnstableWarning"] = Text("Unstable!", 'freesansbold.ttf', Vector2(85,87), 10, (255,0,0), (0,0,0,0), 0, False)
+            self.UIs["GenerationCount"] = Text("Generation: 0", 'freesansbold.ttf', Vector2(1,13), 10, (255,255,255)) 
             
             self.looping = True
             self.Update()
@@ -98,8 +102,6 @@ class SandBoxLVL():
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_p:
                         self.isPlaying = not self.isPlaying
-                    if event.key == pygame.K_s:
-                        settingsMenu = SettingsMenu()
                     if event.key == pygame.K_q:
                         self.Stop()
                         
@@ -110,13 +112,17 @@ class SandBoxLVL():
                 if event.type == pygame.MOUSEBUTTONUP:
                     if self.UIs["PlaySymbolBackground"].CheckCollidePoint(mousePos):
                         self.isPlaying = not self.isPlaying
-                    if self.UIs["SkipSymbolBackground"].CheckCollidePoint(mousePos):
+                    elif self.UIs["SkipSymbolBackground"].CheckCollidePoint(mousePos):
                         self.skipGeneration = True
                         self.isPlaying = True
-                    if self.UIs["RestartSymbolBackground"].CheckCollidePoint(mousePos):
+                    elif self.UIs["RestartSymbolBackground"].CheckCollidePoint(mousePos):
                         self.Restart()
                         pygame.time.wait(10)
                         return
+                    elif self.UIs["SettingsBackgroundInner"].CheckCollidePoint(mousePos):
+                        settingsMenu = SettingsMenu()
+                        self.gridAttributes = settingsMenu.Start()
+                        self.Restart()
                     
                     if event.button == 1: 
                         touchingSlider = False
@@ -133,7 +139,7 @@ class SandBoxLVL():
                     self.tickSpeed = (newSliderPos.x - 52) * 1.5
                     
                     self.UIs["SliderNotch"].MoveSet(newSliderPos)
-                    self.UIs["SliderNotch"].ChangeColor((255,min(255-((newSliderPos.x-85)*20),255),min(255-((newSliderPos.x-85)*20),255)))
+                    self.UIs["SliderNotch"].ChangeColor((255,min(255-((newSliderPos.x-80)*20),255),min(255-((newSliderPos.x-80)*20),255)))
                 
                 UIRects = [ui.GetRect() for ui in self.UIs.values() if ui.state]
                 if not any(rect.collidepoint(mousePos) for rect in UIRects) and not touchingSlider:
@@ -160,10 +166,7 @@ class SandBoxLVL():
             self.UIs["SliderText"].ChangeText("Tickspeed: " + str(int(self.tickSpeed)))
             
             currFPS = int(self.clock.get_fps())
-            self.FPSList.insert(0,int(currFPS))
-            self.FPSList = self.FPSList[:100]
             self.UIs["FPSCount"].ChangeText("FPS: " + str(currFPS))
-            self.UIs["AverageCount"].ChangeText("Average: " + str(int(sum(self.FPSList) / len(self.FPSList))))
             
             if currFPS <= self.tickSpeed and self.isPlaying or self.tickSpeed >= 50:
                 self.UIs["UnstableWarning"].SetState(True)

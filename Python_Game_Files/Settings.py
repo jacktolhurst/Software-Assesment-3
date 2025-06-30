@@ -5,6 +5,7 @@ from pygame.math import *
 import Constants as con
 from UI import *
 from Text import *
+from Grid import GridAttributes
 
 class SettingsMenu():
         def __init__(self):
@@ -17,8 +18,6 @@ class SettingsMenu():
             
             self.FPSList = []
             
-            self.Start()
-        
         def Start(self):
             if not self.looping:
                 con.CURRSCREEN = self
@@ -35,6 +34,8 @@ class SettingsMenu():
                 self.looping = True
                 
                 self.Update()
+                
+                return GridAttributes(0,0,8,0,0)
         
         def Update(self):
             inputText = None

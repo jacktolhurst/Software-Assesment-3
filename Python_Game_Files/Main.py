@@ -27,6 +27,7 @@ async def main () :
                         sandBoxLVL = SandBoxLVL(Vector2(100,100))
                     if event.key == pygame.K_s:
                         settings = SettingsMenu()
+                        settings.Start()
                     if event.key == pygame.K_q:
                         con.HANDLER.QuitGame()
             if event.type == QUIT:

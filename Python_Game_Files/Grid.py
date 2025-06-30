@@ -21,7 +21,10 @@ class Grid():
         
         self.onScreenCells = {}
         
-        self.gridAttributes = gridAttributes
+        if gridAttributes is not None:
+            self.gridAttributes = gridAttributes
+        else:
+            self.gridAttributes = GridAttributes()
 
         self.MoveCells()
         self.DrawCells()

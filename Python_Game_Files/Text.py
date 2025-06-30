@@ -72,7 +72,10 @@ class Text():
         self.state = newState
     
     def CheckCollidePoint(self, point) -> bool:
-        return self.bgRect.collidepoint(point)
+        if self.state:
+            return self.rect.collidepoint(point)
+        else:
+            return False
     
     def GetSizePercent(self) -> int:
         return self.originalRelativeSize
