@@ -9,7 +9,13 @@ class Grid():
         if not (dx == 0 and dy == 0)]
     
     def __init__(self, gridAttributes, size:Vector2, offset:Vector2=Vector2(0,0)):
-        self.size = size
+        if gridAttributes is not None:
+            self.gridAttributes = gridAttributes
+            self.size = gridAttributes.gridSize + Vector2(1,1)
+        else:
+            self.gridAttributes = GridAttributes()
+            self.size = size + Vector2(1,1)
+        
         self.offset = offset
         
         self.buffer = {}
@@ -21,10 +27,7 @@ class Grid():
         
         self.onScreenCells = {}
         
-        if gridAttributes is not None:
-            self.gridAttributes = gridAttributes
-        else:
-            self.gridAttributes = GridAttributes()
+
 
         self.MoveCells()
         self.DrawCells()
@@ -133,7 +136,8 @@ class Grid():
             self.SetCell(cellPos, self.CheckCellState(cellPos))
 
 class GridAttributes():
-    def __init__(self, underPopulationThreshold:int=2, survivalMin:int=2, survivalMax:int=3, overpopulationThreshold:int=3, reproductionCount:int=3):
+    def __init__(self, gridSize:Vector2=Vector2(100,100), underPopulationThreshold:int=2, survivalMin:int=2, survivalMax:int=3, overpopulationThreshold:int=3, reproductionCount:int=3):
+        self.gridSize = gridSize
         self.underPopulationThreshold = underPopulationThreshold
         self.survivalMin = survivalMin
         self.survivalMax = survivalMax

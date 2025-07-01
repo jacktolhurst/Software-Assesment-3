@@ -24,7 +24,7 @@ async def main () :
         for event in pygame.event.get() :      
             if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_g:
-                        sandBoxLVL = SandBoxLVL(Vector2(100,100))
+                        sandBoxLVL = SandBoxLVL(Vector2(9,9))
                     if event.key == pygame.K_s:
                         settings = SettingsMenu()
                         settings.Start()

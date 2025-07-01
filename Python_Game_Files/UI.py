@@ -24,6 +24,26 @@ class UI:
 
         return Vector2(percentWidth, percentHeight)
     
+    @staticmethod
+    def PercentPosToReal(percentPos: Vector2) -> Vector2:
+        screenWidth, screenHeight = pygame.display.get_surface().get_size()
+        screenRatio = screenWidth / screenHeight
+
+        realX = (percentPos.x / (100 * screenRatio)) * screenWidth
+        realY = (percentPos.y / 100) * screenHeight
+
+        return Vector2(realX, realY)
+
+    @staticmethod
+    def PercentSizeToReal(percentSize: Vector2) -> Vector2:
+        screenWidth, screenHeight = pygame.display.get_surface().get_size()
+        base = min(screenWidth, screenHeight)
+
+        realW = (percentSize.x / 100.0) * base
+        realH = (percentSize.y / 100.0) * base
+
+        return Vector2(realW, realH)
+    
     def __init__(self, type, relativePos:Vector2, relativeSize:Vector2, color:tuple, state:bool=True, width:int=0):
         self.screenWidth, self.screenHeight = pygame.display.get_surface().get_size()
         self.screenRatio = self.screenWidth/self.screenHeight
@@ -89,8 +109,14 @@ class UI:
     def GetPosPercent(self) -> Vector2:
         return self.originalRelativePos
     
+    def GetPosReal(self) -> Vector2:
+        return Vector2(self.rect.x, self.rect.y)
+    
     def GetSizePercent(self) -> Vector2:
         return self.originalRelativeSize
+    
+    def GetSizeReal(self) -> Vector2:
+        return Vector2(self.rect.w, self.rect.h)
     
     def GetRect(self) -> pygame.Rect:
         return self.rect

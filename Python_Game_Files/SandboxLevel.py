@@ -60,7 +60,6 @@ class SandBoxLVL():
             self.UIs["SettingscircleOuter"] = UI(Circle, self.UIs["SettingsBackgroundOuter"].GetPosPercent()+Vector2(2,2), self.UIs["SettingsBackgroundOuter"].GetSizePercent()-Vector2(4,4), (75,75,75))
             self.UIs["SettingscircleInner"] = UI(Circle, self.UIs["SettingsBackgroundOuter"].GetPosPercent()+Vector2(3,3), self.UIs["SettingsBackgroundOuter"].GetSizePercent()-Vector2(6,6), (50,50,50))
             
-            
             self.UIs["SliderText"] = Text("TickSpeed", 'freesansbold.ttf', Vector2(53,87), 10, (255,255,255))
             self.UIs["FPSCount"] = Text("FPS", 'freesansbold.ttf', Vector2(1,95), 10, (255,255,255))
             self.UIs["UnstableWarning"] = Text("Unstable!", 'freesansbold.ttf', Vector2(85,87), 10, (255,0,0), (0,0,0,0), 0, False)
@@ -133,13 +132,18 @@ class SandBoxLVL():
             if pygame.mouse.get_pressed()[0]:
                 if touchingSlider:
                     newSliderPos = UI.RealPosToPercent(Vector2(mousePos[0], mousePos[1]))
+
                     newSliderPos.y = self.UIs["SliderNotch"].GetPosPercent().y
+
+                    notchHalfWPercent = self.UIs["SliderNotch"].GetSizePercent().x / 2
+                    newSliderPos.x -= notchHalfWPercent 
+
                     newSliderPos.x = con.HANDLER.Clamp(newSliderPos.x, 53, 92)
-                    
-                    self.tickSpeed = (newSliderPos.x - 52) * 1.5
-                    
+
                     self.UIs["SliderNotch"].MoveSet(newSliderPos)
                     self.UIs["SliderNotch"].ChangeColor((255,min(255-((newSliderPos.x-80)*20),255),min(255-((newSliderPos.x-80)*20),255)))
+                    
+                    self.tickSpeed = (self.UIs["SliderNotch"].GetPosPercent().x-52)*1.5
                 
                 UIRects = [ui.GetRect() for ui in self.UIs.values() if ui.state]
                 if not any(rect.collidepoint(mousePos) for rect in UIRects) and not touchingSlider:
@@ -172,6 +176,20 @@ class SandBoxLVL():
                 self.UIs["UnstableWarning"].SetState(True)
             else:
                 self.UIs["UnstableWarning"].SetState(False)
+            
+            if self.UIs["PlaySymbolBackground"].CheckCollidePoint(mousePos):
+                pygame.mouse.set_cursor(*pygame.cursors.tri_left)
+            elif self.UIs["SkipSymbolBackground"].CheckCollidePoint(mousePos):
+                pygame.mouse.set_cursor(*pygame.cursors.tri_left)
+            elif self.UIs["RestartSymbolBackground"].CheckCollidePoint(mousePos):
+                pygame.mouse.set_cursor(*pygame.cursors.tri_left)
+            elif self.UIs["SettingsBackgroundInner"].CheckCollidePoint(mousePos):
+                pygame.mouse.set_cursor(*pygame.cursors.tri_left)
+            elif self.UIs["SliderNotch"].CheckCollidePoint(mousePos) or touchingSlider:
+                pygame.mouse.set_cursor(*pygame.cursors.tri_left)
+            else: 
+                pygame.mouse.set_cursor(*pygame.cursors.arrow)
+            
 
             self.DrawEverything()
             pygame.display.update()
