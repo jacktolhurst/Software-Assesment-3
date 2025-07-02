@@ -26,11 +26,13 @@ class SettingsMenu():
             if not self.looping:
                 con.CURRSCREEN = self
                 
-                infoGridSize = Text("The size of the grid.", 'freesansbold.ttf', Vector2(0,0), 10, (120,120,120), (70,70,70,255), 100, False, False)
-                self.UIs["GridSizeText"] = Text("Grid Size:", 'freesansbold.ttf', Vector2(2,5), 15, (255,255,255), (0,0,0,0), 10, False, True, infoGridSize)
-                self.UIs["InputGridSize"] = Text(str(int(self.gridAttributes.gridSize.x)), 'freesansbold.ttf', self.UIs["GridSizeText"].GetPosPercent()+Vector2(18,0), 15, (255,255,255), (20,30,40,255), 3, True, True, infoGridSize)
+                infoGridSize = Text("The size of the grid.", 'freesansbold.ttf', Vector2(0,0), 8, (120,120,120), (70,70,70,255), 1000, False, False, 2)
+                self.UIs["GridSizeText"] = Text("Grid Size:", 'freesansbold.ttf', Vector2(2,5), 15, (255,255,255), (0,0,0,0), 100, False, True, 1, infoGridSize)
+                self.UIs["InputGridSize"] = Text(str(int(self.gridAttributes.gridSize.x)), 'freesansbold.ttf', self.UIs["GridSizeText"].GetPosPercent()+Vector2(40,0), 15, (255,255,255), (20,30,40,255), 3, True, True, 1, infoGridSize)
                 
-                self.UIs["InputAliveCount"] = Text("12", 'freesansbold.ttf', Vector2(1,11), 30, (255,255,255), (20,30,40,255), 4, True)
+                infoAliveCount = Text("The minimum aive count", 'freesansbold.ttf', Vector2(0,0), 8, (120,120,120), (70,70,70,255), 1000, False, False, 2)
+                self.UIs["AliveCountText"] = Text("Alive Count:", 'freesansbold.ttf', Vector2(2,10), 15, (255,255,255), (0,0,0,0), 100, False, True, 1, infoAliveCount)
+                self.UIs["InputAliveCount"] = Text(str(int(self.gridAttributes.gridSize.x)), 'freesansbold.ttf', self.UIs["AliveCountText"].GetPosPercent()+Vector2(40,0), 15, (255,255,255), (20,30,40,255), 3, True, True, 1, infoAliveCount)
                 
                 self.UIs["FPSCount"] = Text("FPS", 'freesansbold.ttf', Vector2(100,90), 10, (255,255,255))
                 
@@ -61,7 +63,6 @@ class SettingsMenu():
             
             while self.looping:
                 mousePos = pygame.mouse.get_pos()
-                mousePosV2 = con.HANDLER.TupleToVector2(mousePos)
                 
                 if inputText is not None:
                     desired = con.IBEAMCURSOR
@@ -119,7 +120,7 @@ class SettingsMenu():
                         underItem = UIElement.GetUnderItem()
                         if underItem is not None:
                             if UIElement.CheckCollidePoint(mousePos):
-                                underItem.MoveSet(UI.RealPosToPercent(mousePosV2))
+                                underItem.MoveSet(UI.RealPosToPercent(con.HANDLER.TupleToVector2(mousePos))+Vector2(1,3))
                                 underItem.SetState(True)
                                 break
                             else:

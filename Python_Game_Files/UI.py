@@ -44,7 +44,7 @@ class UI:
 
         return Vector2(realW, realH)
     
-    def __init__(self, type, relativePos:Vector2, relativeSize:Vector2, color:tuple, state:bool=True, underItem=None):
+    def __init__(self, type, relativePos:Vector2, relativeSize:Vector2, color:tuple, state:bool=True, zDist:int=1, underItem=None):
         self.screenWidth, self.screenHeight = pygame.display.get_surface().get_size()
         self.screenRatio = self.screenWidth/self.screenHeight
         
@@ -56,6 +56,7 @@ class UI:
         self.color = color
         
         self.state = state
+        self.zDist = zDist
         
         self.rect = None
         self.vertices = None
@@ -102,6 +103,9 @@ class UI:
             return self.rect.collidepoint(point)
         else:
             return False
+    
+    def GetZDist(self) -> int:
+        return self.zDist
     
     def GetColor(self) -> tuple[float,float,float]:
         return self.color

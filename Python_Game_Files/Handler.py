@@ -14,12 +14,14 @@ class Handler():
             con.WINDOW_HEIGHT = con.SCREENRECT.h = self.screenHeight
             main.ResetScreen()
             
-            for Name, UI in UIList.items():
-                UI.ResetRect()
-                UI.Draw()
+            for name, ui in sorted(UIList.items(), key=lambda pair: pair[1].GetZDist(), reverse=True):
+                ui.ResetRect()
+                ui.Draw()
+
         else:
-            for Name, UI in UIList.items():
-                UI.Draw()
+            for name, ui in sorted(UIList.items(), key=lambda pair: pair[1].GetZDist(), reverse=True):
+                print(ui.GetZDist())
+                ui.Draw()
     
     def QuitGame(self):
         pygame.quit()

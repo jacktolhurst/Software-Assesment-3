@@ -3,7 +3,7 @@ import Constants as con
 from pygame.math import Vector2
 
 class Text():
-    def __init__(self, textStr:str, font:str, relativePos:Vector2, relativeSize:int, color:tuple, bgColor:tuple=(0,0,0,0), maxStrLength:int=1000, numOnly:bool=False, state:bool=True, underItem=None):
+    def __init__(self, textStr:str, font:str, relativePos:Vector2, relativeSize:int, color:tuple, bgColor:tuple=(0,0,0,0), maxStrLength:int=1000, numOnly:bool=False, state:bool=True, zDist:int=1, underItem=None):
         self.screenWidth, self.screenHeight = pygame.display.get_surface().get_size()
         self.screenRatio = self.screenWidth/self.screenHeight
         
@@ -16,6 +16,8 @@ class Text():
         self.numOnly = numOnly
         self.initialBgColor = bgColor
         self.state = state
+        self.underItem = underItem
+        self.zDist = zDist
         
         self.fontStr = font
         self.font = None
@@ -23,7 +25,6 @@ class Text():
         self.rect = None
         self.bgRect = None
         self.bgSurf = None
-        self.underItem = underItem
         
         self.textStr = "Err"
         self.ChangeText(textStr)
@@ -83,6 +84,9 @@ class Text():
     
     def GetSizePercent(self) -> int:
         return self.originalRelativeSize
+    
+    def GetZDist(self) -> int:
+        return self.zDist
     
     def GetText(self) -> str:
         return self.textStr
