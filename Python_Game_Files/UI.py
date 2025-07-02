@@ -44,7 +44,7 @@ class UI:
 
         return Vector2(realW, realH)
     
-    def __init__(self, type, relativePos:Vector2, relativeSize:Vector2, color:tuple, state:bool=True, width:int=0):
+    def __init__(self, type, relativePos:Vector2, relativeSize:Vector2, color:tuple, state:bool=True, underItem=None):
         self.screenWidth, self.screenHeight = pygame.display.get_surface().get_size()
         self.screenRatio = self.screenWidth/self.screenHeight
         
@@ -57,10 +57,10 @@ class UI:
         
         self.state = state
         
-        self.width = width
-
         self.rect = None
         self.vertices = None
+        
+        self.underItem = underItem
 
         self.ResetRect()
     
@@ -120,6 +120,9 @@ class UI:
     
     def GetRect(self) -> pygame.Rect:
         return self.rect
+    
+    def GetUnderItem(self):
+        return self.underItem
 
     def ResetRect(self):
         self.screenWidth, self.screenHeight = pygame.display.get_surface().get_size()
@@ -140,7 +143,8 @@ class UI:
         self.vertices = self.type.GetVertices(self.rect)
 
     def Draw(self):
-        pygame.draw.polygon(con.SCREEN, self.color, self.vertices, self.width)
+        if self.state:
+            pygame.draw.polygon(con.SCREEN, self.color, self.vertices)
 
 class Quad:
     @staticmethod

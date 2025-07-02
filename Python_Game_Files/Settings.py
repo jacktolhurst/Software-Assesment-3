@@ -12,9 +12,10 @@ class SettingsMenu():
             self.looping = False
             self.UIs = {}
             self.inputUIs = {}
-            self.inputNumUIs = {}
             
             self.clock = pygame.time.Clock()
+
+            self.current_cursor = None
             
             if currentGridAttributes == None:
                 self.gridAttributes = GridAttributes()
@@ -25,9 +26,9 @@ class SettingsMenu():
             if not self.looping:
                 con.CURRSCREEN = self
                 
-                self.UIs["GridSizeText"] = Text("Grid Size:", 'freesansbold.ttf', Vector2(2,5), 15, (255,255,255))
-                self.UIs["InputGridSize"] = Text(str(int(self.gridAttributes.gridSize.x)), 'freesansbold.ttf', self.UIs["GridSizeText"].GetPosPercent()+Vector2(19,0), 15, (255,255,255), (20,30,40,255), 3, True)
-                self.UIs["GridSizeInfo"] = Text("The size of the grid.", 'freesansbold.ttf', Vector2(0,0), 10, (120,120,120), (70,70,70,255), 100, False, False)
+                infoGridSize = Text("The size of the grid.", 'freesansbold.ttf', Vector2(0,0), 10, (120,120,120), (70,70,70,255), 100, False, False)
+                self.UIs["GridSizeText"] = Text("Grid Size:", 'freesansbold.ttf', Vector2(2,5), 15, (255,255,255), (0,0,0,0), 10, False, True, infoGridSize)
+                self.UIs["InputGridSize"] = Text(str(int(self.gridAttributes.gridSize.x)), 'freesansbold.ttf', self.UIs["GridSizeText"].GetPosPercent()+Vector2(18,0), 15, (255,255,255), (20,30,40,255), 3, True, True, infoGridSize)
                 
                 self.UIs["InputAliveCount"] = Text("12", 'freesansbold.ttf', Vector2(1,11), 30, (255,255,255), (20,30,40,255), 4, True)
                 
@@ -47,10 +48,10 @@ class SettingsMenu():
                 try:
                     gridSize = int(self.UIs["InputGridSize"].GetText())
                     self.gridAttributes.gridSize = Vector2(gridSize,gridSize)
-                except:
-                    self.UIs["Error"] = Text("An Error Occured",'freesansbold.ttf', Vector2(50,80), 30, (255,0,0), (0,0,0,255))
+                except Exception as e:
+                    self.UIs["Error"] = Text("An Error Occured: " + str(e),'freesansbold.ttf', Vector2(20,80), 10, (255,0,0), (0,0,0,255))
                     self.DrawEverything()
-                    pygame.time.wait(1000)
+                    pygame.time.wait(5000)
                 
                 
                 return self.gridAttributes
@@ -61,6 +62,19 @@ class SettingsMenu():
             while self.looping:
                 mousePos = pygame.mouse.get_pos()
                 mousePosV2 = con.HANDLER.TupleToVector2(mousePos)
+                
+                if inputText is not None:
+                    desired = con.IBEAMCURSOR
+                elif self.UIs["QuitButton"].CheckCollidePoint(mousePos):
+                    desired = con.HANDCURSOR
+                elif any(inputUI.CheckCollidePoint(mousePos) for inputUI in self.inputUIs.values()):
+                    desired = con.HANDCURSOR
+                else:
+                    desired = con.ARROWCURSOR
+                
+                if desired is not self.current_cursor:
+                    pygame.mouse.set_cursor(desired)
+                    self.current_cursor = desired
                 
                 for event in pygame.event.get():
                     if event.type == pygame.KEYDOWN:
@@ -98,20 +112,19 @@ class SettingsMenu():
                     
                     if event.type == QUIT:
                         con.HANDLER.QuitGame()
-                                
-                if inputText is not None:
-                    cursor = pygame.cursors.compile(pygame.cursors.textmarker_strings)
-                    pygame.mouse.set_cursor((8, 16), (0, 0), *cursor)
-                elif self.UIs["GridSizeText"].CheckCollidePoint(mousePos) or self.UIs["InputGridSize"].CheckCollidePoint(mousePos):
-                    pygame.mouse.set_cursor(*pygame.cursors.tri_left)
-                    self.UIs["GridSizeInfo"].MoveSet(UI.RealPosToPercent(mousePosV2))
-                    self.UIs["GridSizeInfo"].SetState(True)
-                else:
-                    self.UIs["GridSizeInfo"].SetState(False)
                 
-                
-                if self.UIs["QuitButton"].CheckCollidePoint(mousePos):
-                    pygame.mouse.set_cursor(*pygame.cursors.tri_left)
+
+                if inputText is None:
+                    for UIElement in self.UIs.values():
+                        underItem = UIElement.GetUnderItem()
+                        if underItem is not None:
+                            if UIElement.CheckCollidePoint(mousePos):
+                                underItem.MoveSet(UI.RealPosToPercent(mousePosV2))
+                                underItem.SetState(True)
+                                break
+                            else:
+                                underItem.SetState(False)
+
                 
                 currFPS = int(self.clock.get_fps())
                 self.UIs["FPSCount"].ChangeText("FPS: " + str(currFPS))

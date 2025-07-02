@@ -1,3 +1,4 @@
+import pygame
 from pygame.math import *
 
 SCREEN = None
@@ -18,3 +19,7 @@ CELLDEADCOLOR = (0,0,0)
 CELLUNTOUCHCOLOR = (200,60,60)
 
 SELECTEDUICOLOR = (10,10,10,255)
+
+ARROWCURSOR = pygame.cursors.Cursor(pygame.SYSTEM_CURSOR_ARROW)
+IBEAMCURSOR = pygame.cursors.Cursor(pygame.SYSTEM_CURSOR_IBEAM)
+HANDCURSOR  = pygame.cursors.Cursor(pygame.SYSTEM_CURSOR_HAND)

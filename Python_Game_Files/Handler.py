@@ -15,13 +15,11 @@ class Handler():
             main.ResetScreen()
             
             for Name, UI in UIList.items():
-                if UI.state:
-                    UI.ResetRect()
-                    UI.Draw()
+                UI.ResetRect()
+                UI.Draw()
         else:
             for Name, UI in UIList.items():
-                if UI.state:
-                    UI.Draw()
+                UI.Draw()
     
     def QuitGame(self):
         pygame.quit()

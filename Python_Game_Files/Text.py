@@ -3,7 +3,7 @@ import Constants as con
 from pygame.math import Vector2
 
 class Text():
-    def __init__(self, textStr:str, font:str, relativePos:Vector2, relativeSize:int, color:tuple, bgColor:tuple=(0,0,0,0), maxStrLength:int=1000, numOnly:bool=False, state:bool=True):
+    def __init__(self, textStr:str, font:str, relativePos:Vector2, relativeSize:int, color:tuple, bgColor:tuple=(0,0,0,0), maxStrLength:int=1000, numOnly:bool=False, state:bool=True, underItem=None):
         self.screenWidth, self.screenHeight = pygame.display.get_surface().get_size()
         self.screenRatio = self.screenWidth/self.screenHeight
         
@@ -23,6 +23,7 @@ class Text():
         self.rect = None
         self.bgRect = None
         self.bgSurf = None
+        self.underItem = underItem
         
         self.textStr = "Err"
         self.ChangeText(textStr)
@@ -103,6 +104,9 @@ class Text():
 
     def GetBgRect(self) -> pygame.Rect:
         return self.bgRect
+
+    def GetUnderItem(self):
+        return self.underItem
     
     def ResetRect(self):                
         self.screenWidth, self.screenHeight = pygame.display.get_surface().get_size()
@@ -131,5 +135,8 @@ class Text():
         self.bgSurf.fill(self.bgColor)
     
     def Draw(self):
-        con.SCREEN.blit(self.bgSurf, self.bgRect)
-        con.SCREEN.blit(self.text, self.rect)
+        if self.state:
+            con.SCREEN.blit(self.bgSurf, self.bgRect)
+            con.SCREEN.blit(self.text, self.rect)
+            if self.underItem is not None:
+                self.underItem.Draw()
