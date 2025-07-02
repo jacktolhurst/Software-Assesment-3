@@ -8,13 +8,9 @@ class Grid():
         for dy in (-1, 0, 1) 
         if not (dx == 0 and dy == 0)]
     
-    def __init__(self, gridAttributes, size:Vector2, offset:Vector2=Vector2(0,0)):
-        if gridAttributes is not None:
-            self.gridAttributes = gridAttributes
-            self.size = gridAttributes.gridSize + Vector2(1,1)
-        else:
-            self.gridAttributes = GridAttributes()
-            self.size = size + Vector2(1,1)
+    def __init__(self, gridAttributes, offset:Vector2=Vector2(0,0)):
+        self.gridAttributes = gridAttributes
+        self.size = gridAttributes.gridSize + Vector2(1,1)
         
         self.offset = offset
         
@@ -27,8 +23,6 @@ class Grid():
         
         self.onScreenCells = {}
         
-
-
         self.MoveCells()
         self.DrawCells()
     
@@ -134,6 +128,9 @@ class Grid():
         for cellPos in oldActiveCells:
             cellPos = Vector2(cellPos)
             self.SetCell(cellPos, self.CheckCellState(cellPos))
+    
+    def GetGridAttributes(self):
+        return self.gridAttributes
 
 class GridAttributes():
     def __init__(self, gridSize:Vector2=Vector2(100,100), underPopulationThreshold:int=2, survivalMin:int=2, survivalMax:int=3, overpopulationThreshold:int=3, reproductionCount:int=3):

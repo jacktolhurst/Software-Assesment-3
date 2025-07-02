@@ -21,6 +21,8 @@ con.HANDLER = Handler()
 async def main () :
     looping = True
     while looping:
+        pygame.mouse.set_cursor(*pygame.cursors.arrow)
+        
         for event in pygame.event.get() :      
             if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_g:

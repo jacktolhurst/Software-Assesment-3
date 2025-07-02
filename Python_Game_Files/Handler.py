@@ -32,6 +32,10 @@ class Handler():
         numA, numB = pos
         
         return Vector2(numA, numB).magnitude()
+    
+    @staticmethod
+    def TupleToVector2(pre:tuple[float|int, float|int]) -> Vector2:
+        return Vector2(pre[0], pre[1])
 
     @staticmethod
     def Clamp(arg:int|float, minArg:int|float, maxArg:int|float) -> int|float:

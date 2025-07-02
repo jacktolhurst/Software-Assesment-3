@@ -7,16 +7,14 @@ class Text():
         self.screenWidth, self.screenHeight = pygame.display.get_surface().get_size()
         self.screenRatio = self.screenWidth/self.screenHeight
         
-        self.textStr = textStr
-        
         self.originalRelativePos = relativePos
         self.originalRelativeSize = relativeSize
         
         self.color = color
         self.bgColor = bgColor
-        self.initialBgColor = bgColor
         self.maxStrLength = maxStrLength
         self.numOnly = numOnly
+        self.initialBgColor = bgColor
         self.state = state
         
         self.fontStr = font
@@ -25,6 +23,11 @@ class Text():
         self.rect = None
         self.bgRect = None
         self.bgSurf = None
+        
+        self.textStr = "Err"
+        self.ChangeText(textStr)
+        
+        
         self.ResetRect()
     
     
@@ -58,7 +61,7 @@ class Text():
         
         self.ResetRect()
     
-    def ChangeText(self, newTextStr:str):
+    def ChangeText(self, newTextStr:str):        
         if len(newTextStr) <= self.maxStrLength:
             if self.numOnly:
                 if newTextStr.isdigit() or newTextStr == "":
@@ -123,7 +126,7 @@ class Text():
         textW, textH = self.font.size(self.textStr)   
         
         minWidth = int(base * 0.035) 
-        self.bgRect = pygame.Rect(pos.x, pos.y, max(textW + 4, minWidth), textH + 4)
+        self.bgRect = pygame.Rect(pos.x, pos.y-4, max(textW + 4, minWidth), textH + 4)
         self.bgSurf = pygame.Surface(pygame.Rect(self.bgRect).size, pygame.SRCALPHA)
         self.bgSurf.fill(self.bgColor)
     

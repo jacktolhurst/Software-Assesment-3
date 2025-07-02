@@ -14,7 +14,7 @@ class SandBoxLVL():
     def __init__(self, gridSize:Vector2):
         self.gridSize = gridSize
         
-        self.gridAttributes = None
+        self.gridAttributes = GridAttributes()
         
         self.Setup()
         self.Start()
@@ -29,7 +29,7 @@ class SandBoxLVL():
         con.CELLOFFSETT = Vector2(0,0)
         con.CELLSIZE = 20
 
-        self.grid = Grid(self.gridAttributes, self.gridSize)
+        self.grid = Grid(self.gridAttributes)
         
         self.clock = pygame.time.Clock()
         
@@ -62,7 +62,7 @@ class SandBoxLVL():
             
             self.UIs["SliderText"] = Text("TickSpeed", 'freesansbold.ttf', Vector2(53,87), 10, (255,255,255))
             self.UIs["FPSCount"] = Text("FPS", 'freesansbold.ttf', Vector2(1,95), 10, (255,255,255))
-            self.UIs["UnstableWarning"] = Text("Unstable!", 'freesansbold.ttf', Vector2(85,87), 10, (255,0,0), (0,0,0,0), 0, False)
+            self.UIs["UnstableWarning"] = Text("Unstable!", 'freesansbold.ttf', Vector2(85,87), 10, (255,0,0), (0,0,0,0))
             self.UIs["GenerationCount"] = Text("Generation: 0", 'freesansbold.ttf', Vector2(1,13), 10, (255,255,255)) 
             
             self.looping = True
@@ -119,8 +119,9 @@ class SandBoxLVL():
                         pygame.time.wait(10)
                         return
                     elif self.UIs["SettingsBackgroundInner"].CheckCollidePoint(mousePos):
-                        settingsMenu = SettingsMenu()
+                        settingsMenu = SettingsMenu(self.grid.GetGridAttributes())
                         self.gridAttributes = settingsMenu.Start()
+                        settingsMenu = None
                         self.Restart()
                     
                     if event.button == 1: 
