@@ -166,6 +166,10 @@ class SettingsMenu():
                     for under in self.underAndItems.keys():
                         under.SetState(False)
 
+                if self.UIs["InputSurvivalMax"].GetText() is not "" and self.UIs["InputSurvivalMin"].GetText() is not "":
+                    if int(self.UIs["InputSurvivalMax"].GetText()) < int(self.UIs["InputSurvivalMin"].GetText()):
+                        self.UIs["InputSurvivalMax"].ChangeText(str(int(self.UIs["InputSurvivalMin"].GetText())+1))
+                
                 
                 currFPS = int(self.clock.get_fps())
                 self.UIs["FPSCount"].ChangeText("FPS: " + str(currFPS))

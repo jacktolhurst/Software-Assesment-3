@@ -62,7 +62,7 @@ class SandBoxLVL():
             
             self.UIs["SliderText"] = Text("TickSpeed", 'freesansbold.ttf', Vector2(53,87), 10, (255,255,255))
             self.UIs["FPSCount"] = Text("FPS", 'freesansbold.ttf', Vector2(1,95), 10, (255,255,255))
-            self.UIs["UnstableWarning"] = Text("Unstable!", 'freesansbold.ttf', Vector2(85,87), 10, (255,0,0), (0,0,0,0))
+            self.UIs["UnstableWarning"] = Text("Unstable!", 'freesansbold.ttf', Vector2(85,87), 10, (255,0,0))
             self.UIs["GenerationCount"] = Text("Generation: 0", 'freesansbold.ttf', Vector2(1,13), 10, (255,255,255)) 
             
             self.looping = True

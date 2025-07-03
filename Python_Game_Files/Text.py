@@ -134,7 +134,7 @@ class Text():
         textW, textH = self.font.size(self.textStr)   
         
         minWidth = int(base * 0.035) 
-        self.bgRect = pygame.Rect(pos.x, pos.y-4, max(textW + 4, minWidth), textH + 4)
+        self.bgRect = pygame.Rect(pos.x-6, pos.y-4, max(textW + 4, minWidth), textH + 4)
         self.bgSurf = pygame.Surface(pygame.Rect(self.bgRect).size, pygame.SRCALPHA)
         self.bgSurf.fill(self.bgColor)
     

@@ -44,7 +44,7 @@ class UI:
 
         return Vector2(realW, realH)
     
-    def __init__(self, type, relativePos:Vector2, relativeSize:Vector2, color:tuple, state:bool=True, zDist:int=1, underItem=None):
+    def __init__(self, type, relativePos:Vector2, relativeSize:Vector2, color:tuple, *, state:bool=True, zDist:int=1, underItem=None):
         self.screenWidth, self.screenHeight = pygame.display.get_surface().get_size()
         self.screenRatio = self.screenWidth/self.screenHeight
         
