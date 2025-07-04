@@ -60,10 +60,10 @@ class SandBoxLVL():
             self.UIs["SettingscircleOuter"] = UI(Circle, self.UIs["SettingsBackgroundOuter"].GetPosPercent()+Vector2(2,2), self.UIs["SettingsBackgroundOuter"].GetSizePercent()-Vector2(4,4), (75,75,75))
             self.UIs["SettingscircleInner"] = UI(Circle, self.UIs["SettingsBackgroundOuter"].GetPosPercent()+Vector2(3,3), self.UIs["SettingsBackgroundOuter"].GetSizePercent()-Vector2(6,6), (50,50,50))
             
-            self.UIs["SliderText"] = Text("TickSpeed", 'freesansbold.ttf', Vector2(53,87), 10, (255,255,255))
-            self.UIs["FPSCount"] = Text("FPS", 'freesansbold.ttf', Vector2(1,95), 10, (255,255,255))
-            self.UIs["UnstableWarning"] = Text("Unstable!", 'freesansbold.ttf', Vector2(85,87), 10, (255,0,0))
-            self.UIs["GenerationCount"] = Text("Generation: 0", 'freesansbold.ttf', Vector2(1,13), 10, (255,255,255)) 
+            self.UIs["SliderText"] = Text("TickSpeed", Vector2(53,87), 10, (255,255,255))
+            self.UIs["FPSCount"] = Text("FPS", Vector2(1,95), 10, (255,255,255))
+            self.UIs["UnstableWarning"] = Text("Unstable!", Vector2(85,87), 10, (255,0,0))
+            self.UIs["GenerationCount"] = Text("Generation: 0", Vector2(1,13), 10, (255,255,255)) 
             
             self.looping = True
             self.Update()

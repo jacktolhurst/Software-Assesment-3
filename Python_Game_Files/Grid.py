@@ -132,7 +132,7 @@ class Grid():
     def GetGridAttributes(self):
         return self.gridAttributes
 
-class GridAttributes():
+class GridAttributes():    
     def __init__(self, gridSize:Vector2=Vector2(100,100), underPopulationThreshold:int=2, survivalMin:int=2, survivalMax:int=3, overpopulationThreshold:int=3, reproductionCount:int=3):
         self.gridSize = gridSize
         self.underPopulationThreshold = underPopulationThreshold
@@ -140,3 +140,21 @@ class GridAttributes():
         self.survivalMax = survivalMax
         self.overpopulationThreshold = overpopulationThreshold
         self.reproductionCount = reproductionCount
+    
+    def ToDict(self):
+        return {
+            "gridSize": [self.gridSize.x, self.gridSize.y],  # Serialize Vector2 as a list
+            "underPopulationThreshold": self.underPopulationThreshold,
+            "survivalMin": self.survivalMin,
+            "survivalMax": self.survivalMax,
+            "overpopulationThreshold": self.overpopulationThreshold,
+            "reproductionCount": self.reproductionCount
+        }
+
+    def FromDict(self, data):
+        self.gridSize=Vector2(*data["gridSize"]),
+        self.underPopulationThreshold=data["underPopulationThreshold"],
+        self.survivalMin=data["survivalMin"],
+        self.survivalMax=data["survivalMax"],
+        self.overpopulationThreshold=data["overpopulationThreshold"],
+        self.reproductionCount=data["reproductionCount"]

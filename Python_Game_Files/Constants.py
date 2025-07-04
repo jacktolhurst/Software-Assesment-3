@@ -23,3 +23,5 @@ SELECTEDUICOLOR = (10,10,10,255)
 ARROWCURSOR = pygame.cursors.Cursor(pygame.SYSTEM_CURSOR_ARROW)
 IBEAMCURSOR = pygame.cursors.Cursor(pygame.SYSTEM_CURSOR_IBEAM)
 HANDCURSOR  = pygame.cursors.Cursor(pygame.SYSTEM_CURSOR_HAND)
+
+SETTINGSSAVEPATH = 'Python_Game_Files/Data/SavedAttributes.json'

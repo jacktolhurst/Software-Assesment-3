@@ -3,7 +3,7 @@ import Constants as con
 from pygame.math import Vector2
 
 class Text():
-    def __init__(self, textStr:str, font:str, relativePos:Vector2, relativeSize:int, color:tuple, *, bgColor:tuple=(0,0,0,0), maxStrLength:int=1000, numOnly:bool=False, state:bool=True, zDist:int=1, underItem=None):
+    def __init__(self, textStr:str, relativePos:Vector2, relativeSize:int, color:tuple, *, font:str='freesansbold.ttf', bgColor:tuple=(0,0,0,0), maxStrLength:int=1000, numOnly:bool=False, state:bool=True, zDist:int=1, underItem=None):
         self.screenWidth, self.screenHeight = pygame.display.get_surface().get_size()
         self.screenRatio = self.screenWidth/self.screenHeight
         
@@ -134,7 +134,7 @@ class Text():
         textW, textH = self.font.size(self.textStr)   
         
         minWidth = int(base * 0.035) 
-        self.bgRect = pygame.Rect(pos.x-6, pos.y-4, max(textW + 4, minWidth), textH + 4)
+        self.bgRect = pygame.Rect(pos.x-3, pos.y-4, max(textW + 4, minWidth), textH + 4)
         self.bgSurf = pygame.Surface(pygame.Rect(self.bgRect).size, pygame.SRCALPHA)
         self.bgSurf.fill(self.bgColor)
     
