@@ -152,9 +152,9 @@ class GridAttributes():
         }
 
     def FromDict(self, data):
-        self.gridSize=Vector2(*data["gridSize"]),
-        self.underPopulationThreshold=data["underPopulationThreshold"],
-        self.survivalMin=data["survivalMin"],
-        self.survivalMax=data["survivalMax"],
-        self.overpopulationThreshold=data["overpopulationThreshold"],
+        self.gridSize=Vector2(*data["gridSize"])
+        self.underPopulationThreshold=data["underPopulationThreshold"]
+        self.survivalMin=data["survivalMin"]
+        self.survivalMax=data["survivalMax"]
+        self.overpopulationThreshold=data["overpopulationThreshold"]
         self.reproductionCount=data["reproductionCount"]

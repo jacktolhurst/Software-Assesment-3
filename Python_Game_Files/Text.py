@@ -3,7 +3,7 @@ import Constants as con
 from pygame.math import Vector2
 
 class Text():
-    def __init__(self, textStr:str, relativePos:Vector2, relativeSize:int, color:tuple, *, font:str='freesansbold.ttf', bgColor:tuple=(0,0,0,0), maxStrLength:int=1000, numOnly:bool=False, state:bool=True, zDist:int=1, underItem=None):
+    def __init__(self, textStr:str, relativePos:Vector2, relativeSize:int, color:tuple, *, font:str='freesansbold.ttf', bgColor:tuple=(0,0,0,0), maxStrLength:int=1000, numOnly:bool=False, state:bool=True, zDist:int=1, underItem=None, defaultStr:str=""):
         self.screenWidth, self.screenHeight = pygame.display.get_surface().get_size()
         self.screenRatio = self.screenWidth/self.screenHeight
         
@@ -18,6 +18,7 @@ class Text():
         self.state = state
         self.underItem = underItem
         self.zDist = zDist
+        self.defaultStr = defaultStr
         
         self.fontStr = font
         self.font = None
@@ -63,7 +64,10 @@ class Text():
         
         self.ResetRect()
     
-    def ChangeText(self, newTextStr:str):        
+    def ChangeText(self, newTextStr:str, checkDefaultStr:bool=False):
+        if checkDefaultStr and newTextStr.strip() == "":
+            newTextStr = self.defaultStr
+        
         if len(newTextStr) <= self.maxStrLength:
             if self.numOnly:
                 if newTextStr.isdigit() or newTextStr == "":

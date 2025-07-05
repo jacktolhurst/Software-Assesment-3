@@ -1,0 +1,24 @@
+{
+    "Default": {
+        "gridSize": [
+            100.0,
+            100.0
+        ],
+        "underPopulationThreshold": 2,
+        "survivalMin": 2,
+        "survivalMax": 3,
+        "overpopulationThreshold": 3,
+        "reproductionCount": 3
+    },
+    "What": {
+        "gridSize": [
+            100.0,
+            100.0
+        ],
+        "underPopulationThreshold": 2,
+        "survivalMin": 2,
+        "survivalMax": 3,
+        "overpopulationThreshold": 3,
+        "reproductionCount": 1
+    }
+}
