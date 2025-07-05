@@ -10,15 +10,37 @@
         "overpopulationThreshold": 3,
         "reproductionCount": 3
     },
-    "What": {
+    "Seizure": {
         "gridSize": [
             100.0,
             100.0
         ],
-        "underPopulationThreshold": 2,
-        "survivalMin": 2,
-        "survivalMax": 3,
-        "overpopulationThreshold": 3,
-        "reproductionCount": 1
+        "underPopulationThreshold": 0,
+        "survivalMin": 0,
+        "survivalMax": 0,
+        "overpopulationThreshold": 0,
+        "reproductionCount": 0
+    },
+    "Drawing": {
+        "gridSize": [
+            100.0,
+            100.0
+        ],
+        "underPopulationThreshold": 0,
+        "survivalMin": 0,
+        "survivalMax": 0,
+        "overpopulationThreshold": 9,
+        "reproductionCount": 0
+    },
+    "Fungus": {
+        "gridSize": [
+            100.0,
+            100.0
+        ],
+        "underPopulationThreshold": 0,
+        "survivalMin": 0,
+        "survivalMax": 9,
+        "overpopulationThreshold": 9,
+        "reproductionCount": 2
     }
 }

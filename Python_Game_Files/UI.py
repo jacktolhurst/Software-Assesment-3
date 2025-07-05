@@ -43,6 +43,18 @@ class UI:
         realH = (percentSize.y / 100.0) * base
 
         return Vector2(realW, realH)
+
+    @staticmethod
+    def GetEdgeXPercentage() -> float:
+        screenWidth, screenHeight = pygame.display.get_surface().get_size()
+        
+        return UI.RealSizeToPercent(Vector2(screenWidth, screenHeight)).x
+
+    @staticmethod
+    def GetEdgeYPercentage() -> float:
+        screenWidth, screenHeight = pygame.display.get_surface().get_size()
+        
+        return UI.RealSizeToPercent(Vector2(screenWidth, screenHeight)).y
     
     def __init__(self, type, relativePos:Vector2, relativeSize:Vector2, color:tuple, *, state:bool=True, zDist:int=1, underItem=None):
         self.screenWidth, self.screenHeight = pygame.display.get_surface().get_size()
