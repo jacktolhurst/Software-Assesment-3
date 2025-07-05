@@ -16,6 +16,8 @@ class SandBoxLVL():
         
         self.gridAttributes = GridAttributes()
         
+        self.currCursor = None
+        
         self.Setup()
         self.Start()
         
@@ -36,6 +38,7 @@ class SandBoxLVL():
         self.generation = 0
         
         self.UIs = {}
+        self.underAndItems = {}
     
     def Start(self):
         if not self.looping:
@@ -55,7 +58,7 @@ class SandBoxLVL():
             self.UIs["SliderSquare"] = UI(Quad, Vector2(52, 90), Vector2(46,7.5), (100,100,100))
             self.UIs["SliderBackground"] = UI(Quad, Vector2(55,91.25), Vector2(40,5), (50,50,50))
             self.UIs["SliderNotch"] = UI(Circle, Vector2(60,91.25), Vector2(5,5), (255,255,255))
-            self.UIs["SettingsBackgroundOuter"] = UI(Quad, Vector2(165,1), Vector2(12,12), (100,100,100))
+            self.UIs["SettingsBackgroundOuter"] = UI(Quad, Vector2(UI.GetEdgeXPercentage()-13, self.UIs["SymbolBackground"].GetPosPercent().y), Vector2(12,12), (100,100,100))
             self.UIs["SettingsBackgroundInner"] = UI(Quad, self.UIs["SettingsBackgroundOuter"].GetPosPercent()+Vector2(1,1), self.UIs["SettingsBackgroundOuter"].GetSizePercent()-Vector2(2,2), (50,50,50))
             self.UIs["SettingscircleOuter"] = UI(Circle, self.UIs["SettingsBackgroundOuter"].GetPosPercent()+Vector2(2,2), self.UIs["SettingsBackgroundOuter"].GetSizePercent()-Vector2(4,4), (75,75,75))
             self.UIs["SettingscircleInner"] = UI(Circle, self.UIs["SettingsBackgroundOuter"].GetPosPercent()+Vector2(3,3), self.UIs["SettingsBackgroundOuter"].GetSizePercent()-Vector2(6,6), (50,50,50))
@@ -63,7 +66,11 @@ class SandBoxLVL():
             self.UIs["SliderText"] = Text("TickSpeed", Vector2(53,87), 10, (255,255,255))
             self.UIs["FPSCount"] = Text("FPS", Vector2(1,95), 10, (255,255,255))
             self.UIs["UnstableWarning"] = Text("Unstable!", Vector2(85,87), 10, (255,0,0))
+            
             self.UIs["GenerationCount"] = Text("Generation: 0", Vector2(1,13), 10, (255,255,255)) 
+            
+            self.underAndItems = self.GetUnderItems()
+            
             
             self.looping = True
             self.Update()
@@ -76,6 +83,21 @@ class SandBoxLVL():
         touchingSlider = False
 
         while self.looping:    
+            currTime = pygame.time.get_ticks()
+            elapsedTime = currTime - lastUpdateTime
+            
+            mousePos = pygame.mouse.get_pos()
+
+            
+            if self.UIs["PlaySymbolBackground"].CheckCollidePoint(mousePos) or self.UIs["SkipSymbolBackground"].CheckCollidePoint(mousePos) or self.UIs["RestartSymbolBackground"].CheckCollidePoint(mousePos) or self.UIs["SliderNotch"].CheckCollidePoint(mousePos) or self.UIs["SettingsBackgroundInner"].CheckCollidePoint(mousePos):
+                desired = con.HANDCURSOR
+            else:
+                desired = con.ARROWCURSOR
+            
+            if desired is not self.currCursor:
+                    pygame.mouse.set_cursor(desired)
+                    self.currCursor = desired
+            
             if self.skipGeneration:
                 self.isPlaying = False
                 self.skipGeneration = False
@@ -87,10 +109,6 @@ class SandBoxLVL():
                 self.UIs["PlaySymbol"].ChangeColor((0,255,0))
                 self.UIs["PlaySymbol"].ChangeShape(TriangleRight)
             
-            currTime = pygame.time.get_ticks()
-            elapsedTime = currTime - lastUpdateTime
-            
-            mousePos = pygame.mouse.get_pos()
             
             for event in pygame.event.get():
                 if event.type == pygame.MOUSEWHEEL:
@@ -159,6 +177,15 @@ class SandBoxLVL():
                 self.grid.MoveCells()
             if pygame.mouse.get_pressed()[2]:
                 self.grid.ClickIntersection(mousePos, State.DEAD)
+            
+            for under, uiList in self.underAndItems.items():
+                for ui in uiList:
+                    if ui.CheckCollidePoint(mousePos):
+                        under.MoveSet(UI.RealPosToPercent(Vector2(*mousePos))+Vector2(1,1))
+                        under.SetState(True)
+                        break
+                    else:
+                        under.SetState(False)
 
             if self.isPlaying and elapsedTime >= (1000 / self.tickSpeed):
                 self.grid.Update()
@@ -178,22 +205,8 @@ class SandBoxLVL():
             else:
                 self.UIs["UnstableWarning"].SetState(False)
             
-            if self.UIs["PlaySymbolBackground"].CheckCollidePoint(mousePos):
-                pygame.mouse.set_cursor(*pygame.cursors.tri_left)
-            elif self.UIs["SkipSymbolBackground"].CheckCollidePoint(mousePos):
-                pygame.mouse.set_cursor(*pygame.cursors.tri_left)
-            elif self.UIs["RestartSymbolBackground"].CheckCollidePoint(mousePos):
-                pygame.mouse.set_cursor(*pygame.cursors.tri_left)
-            elif self.UIs["SettingsBackgroundInner"].CheckCollidePoint(mousePos):
-                pygame.mouse.set_cursor(*pygame.cursors.tri_left)
-            elif self.UIs["SliderNotch"].CheckCollidePoint(mousePos) or touchingSlider:
-                pygame.mouse.set_cursor(*pygame.cursors.tri_left)
-            else: 
-                pygame.mouse.set_cursor(*pygame.cursors.arrow)
-            
 
             self.DrawEverything()
-            pygame.display.update()
             
             prevMousePos = mousePos
             
@@ -205,6 +218,20 @@ class SandBoxLVL():
         self.grid.DrawCells()
         
         con.HANDLER.DrawUI(self, self.UIs)
+        
+        pygame.display.update()
+        
+    def GetUnderItems(self) -> dict:
+        underItems = {}
+        
+        for ui in self.UIs.values():
+            under = ui.GetUnderItem() 
+            if under is not None:
+                if under not in underItems:
+                    underItems[under] = []
+                underItems[under].append(ui)
+        
+        return underItems
     
     def ResetScreen(self):
         self.grid.MoveCells()

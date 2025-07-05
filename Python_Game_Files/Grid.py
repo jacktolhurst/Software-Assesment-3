@@ -1,4 +1,6 @@
 import Constants as con
+import pygame
+import pygame
 from pygame.math import *
 from Cell import Cell, State
 
@@ -7,6 +9,21 @@ class Grid():
         for dx in (-1, 0, 1) 
         for dy in (-1, 0, 1) 
         if not (dx == 0 and dy == 0)]
+    
+    @staticmethod
+    def ScreenToGridSize() -> Vector2:
+        screenWidth, screenHeight = pygame.display.get_surface().get_size()
+        
+        stride = con.CELLSIZE * con.CELLGAP
+        
+        totalCols = int(screenWidth // stride)
+        totalRows = int(screenHeight // stride)
+
+        # subtract the border on *both* sides
+        usableCols = max(0, totalCols - 2)
+        usableRows = max(0, totalRows - 2)
+
+        return Vector2(usableCols, usableRows)
     
     def __init__(self, gridAttributes, offset:Vector2=Vector2(0,0)):
         self.gridAttributes = gridAttributes
@@ -55,6 +72,9 @@ class Grid():
                         self.activeCells.add((newX, newY))
             else:
                 self.stationaryCells.add((cellPos.x, cellPos.y))
+    
+    def GetCell(self, cellPos:Vector2):
+        return self.cells[int(cellPos.x)][int(cellPos.y)]
 
     def GetNeighbours(self, cellPos: Vector2):
         neighbours = []

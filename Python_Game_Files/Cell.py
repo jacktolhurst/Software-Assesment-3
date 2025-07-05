@@ -41,6 +41,9 @@ class Cell():
         self.onScreen =  self.rect.colliderect(con.SCREENRECT)
         return self.onScreen
     
+    def GetState(self):
+        return self.state
+    
     def Move(self):
         self.rect.x = int(self.basePos.x * (con.CELLSIZE/20) + con.CELLOFFSETT.x)
         self.rect.y = int(self.basePos.y * (con.CELLSIZE/20) + con.CELLOFFSETT.y)

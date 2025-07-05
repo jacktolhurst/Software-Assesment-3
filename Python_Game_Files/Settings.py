@@ -79,7 +79,6 @@ class SettingsMenu():
                 
                 self.inputUIs = {name: ui for name, ui in self.UIs.items() if name.startswith("Input")}
                 
-                
                 self.underAndItems = self.GetUnderItems()
                 
                 self.looping = True
@@ -116,9 +115,6 @@ class SettingsMenu():
                 
                 for event in pygame.event.get():
                     if event.type == pygame.KEYDOWN:
-                        if event.key == pygame.K_q and inputText is None:
-                            self.Stop()
-                        
                         if inputText is not None:                            
                             if event.key == pygame.K_BACKSPACE:
                                 inputText.ChangeText(inputText.GetText()[:-1])
