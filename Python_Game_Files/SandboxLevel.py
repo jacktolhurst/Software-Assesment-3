@@ -11,9 +11,7 @@ from UI import *
 from Text import *
 
 class SandBoxLVL():
-    def __init__(self, gridSize:Vector2):
-        self.gridSize = gridSize
-        
+    def __init__(self):
         self.gridAttributes = GridAttributes()
         
         self.currCursor = None
@@ -68,6 +66,9 @@ class SandBoxLVL():
             self.UIs["UnstableWarning"] = Text("Unstable!", Vector2(85,87), 10, (255,0,0))
             
             self.UIs["GenerationCount"] = Text("Generation: 0", Vector2(1,13), 10, (255,255,255)) 
+
+            self.UIs["ExitText"] = Text("Exit", Vector2(UI.GetEdgeXPercentage(),UI.GetEdgeYPercentage()) - Vector2(2.5,3), 15, (0,0,0), bgColor=(255,0,0,255))
+            self.UIs["ExitText"].MoveAdd(UI.RealSizeToPercent(Vector2(*self.UIs["ExitText"].GetRect().size))*-1)
             
             self.underAndItems = self.GetUnderItems()
             
@@ -89,7 +90,7 @@ class SandBoxLVL():
             mousePos = pygame.mouse.get_pos()
 
             
-            if self.UIs["PlaySymbolBackground"].CheckCollidePoint(mousePos) or self.UIs["SkipSymbolBackground"].CheckCollidePoint(mousePos) or self.UIs["RestartSymbolBackground"].CheckCollidePoint(mousePos) or self.UIs["SliderNotch"].CheckCollidePoint(mousePos) or self.UIs["SettingsBackgroundInner"].CheckCollidePoint(mousePos):
+            if self.UIs["PlaySymbolBackground"].CheckCollidePoint(mousePos) or self.UIs["SkipSymbolBackground"].CheckCollidePoint(mousePos) or self.UIs["RestartSymbolBackground"].CheckCollidePoint(mousePos) or self.UIs["SliderNotch"].CheckCollidePoint(mousePos) or self.UIs["SettingsBackgroundInner"].CheckCollidePoint(mousePos) or self.UIs["ExitText"].CheckCollidePoint(mousePos):
                 desired = con.HANDCURSOR
             else:
                 desired = con.ARROWCURSOR
@@ -141,6 +142,8 @@ class SandBoxLVL():
                         self.gridAttributes = settingsMenu.Start()
                         settingsMenu = None
                         self.Restart()
+                    elif self.UIs["ExitText"].CheckCollidePoint(mousePos):
+                        self.Stop()
                     
                     if event.button == 1: 
                         touchingSlider = False

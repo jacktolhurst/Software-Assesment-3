@@ -42,5 +42,16 @@
         "survivalMax": 9,
         "overpopulationThreshold": 9,
         "reproductionCount": 2
+    },
+    "QR": {
+        "gridSize": [
+            200.0,
+            200.0
+        ],
+        "underPopulationThreshold": 1,
+        "survivalMin": 1,
+        "survivalMax": 1,
+        "overpopulationThreshold": 9,
+        "reproductionCount": 1
     }
 }
