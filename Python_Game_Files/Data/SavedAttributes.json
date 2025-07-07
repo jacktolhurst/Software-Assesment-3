@@ -10,17 +10,6 @@
         "overpopulationThreshold": 3,
         "reproductionCount": 3
     },
-    "Seizure": {
-        "gridSize": [
-            100.0,
-            100.0
-        ],
-        "underPopulationThreshold": 0,
-        "survivalMin": 0,
-        "survivalMax": 0,
-        "overpopulationThreshold": 0,
-        "reproductionCount": 0
-    },
     "Drawing": {
         "gridSize": [
             100.0,
@@ -48,10 +37,21 @@
             200.0,
             200.0
         ],
-        "underPopulationThreshold": 1,
-        "survivalMin": 1,
-        "survivalMax": 1,
+        "underPopulationThreshold": 0,
+        "survivalMin": 0,
+        "survivalMax": 0,
         "overpopulationThreshold": 9,
         "reproductionCount": 1
+    },
+    "Glitch": {
+        "gridSize": [
+            100.0,
+            100.0
+        ],
+        "underPopulationThreshold": 2,
+        "survivalMin": 3,
+        "survivalMax": 4,
+        "overpopulationThreshold": 0,
+        "reproductionCount": 0
     }
 }

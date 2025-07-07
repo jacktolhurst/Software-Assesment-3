@@ -6,7 +6,7 @@ from pygame.math import *
 import Constants as con
 from Grid import Grid, GridAttributes
 from Cell import State
-from Settings import SettingsMenu
+from GridSettings import SettingsMenu
 from UI import *
 from Text import *
 
@@ -153,7 +153,7 @@ class SandBoxLVL():
                 
             if pygame.mouse.get_pressed()[0]:
                 if touchingSlider:
-                    newSliderPos = UI.RealPosToPercent(Vector2(mousePos[0], mousePos[1]))
+                    newSliderPos = UI.RealPosToPercent(Vector2(*mousePos))
 
                     newSliderPos.y = self.UIs["SliderNotch"].GetPosPercent().y
 
@@ -216,25 +216,26 @@ class SandBoxLVL():
             self.clock.tick(120)
 
     def DrawEverything(self):
-        con.SCREEN.fill((50,0,0))
+        con.SCREEN.fill(con.BACKGROUNDCOLOR)
         
         self.grid.DrawCells()
         
         con.HANDLER.DrawUI(self, self.UIs)
         
         pygame.display.update()
-        
+    
     def GetUnderItems(self) -> dict:
-        underItems = {}
-        
-        for ui in self.UIs.values():
-            under = ui.GetUnderItem() 
-            if under is not None:
-                if under not in underItems:
-                    underItems[under] = []
-                underItems[under].append(ui)
-        
-        return underItems
+            underItems = {}
+            
+            for ui in self.UIs.values():
+                unders = ui.GetUnderItem() 
+                if unders:
+                    for under in unders:
+                        if under not in underItems:
+                            underItems[under] = []
+                        underItems[under].append(ui)
+            
+            return underItems
     
     def ResetScreen(self):
         self.grid.MoveCells()

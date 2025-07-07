@@ -56,7 +56,7 @@ class UI:
         
         return UI.RealSizeToPercent(Vector2(screenWidth, screenHeight)).y
     
-    def __init__(self, type, relativePos:Vector2, relativeSize:Vector2, color:tuple, *, state:bool=True, zDist:int=1, underItem=None):
+    def __init__(self, type, relativePos:Vector2, relativeSize:Vector2, color:tuple, *, state:bool=True, zDist:int=1, underItems:list=[]):
         self.screenWidth, self.screenHeight = pygame.display.get_surface().get_size()
         self.screenRatio = self.screenWidth/self.screenHeight
         
@@ -73,7 +73,7 @@ class UI:
         self.rect = None
         self.vertices = None
         
-        self.underItem = underItem
+        self.underItems = underItems
 
         self.ResetRect()
     
@@ -107,8 +107,11 @@ class UI:
         
         self.ResetRect()
     
-    def SetState(self, newState):
+    def SetState(self, newState:bool):
         self.state = newState
+    
+    def AddUnderItems(self, underItems:list):
+        self.underItems.extend(underItems)
     
     def CheckCollidePoint(self, point) -> bool:
         if self.state:
@@ -138,7 +141,7 @@ class UI:
         return self.rect
     
     def GetUnderItem(self):
-        return self.underItem
+        return self.underItems
 
     def ResetRect(self):
         self.screenWidth, self.screenHeight = pygame.display.get_surface().get_size()

@@ -8,6 +8,7 @@ from UI import *
 from Text import *
 from Grid import *
 from SandboxLevel import SandBoxLVL
+from Settings import Settings
 
 class MainMenu():
     def __init__(self):
@@ -26,17 +27,28 @@ class MainMenu():
         self.CreateGrid()
         
         self.sandBoxLevel = None
+        self.settings = None
 
         self.Start()
     
     def Start(self):
         self.looping = True
         
-        changeGridInfo = Text("Changes the background.", Vector2(0,0), 5, (120,120,120), bgColor=(70,70,70,255), zDist=2)
-        self.UIs["ChangeGridText"] = Text("Change Background", Vector2(2,UI.GetEdgeYPercentage()-5), 8, (255,255,255), bgColor=(20,30,40,255))
+        
+        self.UIs["RestartSymbolBackground"] = UI(Quad, Vector2(0,0), Vector2(10,10), (100,100,100))
+        self.UIs["RestartSymbolBackground"].MoveSet(Vector2(2, (UI.GetEdgeYPercentage()-self.UIs["RestartSymbolBackground"].GetSizePercent().y)-3))
+        self.UIs["RestartSymbolForeground"] = UI(Quad, self.UIs["RestartSymbolBackground"].GetPosPercent()+Vector2(1,1), self.UIs["RestartSymbolBackground"].GetSizePercent()-Vector2(2,2), (50,50,50))
+        self.UIs["RestartSymbolOuterCircle"] = UI(Circle,UI.RealPosToPercent(Vector2(*self.UIs["RestartSymbolBackground"].GetRect().center)), self.UIs["RestartSymbolForeground"].GetSizePercent()-Vector2(1,1), (0,0,255))
+        self.UIs["RestartSymbolOuterCircle"].MoveAdd(UI.RealSizeToPercent(Vector2(self.UIs["RestartSymbolOuterCircle"].GetRect().w,self.UIs["RestartSymbolOuterCircle"].GetRect().h))*-0.5)
+        self.UIs["RestartSymbolInnerCircle"]  = UI(Circle, UI.RealPosToPercent(Vector2(*self.UIs["RestartSymbolBackground"].GetRect().center)), self.UIs["RestartSymbolOuterCircle"].GetSizePercent()-Vector2(2,2), (50,50,50))
+        self.UIs["RestartSymbolInnerCircle"].MoveAdd(UI.RealSizeToPercent(Vector2(self.UIs["RestartSymbolInnerCircle"].GetRect().w,self.UIs["RestartSymbolInnerCircle"].GetRect().h))*-0.5)
+        self.UIs["RestartSymbolInnerCircleBlock"]  = UI(Circle, UI.RealPosToPercent(Vector2(*self.UIs["RestartSymbolBackground"].GetRect().center)), self.UIs["RestartSymbolInnerCircle"].GetSizePercent()-Vector2(2,2), (50,50,50))
+        self.UIs["RestartSymbolInnerCircleBlock"].MoveAdd((UI.RealSizeToPercent(Vector2(self.UIs["RestartSymbolInnerCircleBlock"].GetRect().w,self.UIs["RestartSymbolInnerCircleBlock"].GetRect().h))*-0.5)-Vector2(2,2))
+        self.UIs["RestartSymbolInnerSquare"]  = UI(Quad, UI.RealPosToPercent(Vector2(*self.UIs["RestartSymbolInnerCircleBlock"].GetRect().center)), Vector2(1,2), (0,0,255))
+        self.UIs["RestartSymbolInnerSquare"].MoveAdd((UI.RealSizeToPercent(Vector2(self.UIs["RestartSymbolInnerSquare"].GetRect().w,self.UIs["RestartSymbolInnerSquare"].GetRect().h))*-0.5)+Vector2(1,-0.75))
         
         backgroundSize = Vector2(80,40)
-        self.UIs["OptionsBackground"] = UI(Quad, Vector2((UI.GetEdgeXPercentage()/2)-(backgroundSize.x/2), (UI.GetEdgeYPercentage()/2)-(backgroundSize.y/2)), backgroundSize, (100,100,100))
+        self.UIs["OptionsBackground"] = UI(Quad, Vector2((UI.GetEdgeXPercentage()/2)-(backgroundSize.x/2), (UI.GetEdgeYPercentage()/2)-(backgroundSize.y/2)) + Vector2(0, 10), backgroundSize, (100,100,100))
         self.UIs["PlayForeground"] = UI(Quad, self.UIs["OptionsBackground"].GetPosPercent() + Vector2(1,1), Vector2(self.UIs["OptionsBackground"].GetSizePercent().x, self.UIs["OptionsBackground"].GetSizePercent().y/2) - Vector2(2,2), (50,50,50))
         self.UIs["SettingsForeground"] = UI(Quad, self.UIs["PlayForeground"].GetPosPercent() + Vector2(0, self.UIs["PlayForeground"].GetSizePercent().y+1), Vector2((self.UIs["OptionsBackground"].GetSizePercent().x/2)+1, self.UIs["OptionsBackground"].GetSizePercent().y/2) - Vector2(2,1), (50,50,50))
         self.UIs["AboutForeground"] = UI(Quad, self.UIs["SettingsForeground"].GetPosPercent() + Vector2((self.UIs["OptionsBackground"].GetSizePercent().x/2), 0), Vector2((self.UIs["OptionsBackground"].GetSizePercent().x/2)-1, self.UIs["OptionsBackground"].GetSizePercent().y/2) - Vector2(1,1), (50,50,50))
@@ -47,13 +59,16 @@ class MainMenu():
         self.UIs["SettingsText"].MoveAdd((UI.RealSizeToPercent(Vector2(*self.UIs["SettingsText"].GetRect().size))/2)*-1)
         self.UIs["AboutText"] = Text("About", UI.RealPosToPercent(Vector2(*self.UIs["AboutForeground"].GetRect().center)), 30, (255,255,255))
         self.UIs["AboutText"].MoveAdd((UI.RealSizeToPercent(Vector2(*self.UIs["AboutText"].GetRect().size))/2)*-1)
-        # * THIS IS FUCKING MAGICAL CODE THAT FIGURES THE CENTRE OF A TEXT ELEMENT, DO NOT CHANGE. YES ITS 3AM.
+        # * THIS IS FUCKING MAGICAL CODE THAT FIGURES THE CENTRE OF A TEXT ELEMENT, DO NOT CHANGE.
         # sorry for swearing.
         
         self.UIs["RuleNameText"] = Text(self.presetName, Vector2(2,2), 8, (255,255,255))
         
         self.UIs["ExitText"] = Text("Exit", Vector2(UI.GetEdgeXPercentage(),UI.GetEdgeYPercentage()) - Vector2(2.5,3), 15, (0,0,0), bgColor=(255,0,0,255))
         self.UIs["ExitText"].MoveAdd(UI.RealSizeToPercent(Vector2(*self.UIs["ExitText"].GetRect().size))*-1)
+        
+        self.UIs["NameText"] = Text("The Games Of Life", Vector2(UI.GetEdgeXPercentage()/2,UI.GetEdgeYPercentage()/4), 40, (255,255,255), bgColor=(0,0,0,255))
+        self.UIs["NameText"].MoveAdd(UI.RealSizeToPercent(Vector2(*self.UIs["NameText"].GetRect().size))*-0.5)
         
         self.Update()
     
@@ -70,7 +85,7 @@ class MainMenu():
             
             mousePos = pygame.mouse.get_pos()
             
-            if self.UIs["ChangeGridText"].CheckCollidePoint(mousePos) or self.UIs["PlayForeground"].CheckCollidePoint(mousePos) or self.UIs["SettingsForeground"].CheckCollidePoint(mousePos) or self.UIs["ExitText"].CheckCollidePoint(mousePos) or self.UIs["AboutForeground"].CheckCollidePoint(mousePos):
+            if self.UIs["RestartSymbolForeground"].CheckCollidePoint(mousePos) or self.UIs["PlayForeground"].CheckCollidePoint(mousePos) or self.UIs["SettingsForeground"].CheckCollidePoint(mousePos) or self.UIs["ExitText"].CheckCollidePoint(mousePos) or self.UIs["AboutForeground"].CheckCollidePoint(mousePos):
                 desired = con.HANDCURSOR
             else:
                 desired = con.ARROWCURSOR
@@ -84,10 +99,13 @@ class MainMenu():
                     if event.key == pygame.K_q:
                         self.Stop()
                 if event.type == pygame.MOUSEBUTTONUP:
-                    if self.UIs["ChangeGridText"].CheckCollidePoint(mousePos):
+                    if self.UIs["RestartSymbolForeground"].CheckCollidePoint(mousePos):
                         self.CreateGrid()
                     elif self.UIs["PlayForeground"].CheckCollidePoint(mousePos):
                         self.sandBoxLevel = SandBoxLVL()
+                        self.CreateGrid()
+                    elif self.UIs["SettingsForeground"].CheckCollidePoint(mousePos):
+                        self.settings = Settings()
                     elif self.UIs["ExitText"].CheckCollidePoint(mousePos):
                         self.Stop()
                 if event.type == QUIT:
@@ -98,7 +116,7 @@ class MainMenu():
                 
                 lastUpdateTime = currTime
             
-            if elapsedGridChangeTime >= 5000 + randomAddedTime:
+            if elapsedGridChangeTime >= 10000 + randomAddedTime:
                 self.CreateGrid()
                 
                 randomAddedTime = random.randint(-1000,1000)
@@ -107,6 +125,7 @@ class MainMenu():
             self.UIs["RuleNameText"].ChangeText(self.presetName)
             
             self.sandBoxLevel = None
+            self.settings = None
             
             self.DrawEverything()
     
@@ -142,6 +161,10 @@ class MainMenu():
             self.bgGrid.SetCell(spawnedCellPos, State.ALIVE)
     
     def CreateGrid(self):
+        con.CELLOFFSETT = Vector2(0,0)
+        con.CELLSIZE = 20
+        con.CELLGAP = 0.99
+        
         with open(con.SETTINGSSAVEPATH, 'r') as file:
             data = json.load(file)
         presets = list(data.items())

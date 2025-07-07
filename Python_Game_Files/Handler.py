@@ -1,7 +1,10 @@
 import sys
 import pygame
+import itertools
 import Constants as con
 from pygame.math import Vector2
+from UI import *
+from Text import *
 
 class Handler():
     def __init__(self):
@@ -21,6 +24,7 @@ class Handler():
                 for ui in UIList.values()
                 if ui.GetUnderItem() is not None
             ]
+            allItems = list(itertools.chain.from_iterable([item if isinstance(item, list) else [item] for item in allItems]))
 
             for ui in sorted(allItems, key=lambda u: u.GetZDist(), reverse=False):
                 ui.ResetRect()
@@ -34,6 +38,8 @@ class Handler():
                 for ui in UIList.values()
                 if ui.GetUnderItem() is not None
             ]
+            
+            allItems = list(itertools.chain.from_iterable([item if isinstance(item, list) else [item] for item in allItems]))
 
             for ui in sorted(allItems, key=lambda u: u.GetZDist(), reverse=False):
                 ui.Draw()
@@ -51,3 +57,12 @@ class Handler():
     @staticmethod
     def Clamp(arg:int|float, minArg:int|float, maxArg:int|float) -> int|float:
         return min(max(arg, minArg), maxArg)
+    
+    @staticmethod
+    def CreateColourWheel(pos:Vector2, size:Vector2, *, state:bool=True, zDist:int=1, underItems:list=[]) -> UI:
+        mainUI = UI(Quad, pos, size, (0,0,0), state=state, zDist=zDist, underItems=underItems)
+        circlePicker = UI(Circle, UI.RealPosToPercent(Vector2(*mainUI.GetRect().center)), mainUI.GetSizePercent()/4, (255,255,255))
+        mainUI.AddUnderItems([circlePicker])
+        
+        return mainUI
+        
