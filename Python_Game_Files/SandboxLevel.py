@@ -41,34 +41,8 @@ class SandBoxLVL():
     def Start(self):
         if not self.looping:
             con.CURRSCREEN = self
-            
-            self.UIs["SymbolBackground"] = UI(Quad, Vector2(1,1), Vector2(34,12), (100,100,100))
-            self.UIs["PlaySymbolBackground"] = UI(Quad, Vector2(2,2), Vector2(10,10), (50,50,50))
-            self.UIs["PlaySymbol"] = UI(TriangleRight, self.UIs["PlaySymbolBackground"].GetPosPercent()+Vector2(1.5,1.5), self.UIs["PlaySymbolBackground"].GetSizePercent()-Vector2(3,3), (0,255,0))
-            self.UIs["SkipSymbolBackground"] = UI(Quad, Vector2(13,2), Vector2(10,10), (50,50,50))
-            self.UIs["SkipSymbolTriangle"] = UI(TriangleRight, self.UIs["SkipSymbolBackground"].GetPosPercent()+Vector2(1.5,1.5), self.UIs["SkipSymbolBackground"].GetSizePercent()-Vector2(3,3), (200,255,200))
-            self.UIs["SkipSymbolSquare"] = UI(Quad, self.UIs["SkipSymbolTriangle"].GetPosPercent()+Vector2(6,0), Vector2(1.5,7), (200,255,200))
-            self.UIs["RestartSymbolBackground"] = UI(Quad, Vector2(24,2), Vector2(10,10), (50,50,50))
-            self.UIs["RestartSymbolOuter"] = UI(Circle, self.UIs["RestartSymbolBackground"].GetPosPercent()+Vector2(1,1), self.UIs["RestartSymbolBackground"].GetSizePercent()-Vector2(2,2), (0,0,255))
-            self.UIs["RestartSymbolInner"] = UI(Circle, self.UIs["RestartSymbolBackground"].GetPosPercent()+Vector2(2,2), self.UIs["RestartSymbolBackground"].GetSizePercent()-Vector2(4,4), self.UIs["RestartSymbolBackground"].GetColor())
-            self.UIs["RestartSymbolInnerCircle"] = UI(Circle, self.UIs["RestartSymbolBackground"].GetPosPercent()+Vector2(2,0), self.UIs["RestartSymbolBackground"].GetSizePercent()-Vector2(7,6), self.UIs["RestartSymbolBackground"].GetColor())
-            self.UIs["RestartSymbolOuterSquare"] = UI(Quad, self.UIs["RestartSymbolBackground"].GetPosPercent()+Vector2(4,0.25), Vector2(1,2.5), self.UIs["RestartSymbolOuter"].GetColor())
-            self.UIs["SliderSquare"] = UI(Quad, Vector2(52, 90), Vector2(46,7.5), (100,100,100))
-            self.UIs["SliderBackground"] = UI(Quad, Vector2(55,91.25), Vector2(40,5), (50,50,50))
-            self.UIs["SliderNotch"] = UI(Circle, Vector2(60,91.25), Vector2(5,5), (255,255,255))
-            self.UIs["SettingsBackgroundOuter"] = UI(Quad, Vector2(UI.GetEdgeXPercentage()-13, self.UIs["SymbolBackground"].GetPosPercent().y), Vector2(12,12), (100,100,100))
-            self.UIs["SettingsBackgroundInner"] = UI(Quad, self.UIs["SettingsBackgroundOuter"].GetPosPercent()+Vector2(1,1), self.UIs["SettingsBackgroundOuter"].GetSizePercent()-Vector2(2,2), (50,50,50))
-            self.UIs["SettingscircleOuter"] = UI(Circle, self.UIs["SettingsBackgroundOuter"].GetPosPercent()+Vector2(2,2), self.UIs["SettingsBackgroundOuter"].GetSizePercent()-Vector2(4,4), (75,75,75))
-            self.UIs["SettingscircleInner"] = UI(Circle, self.UIs["SettingsBackgroundOuter"].GetPosPercent()+Vector2(3,3), self.UIs["SettingsBackgroundOuter"].GetSizePercent()-Vector2(6,6), (50,50,50))
-            
-            self.UIs["SliderText"] = Text("TickSpeed", Vector2(53,87), 10, (255,255,255))
-            self.UIs["FPSCount"] = Text("FPS", Vector2(1,95), 10, (255,255,255))
-            self.UIs["UnstableWarning"] = Text("Unstable!", Vector2(85,87), 10, (255,0,0))
-            
-            self.UIs["GenerationCount"] = Text("Generation: 0", Vector2(1,13), 10, (255,255,255)) 
 
-            self.UIs["ExitText"] = Text("Exit", Vector2(UI.GetEdgeXPercentage(),UI.GetEdgeYPercentage()) - Vector2(2.5,3), 15, (0,0,0), bgColor=(255,0,0,255))
-            self.UIs["ExitText"].MoveAdd(UI.RealSizeToPercent(Vector2(*self.UIs["ExitText"].GetRect().size))*-1)
+            self.ResetScreen()
             
             self.underAndItems = self.GetUnderItems()
             
@@ -238,6 +212,35 @@ class SandBoxLVL():
             return underItems
     
     def ResetScreen(self):
+        self.UIs["SymbolBackground"] = UI(Quad, Vector2(1,1), Vector2(34,12), (100,100,100))
+        self.UIs["PlaySymbolBackground"] = UI(Quad, Vector2(2,2), Vector2(10,10), (50,50,50))
+        self.UIs["PlaySymbol"] = UI(TriangleRight, self.UIs["PlaySymbolBackground"].GetPosPercent()+Vector2(1.5,1.5), self.UIs["PlaySymbolBackground"].GetSizePercent()-Vector2(3,3), (0,255,0))
+        self.UIs["SkipSymbolBackground"] = UI(Quad, Vector2(13,2), Vector2(10,10), (50,50,50))
+        self.UIs["SkipSymbolTriangle"] = UI(TriangleRight, self.UIs["SkipSymbolBackground"].GetPosPercent()+Vector2(1.5,1.5), self.UIs["SkipSymbolBackground"].GetSizePercent()-Vector2(3,3), (200,255,200))
+        self.UIs["SkipSymbolSquare"] = UI(Quad, self.UIs["SkipSymbolTriangle"].GetPosPercent()+Vector2(6,0), Vector2(1.5,7), (200,255,200))
+        self.UIs["RestartSymbolBackground"] = UI(Quad, Vector2(24,2), Vector2(10,10), (50,50,50))
+        self.UIs["RestartSymbolOuter"] = UI(Circle, self.UIs["RestartSymbolBackground"].GetPosPercent()+Vector2(1,1), self.UIs["RestartSymbolBackground"].GetSizePercent()-Vector2(2,2), (0,0,255))
+        self.UIs["RestartSymbolInner"] = UI(Circle, self.UIs["RestartSymbolBackground"].GetPosPercent()+Vector2(2,2), self.UIs["RestartSymbolBackground"].GetSizePercent()-Vector2(4,4), self.UIs["RestartSymbolBackground"].GetColor())
+        self.UIs["RestartSymbolInnerCircle"] = UI(Circle, self.UIs["RestartSymbolBackground"].GetPosPercent()+Vector2(2,0), self.UIs["RestartSymbolBackground"].GetSizePercent()-Vector2(7,6), self.UIs["RestartSymbolBackground"].GetColor())
+        self.UIs["RestartSymbolOuterSquare"] = UI(Quad, self.UIs["RestartSymbolBackground"].GetPosPercent()+Vector2(4,0.25), Vector2(1,2.5), self.UIs["RestartSymbolOuter"].GetColor())
+        self.UIs["SliderSquare"] = UI(Quad, Vector2(52, 90), Vector2(46,7.5), (100,100,100))
+        self.UIs["SliderBackground"] = UI(Quad, Vector2(55,91.25), Vector2(40,5), (50,50,50))
+        self.UIs["SliderNotch"] = UI(Circle, Vector2(60,91.25), Vector2(5,5), (255,255,255))
+        self.UIs["SettingsBackgroundOuter"] = UI(Quad, Vector2(UI.GetEdgeXPercentage()-13, self.UIs["SymbolBackground"].GetPosPercent().y), Vector2(12,12), (100,100,100))
+        self.UIs["SettingsBackgroundInner"] = UI(Quad, self.UIs["SettingsBackgroundOuter"].GetPosPercent()+Vector2(1,1), self.UIs["SettingsBackgroundOuter"].GetSizePercent()-Vector2(2,2), (50,50,50))
+        self.UIs["SettingscircleOuter"] = UI(Circle, self.UIs["SettingsBackgroundOuter"].GetPosPercent()+Vector2(2,2), self.UIs["SettingsBackgroundOuter"].GetSizePercent()-Vector2(4,4), (75,75,75))
+        self.UIs["SettingscircleInner"] = UI(Circle, self.UIs["SettingsBackgroundOuter"].GetPosPercent()+Vector2(3,3), self.UIs["SettingsBackgroundOuter"].GetSizePercent()-Vector2(6,6), (50,50,50))
+        
+        self.UIs["SliderText"] = Text("TickSpeed", Vector2(53,87), 10, (255,255,255))
+        self.UIs["FPSCount"] = Text("FPS", Vector2(1,95), 10, (255,255,255))
+        self.UIs["UnstableWarning"] = Text("Unstable!", Vector2(85,87), 10, (255,0,0))
+        
+        self.UIs["GenerationCount"] = Text("Generation: 0", Vector2(1,13), 10, (255,255,255)) 
+        self.UIs["ExitText"] = Text("Exit", Vector2(UI.GetEdgeXPercentage(),UI.GetEdgeYPercentage()) - Vector2(2.5,3), 15, (0,0,0), bgColor=(255,0,0,255))
+        self.UIs["ExitText"].MoveAdd(UI.RealSizeToPercent(Vector2(*self.UIs["ExitText"].GetRect().size))*-1)
+        
+        self.underAndItems = self.GetUnderItems()
+        
         self.grid.MoveCells()
     
     def Restart(self):

@@ -1,6 +1,6 @@
 import pygame
-import json
 import random
+import numpy
 from pygame.locals import *
 from pygame.math import *
 import Constants as con
@@ -14,26 +14,35 @@ class Settings():
         self.looping = False
         
         self.UIs = {}
-        
-        self.currCursor = None
+        self.slidersUIs = {}
 
+        self.currCursor = None
+        
         self.Start()
     
     def Start(self):
         self.looping = True
         
-        self.UIs["ColourPickerBg"] = con.HANDLER.CreateColourWheel(Vector2(10,10), Vector2(10,10))
-        self.UIs["ColourPickerPointer"] = self.UIs["ColourPickerBg"].GetUnderItem()[0]
+        self.UIs["ColorPickerBackground"] = UI(Quad, Vector2(20,20), Vector2(60,20), (100,100,100))
+        self.UIs["ColorPickerCurrColor"] = UI(Quad, self.UIs["ColorPickerBackground"].GetPosPercentCenter()-Vector2(self.UIs["ColorPickerBackground"].GetSizePercent().x/2,0), Vector2(10,10), (0,0,0))
+        self.UIs["ColorPickerCurrColor"].MoveAdd((self.UIs["ColorPickerCurrColor"].GetSizePercent()*-0.5) + Vector2((self.UIs["ColorPickerCurrColor"].GetSizePercent().x/2)+1,0))
+        
+        self.UIs["RedSliderBackground"], self.UIs["RedSliderCursor"] = self.CreateSlider(self.UIs["ColorPickerBackground"].GetPosPercent()+Vector2(15,1), Vector2(3,self.UIs["ColorPickerBackground"].GetSizePercent().y-2), (75,50,50))
+        self.UIs["GreenSliderBackground"], self.UIs["GreenSliderCursor"] = self.CreateSlider(self.UIs["ColorPickerBackground"].GetPosPercent()+Vector2(20,1), Vector2(3,self.UIs["ColorPickerBackground"].GetSizePercent().y-2), (50,75,50))
+        self.UIs["BlueSliderBackground"], self.UIs["BlueSliderCursor"] = self.CreateSlider(self.UIs["ColorPickerBackground"].GetPosPercent()+Vector2(25,1), Vector2(3,self.UIs["ColorPickerBackground"].GetSizePercent().y-2), (50,50,75))
+        
+        self.UIs["ExitText"] = Text("Exit", Vector2(UI.GetEdgeXPercentage(),UI.GetEdgeYPercentage()) - Vector2(2.5,3), 15, (0,0,0), bgColor=(255,0,0,255))
+        self.UIs["ExitText"].MoveAdd(UI.RealSizeToPercent(Vector2(*self.UIs["ExitText"].GetRect().size))*-1)
         
         self.Update()
     
     def Update(self):
+        selectedSlider = None
+        
         while self.looping:
             mousePos = pygame.mouse.get_pos()
             
-            self.UIs["ColourPickerPointer"].MoveSet(UI.RealPosToPercent(Vector2(*mousePos))-(self.UIs["ColourPickerPointer"].GetSizePercent()/2))
-            
-            if False:
+            if self.UIs["ExitText"].CheckCollidePoint(mousePos):
                 desired = con.HANDCURSOR
             else:
                 desired = con.ARROWCURSOR
@@ -47,11 +56,31 @@ class Settings():
                     if event.key == pygame.K_q:
                         self.Stop()
                 if event.type == pygame.MOUSEBUTTONUP:
-                    pass
+                    if self.UIs["ExitText"].CheckCollidePoint(mousePos):
+                        self.Stop()
+                
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if any(element.CheckCollidePoint(mousePos) for element in self.slidersUIs.keys()) and selectedSlider is None:
+                        selectedElement = next((element for element in self.slidersUIs.keys() if element.CheckCollidePoint(mousePos)),None)
+                        selectedElementBackground = next((background for element,background in self.slidersUIs.items() if element.CheckCollidePoint(mousePos)),None)
+                        
+                        if selectedElement and selectedElementBackground:
+                            selectedSlider = (selectedElement, selectedElementBackground)
+                        else:
+                            selectedSlider = None
+                        
                 if event.type == QUIT:
                         con.HANDLER.QuitGame()
             
-            self.sandBoxLevel = None
+            if pygame.mouse.get_pressed()[0]:
+                if selectedSlider:
+                    clampMin = selectedSlider[1].GetPosReal().y
+                    clampMax = (selectedSlider[1].GetPosReal().y+selectedSlider[1].GetSizeReal().y)-selectedSlider[0].GetSizeReal().y
+                    selectedSlider[0].MoveSetRealY(con.HANDLER.Clamp(mousePos[1], clampMin, clampMax))
+            else:
+                selectedSlider = None
+            
+            self.UIs["ColorPickerCurrColor"].ChangeColor(self.ColorPicker([{self.UIs["RedSliderCursor"],self.UIs["RedSliderBackground"]},{self.UIs["GreenSliderCursor"],self.UIs["GreenSliderBackground"]},{self.UIs["BlueSliderCursor"],self.UIs["BlueSliderBackground"]}]))
             
             self.DrawEverything()
     
@@ -62,41 +91,24 @@ class Settings():
         
         pygame.display.update()
     
-    def CreateRandomCells(self, randomCellAmount:int=100):
-        maxX = int(self.bgGrid.size.x) - 1
-        maxY = int(self.bgGrid.size.y) - 1
-        
-        spawnedCells = [Vector2(random.randint(1, maxX-1), random.randint(1, maxY-1))]
-        
-        for i in range(randomCellAmount):
-            lastPos = spawnedCells[len(spawnedCells)-1]
-            
-            offset = random.choice(Grid.possibleOffsets)
-            
-            addedOffset = lastPos+Vector2(*offset)
-            
-            if self.bgGrid.GetCell(addedOffset).GetState() == State.UNTOUCH or self.bgGrid.GetCell(addedOffset).GetState() == State.ALIVE:
-                randomCellAmount += 1
-            else:
-                spawnedCells.append(addedOffset)
-            
-        
-        for spawnedCellPos in spawnedCells:
-            self.bgGrid.SetCell(spawnedCellPos, State.ALIVE)
+    def ColorPicker(self, RGBSliders):
+        curr = []
+        for slider, bg in RGBSliders:
+            offset = slider.GetPosReal().y - bg.GetPosReal().y
+            travel = bg.GetSizeReal().y - slider.GetSizeReal().y
+            ratio = con.HANDLER.Clamp(offset / travel, 0,1)
+            ratio = 1.0 - ratio
+            curr.append(int(ratio * 255))
+        return tuple(curr)
     
-    def CreateGrid(self):
-        with open(con.SETTINGSSAVEPATH, 'r') as file:
-            data = json.load(file)
-        presets = list(data.items())
-        name, preset = random.choice(presets)
-        while name == self.presetName:
-            name, preset = random.choice(presets)
-        self.presetName = name
-        self.bgGridAttributes = GridAttributes(**preset)
-        self.bgGridAttributes.gridSize = Grid.ScreenToGridSize()
-
-        self.bgGrid = Grid(self.bgGridAttributes)
-        self.CreateRandomCells(1000)
+    def CreateSlider(self, pos:Vector2, size:Vector2, color:tuple) -> UI:
+        background = UI(Quad, pos, size, color)
+        slider = UI(Circle, Vector2(background.GetPosPercent().x, background.GetPosPercentCenter().y), Vector2(background.GetSizePercent().x, background.GetSizePercent().x), (255,255,255))
+        slider.MoveAdd(Vector2(0,slider.GetSizePercent().y)*-0.5)
+        
+        self.slidersUIs[slider] = background
+        
+        return background, slider
         
     def ResetScreen(self):
         pass

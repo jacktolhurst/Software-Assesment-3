@@ -34,12 +34,12 @@
     },
     "QR": {
         "gridSize": [
-            200.0,
-            200.0
+            100.0,
+            100.0
         ],
         "underPopulationThreshold": 0,
-        "survivalMin": 0,
-        "survivalMax": 0,
+        "survivalMin": 1,
+        "survivalMax": 2,
         "overpopulationThreshold": 9,
         "reproductionCount": 1
     },
@@ -53,5 +53,27 @@
         "survivalMax": 4,
         "overpopulationThreshold": 0,
         "reproductionCount": 0
+    },
+    "Maze": {
+        "gridSize": [
+            100.0,
+            100.0
+        ],
+        "underPopulationThreshold": 2,
+        "survivalMin": 3,
+        "survivalMax": 4,
+        "overpopulationThreshold": 3,
+        "reproductionCount": 3
+    },
+    "Name": {
+        "gridSize": [
+            100.0,
+            100.0
+        ],
+        "underPopulationThreshold": 2,
+        "survivalMin": 3,
+        "survivalMax": 4,
+        "overpopulationThreshold": 3,
+        "reproductionCount": 3
     }
 }

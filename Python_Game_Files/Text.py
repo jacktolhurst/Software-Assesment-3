@@ -113,6 +113,9 @@ class Text():
     def GetBgRect(self) -> pygame.Rect:
         return self.bgRect
 
+    def GetBgSurf(self) -> pygame.Surface:
+        return self.bgSurf
+
     def GetUnderItem(self):
         return self.underItems
     

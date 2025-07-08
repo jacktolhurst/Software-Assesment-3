@@ -81,9 +81,51 @@ class UI:
         self.originalRelativePos = newPos
         
         self.ResetRect()
+
+    def MoveSetReal(self, newPos:Vector2):
+        self.originalRelativePos = UI.RealPosToPercent(newPos)
+        
+        self.ResetRect()
+
+    def MoveSetRealX(self, newX:int|float):
+        self.originalRelativePos = Vector2(UI.RealPosToPercent(Vector2(0,newX)).x, self.originalRelativePos.y)
+        
+        self.ResetRect()
+
+    def MoveSetRealY(self, newY:int|float):
+        self.originalRelativePos = Vector2(self.originalRelativePos.x, UI.RealPosToPercent(Vector2(0,newY)).y)
+        
+        self.ResetRect()
+    
+    def MoveSetCenter(self, newPos:Vector2):
+        self.originalRelativePos = newPos - (self.originalRelativeSize/2)
+        
+        self.ResetRect()
+    
+    def MoveSetRealCenter(self, newPos:Vector2):
+        self.originalRelativePos = UI.RealPosToPercent(newPos) - (self.originalRelativeSize/2)
+        
+        self.ResetRect()
+    
+
     
     def MoveAdd(self, addedPos:Vector2):
         self.originalRelativePos = self.originalRelativePos + addedPos
+        
+        self.ResetRect()
+    
+    def MoveAddReal(self, addedPos:Vector2):
+        self.originalRelativePos = self.originalRelativePos + UI.RealPosToPercent(addedPos)
+        
+        self.ResetRect()
+    
+    def MoveAddCenter(self, addedPos:Vector2):
+        self.originalRelativePos = self.originalRelativePos  + (addedPos - (self.originalRelativeSize/2))
+        
+        self.ResetRect()
+
+    def MoveAddRealCenter(self, addedPos:Vector2):
+        self.originalRelativePos = self.originalRelativePos + (UI.RealPosToPercent(addedPos) - (self.originalRelativeSize/2))
         
         self.ResetRect()
     
@@ -128,8 +170,14 @@ class UI:
     def GetPosPercent(self) -> Vector2:
         return self.originalRelativePos
     
+    def GetPosPercentCenter(self) -> Vector2:
+        return UI.RealPosToPercent(Vector2(*self.rect.center))
+    
     def GetPosReal(self) -> Vector2:
         return Vector2(self.rect.x, self.rect.y)
+    
+    def GetPosRealCenter(self) -> Vector2:
+        return Vector2(*self.rect.center)
     
     def GetSizePercent(self) -> Vector2:
         return self.originalRelativeSize
@@ -140,7 +188,7 @@ class UI:
     def GetRect(self) -> pygame.Rect:
         return self.rect
     
-    def GetUnderItem(self):
+    def GetUnderItem(self) -> list:
         return self.underItems
 
     def ResetRect(self):

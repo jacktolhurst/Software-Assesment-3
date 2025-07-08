@@ -57,12 +57,3 @@ class Handler():
     @staticmethod
     def Clamp(arg:int|float, minArg:int|float, maxArg:int|float) -> int|float:
         return min(max(arg, minArg), maxArg)
-    
-    @staticmethod
-    def CreateColourWheel(pos:Vector2, size:Vector2, *, state:bool=True, zDist:int=1, underItems:list=[]) -> UI:
-        mainUI = UI(Quad, pos, size, (0,0,0), state=state, zDist=zDist, underItems=underItems)
-        circlePicker = UI(Circle, UI.RealPosToPercent(Vector2(*mainUI.GetRect().center)), mainUI.GetSizePercent()/4, (255,255,255))
-        mainUI.AddUnderItems([circlePicker])
-        
-        return mainUI
-        

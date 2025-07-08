@@ -35,51 +35,7 @@ class SettingsMenu():
             if not self.looping:
                 con.CURRSCREEN = self
                 
-                inputOffsetX = 60
-                
-                self.UIs["GridAttributesHeader"] = Text("Grid Attributes:", Vector2(20,5), 20, (255,255,255))
-                self.UIs["GridPresetsHeader"] = Text("Grid Presets:", Vector2(UI.GetEdgeXPercentage()-35,5), 20, (255,255,255))
-                
-                infoGridSize = Text("The size of the grid.", Vector2(0,0), 5, (120,120,120), bgColor=(70,70,70,255), zDist=2)
-                self.UIs["GridSizeText"] = Text("Grid Size:", Vector2(2,15), 15, (255,255,255), zDist=1, underItems=[infoGridSize])
-                self.UIs["InputGridSize"] = Text("0", self.UIs["GridSizeText"].GetPosPercent()+Vector2(inputOffsetX,0), 15, (255,255,255), bgColor=(20,30,40,255), maxStrLength=3, numOnly=True, underItems=[infoGridSize], defaultStr="100")
-                
-                infoUnderPopulation = Text("The lowest number of neighbors a live Cell must have to avoid dying.", Vector2(0,0), 5, (120,120,120), bgColor=(70,70,70,255), zDist=2)
-                self.UIs["UnderPopulationText"] = Text("Underpopulation Threshold:", self.UIs["GridSizeText"].GetPosPercent()+Vector2(0,5), 15, (255,255,255), underItems=[infoUnderPopulation])
-                self.UIs["InputUnderPopulation"] = Text("0", self.UIs["UnderPopulationText"].GetPosPercent()+Vector2(inputOffsetX,0), 15, (255,255,255), bgColor=(20,30,40,255), maxStrLength=1, numOnly=True, underItems=[infoUnderPopulation], defaultStr="0")
-                
-                infoSurvivalMin = Text("The minimum number of neighbors a live Cell must have to continue living.", Vector2(0,0), 5, (120,120,120), bgColor=(70,70,70,255), zDist=2)
-                self.UIs["SurvivalMinText"] = Text("Survival Minimum:",  self.UIs["UnderPopulationText"].GetPosPercent()+Vector2(0,5), 15, (255,255,255), underItems=[infoSurvivalMin])
-                self.UIs["InputSurvivalMin"] = Text("0", self.UIs["SurvivalMinText"].GetPosPercent()+Vector2(inputOffsetX,0), 15, (255,255,255), bgColor=(20,30,40,255), maxStrLength=1, numOnly=True, underItems=[infoSurvivalMin], defaultStr="0")
-                
-                infoSurvivalMax = Text("The maximum number of alive Cell to allow a Cell to survive.", Vector2(0,0), 5, (120,120,120), bgColor=(70,70,70,255), zDist=2)
-                self.UIs["SurvivalMaxText"] = Text("Survival Maximum:", self.UIs["SurvivalMinText"].GetPosPercent()+Vector2(0,5), 15, (255,255,255), underItems=[infoSurvivalMax])
-                self.UIs["InputSurvivalMax"] = Text("0", self.UIs["SurvivalMaxText"].GetPosPercent()+Vector2(inputOffsetX,0), 15, (255,255,255), bgColor=(20,30,40,255), maxStrLength=1, numOnly=True, underItems=[infoSurvivalMax], defaultStr="0")
-                
-                infoOverpopulationThreshold = Text("The maximum alive Cells before a live cell dies.", Vector2(0,0), 5, (120,120,120), bgColor=(70,70,70,255), zDist=2)
-                self.UIs["OverpopulationThresholdText"] = Text("Overpopulation Threshold:", self.UIs["SurvivalMaxText"].GetPosPercent()+Vector2(0,5), 15, (255,255,255), underItems=[infoOverpopulationThreshold])
-                self.UIs["InputOverpopulationThreshold"] = Text("0", self.UIs["OverpopulationThresholdText"].GetPosPercent()+Vector2(inputOffsetX,0), 15, (255,255,255), bgColor=(20,30,40,255), maxStrLength=1, numOnly=True, underItems=[infoOverpopulationThreshold], defaultStr="0")
-                
-                infoReproductionCount = Text("The exact amount of Cells for a dead Cell to become alive.", Vector2(0,0), 5, (120,120,120), bgColor=(70,70,70,255), zDist=2)
-                self.UIs["ReproductionCountText"] = Text("Reproduction Count:", self.UIs["OverpopulationThresholdText"].GetPosPercent()+Vector2(0,5), 15, (255,255,255), underItems=[infoReproductionCount])
-                self.UIs["InputReproductionCount"] = Text("0", self.UIs["ReproductionCountText"].GetPosPercent()+Vector2(inputOffsetX,0), 15, (255,255,255), bgColor=(20,30,40,255), maxStrLength=1, numOnly=True, underItems=[infoReproductionCount], defaultStr="0")
-                
-                self.EnterGridAttributesToUI()
-                
-                infoEnterName = Text("The name of the preset.", Vector2(0,0), 5, (120,120,120), bgColor=(70,70,70,255), zDist=2)
-                self.UIs["EnterNameText"] = Text("Name:", self.UIs["ReproductionCountText"].GetPosPercent()+Vector2(0,5), 15, (255,255,255), underItems=[infoEnterName])
-                self.UIs["InputEnterName"] = Text("Name", self.UIs["EnterNameText"].GetPosPercent()+Vector2(inputOffsetX,0), 15, (255,255,255), bgColor=(20,30,40,255), maxStrLength=12, underItems=[infoEnterName], defaultStr="Name")
-                
-                infoSave = Text("Save the values to a preset.", Vector2(0,0), 5, (120,120,120), bgColor=(70,70,70,255), zDist=2)
-                self.UIs["SaveAttributesButton"] = Text("Save", Vector2(inputOffsetX/2,self.UIs["EnterNameText"].GetPosPercent().y+5), 20, (255,255,255), bgColor=(20,30,40,255), underItems=[infoSave])
-                
-                self.UIs["SaveAndQuitText"] = Text("Apply and Exit", Vector2(UI.GetEdgeXPercentage()-20, UI.GetEdgeYPercentage()-5), 10, (0,0,0), bgColor=(0,255,0,255))
-                
-                self.RecreateGridUIs()
-                
-                self.inputUIs = {name: ui for name, ui in self.UIs.items() if name.startswith("Input")}
-                
-                self.underAndItems = self.GetUnderItems()
+                self.ResetScreen()
                 
                 self.looping = True
                 
@@ -126,6 +82,9 @@ class SettingsMenu():
                             else:
                                 inputText.ChangeText(inputText.GetText() + event.unicode)
                             self.EnterDataToGridAttributes()
+                        else:
+                            if event.key == pygame.K_q:
+                                self.Stop()
                         
                     if event.type == pygame.MOUSEBUTTONUP:
                         if event.button == 1:
@@ -221,7 +180,7 @@ class SettingsMenu():
 
                 if self.UIs["InputSurvivalMax"].GetText() != "" and self.UIs["InputSurvivalMin"].GetText() != "" and self.UIs["InputUnderPopulation"].GetText() != "":
                     if int(self.UIs["InputSurvivalMin"].GetText()) <= int(self.UIs["InputUnderPopulation"].GetText()):
-                        self.UIs["InputSurvivalMin"].ChangeText(str(int(int(self.UIs["InputUnderPopulation"].GetText())+1)))
+                        self.UIs["InputSurvivalMin"].ChangeText(str(int(int(self.UIs["InputUnderPopulation"].GetText()))))
                     if int(self.UIs["InputSurvivalMax"].GetText()) <= int(self.UIs["InputSurvivalMin"].GetText()):
                         self.UIs["InputSurvivalMax"].ChangeText(str(int(self.UIs["InputSurvivalMin"].GetText())+1))
                 
@@ -295,7 +254,51 @@ class SettingsMenu():
             return underItems
         
         def ResetScreen(self):
-            pass
+            inputOffsetX = 60
+            
+            self.UIs["GridAttributesHeader"] = Text("Grid Attributes:", Vector2(20,5), 20, (255,255,255))
+            self.UIs["GridPresetsHeader"] = Text("Grid Presets:", Vector2(UI.GetEdgeXPercentage()-35,5), 20, (255,255,255))
+            
+            infoGridSize = Text("The size of the grid.", Vector2(0,0), 5, (120,120,120), bgColor=(70,70,70,255), zDist=2)
+            self.UIs["GridSizeText"] = Text("Grid Size:", Vector2(2,15), 15, (255,255,255), zDist=1, underItems=[infoGridSize])
+            self.UIs["InputGridSize"] = Text("0", self.UIs["GridSizeText"].GetPosPercent()+Vector2(inputOffsetX,0), 15, (255,255,255), bgColor=(20,30,40,255), maxStrLength=3, numOnly=True, underItems=[infoGridSize], defaultStr="100")
+            
+            infoUnderPopulation = Text("The lowest number of neighbors a live Cell must have to avoid dying.", Vector2(0,0), 5, (120,120,120), bgColor=(70,70,70,255), zDist=2)
+            self.UIs["UnderPopulationText"] = Text("Underpopulation Threshold:", self.UIs["GridSizeText"].GetPosPercent()+Vector2(0,5), 15, (255,255,255), underItems=[infoUnderPopulation])
+            self.UIs["InputUnderPopulation"] = Text("0", self.UIs["UnderPopulationText"].GetPosPercent()+Vector2(inputOffsetX,0), 15, (255,255,255), bgColor=(20,30,40,255), maxStrLength=1, numOnly=True, underItems=[infoUnderPopulation], defaultStr="0")
+            
+            infoSurvivalMin = Text("The minimum number of neighbors a live Cell must have to continue living.", Vector2(0,0), 5, (120,120,120), bgColor=(70,70,70,255), zDist=2)
+            self.UIs["SurvivalMinText"] = Text("Survival Minimum:",  self.UIs["UnderPopulationText"].GetPosPercent()+Vector2(0,5), 15, (255,255,255), underItems=[infoSurvivalMin])
+            self.UIs["InputSurvivalMin"] = Text("0", self.UIs["SurvivalMinText"].GetPosPercent()+Vector2(inputOffsetX,0), 15, (255,255,255), bgColor=(20,30,40,255), maxStrLength=1, numOnly=True, underItems=[infoSurvivalMin], defaultStr="0")
+            
+            infoSurvivalMax = Text("The maximum number of alive Cell to allow a Cell to survive.", Vector2(0,0), 5, (120,120,120), bgColor=(70,70,70,255), zDist=2)
+            self.UIs["SurvivalMaxText"] = Text("Survival Maximum:", self.UIs["SurvivalMinText"].GetPosPercent()+Vector2(0,5), 15, (255,255,255), underItems=[infoSurvivalMax])
+            self.UIs["InputSurvivalMax"] = Text("0", self.UIs["SurvivalMaxText"].GetPosPercent()+Vector2(inputOffsetX,0), 15, (255,255,255), bgColor=(20,30,40,255), maxStrLength=1, numOnly=True, underItems=[infoSurvivalMax], defaultStr="0")
+            
+            infoOverpopulationThreshold = Text("The maximum alive Cells before a live cell dies.", Vector2(0,0), 5, (120,120,120), bgColor=(70,70,70,255), zDist=2)
+            self.UIs["OverpopulationThresholdText"] = Text("Overpopulation Threshold:", self.UIs["SurvivalMaxText"].GetPosPercent()+Vector2(0,5), 15, (255,255,255), underItems=[infoOverpopulationThreshold])
+            self.UIs["InputOverpopulationThreshold"] = Text("0", self.UIs["OverpopulationThresholdText"].GetPosPercent()+Vector2(inputOffsetX,0), 15, (255,255,255), bgColor=(20,30,40,255), maxStrLength=1, numOnly=True, underItems=[infoOverpopulationThreshold], defaultStr="0")
+            
+            infoReproductionCount = Text("The exact amount of Cells for a dead Cell to become alive.", Vector2(0,0), 5, (120,120,120), bgColor=(70,70,70,255), zDist=2)
+            self.UIs["ReproductionCountText"] = Text("Reproduction Count:", self.UIs["OverpopulationThresholdText"].GetPosPercent()+Vector2(0,5), 15, (255,255,255), underItems=[infoReproductionCount])
+            self.UIs["InputReproductionCount"] = Text("0", self.UIs["ReproductionCountText"].GetPosPercent()+Vector2(inputOffsetX,0), 15, (255,255,255), bgColor=(20,30,40,255), maxStrLength=1, numOnly=True, underItems=[infoReproductionCount],defaultStr="0")
+            
+            self.EnterGridAttributesToUI()
+            
+            infoEnterName = Text("The name of the preset.", Vector2(0,0), 5, (120,120,120), bgColor=(70,70,70,255), zDist=2)
+            self.UIs["EnterNameText"] = Text("Name:", self.UIs["ReproductionCountText"].GetPosPercent()+Vector2(0,5), 15, (255,255,255), underItems=[infoEnterName])
+            self.UIs["InputEnterName"] = Text("Name", self.UIs["EnterNameText"].GetPosPercent()+Vector2(inputOffsetX,0), 15, (255,255,255), bgColor=(20,30,40,255), maxStrLength=12, underItems=[infoEnterName], defaultStr="Name")
+            
+            infoSave = Text("Save the values to a preset.", Vector2(0,0), 5, (120,120,120), bgColor=(70,70,70,255), zDist=2)
+            self.UIs["SaveAttributesButton"] = Text("Save Preset", Vector2(inputOffsetX/2-4,self.UIs["EnterNameText"].GetPosPercent().y+5), 20, (255,255,255), bgColor=(20,30,40,255), underItems=[infoSave])
+            
+            self.UIs["SaveAndQuitText"] = Text("Apply and Exit", Vector2(UI.GetEdgeXPercentage()-20, UI.GetEdgeYPercentage()-5), 10, (0,0,0), bgColor=(0,255,0,255))
+            
+            self.RecreateGridUIs()
+            
+            self.inputUIs = {name: ui for name, ui in self.UIs.items() if name.startswith("Input")}
+            
+            self.underAndItems = self.GetUnderItems()
         
         def Stop(self):
             if self.looping:
