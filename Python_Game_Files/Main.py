@@ -1,5 +1,6 @@
 import pygame
 import asyncio
+import json
 import Constants as con
 from pygame.locals import *
 from pygame.math import *
@@ -11,13 +12,33 @@ pygame.init()
 clock = pygame.time.Clock()
 
 pygame.display.set_caption('Game Of Life')
-# con.SCREEN = pygame.display.set_mode((con.WINDOWWIDTH, con.WINDOWHEIGHT), FULLSCREEN)
-con.SCREEN = pygame.display.set_mode((con.WINDOWWIDTH, con.WINDOWHEIGHT), pygame.RESIZABLE)
+con.SCREEN = pygame.display.set_mode((con.WINDOWWIDTH, con.WINDOWHEIGHT), FULLSCREEN)
+# con.SCREEN = pygame.display.set_mode((con.WINDOWWIDTH, con.WINDOWHEIGHT), pygame.RESIZABLE)
 con.SCREENRECT = pygame.Rect(0,0,con.WINDOWWIDTH, con.WINDOWHEIGHT)
 
 con.HANDLER = Handler()
 
 async def main ():
+    with open(con.LOADDATASAVEPATH, 'r') as file:
+        data = json.load(file)
+
+        con.CELLALIVECOLOR = data["CELLALIVECOLOR"]
+        con.CELLDEADCOLOR = data["CELLDEADCOLOR"]
+        con.CELLUNTOUCHCOLOR = data["CELLUNTOUCHCOLOR"]
+        con.BACKGROUNDCOLOR = data["BACKGROUNDCOLOR"]
+    
     mainMenu = MainMenu()
+    
+    with open(con.LOADDATASAVEPATH, 'w') as file:
+        
+        saveData = {
+            "CELLALIVECOLOR" : con.CELLALIVECOLOR,
+            "CELLDEADCOLOR" : con.CELLDEADCOLOR,
+            "CELLUNTOUCHCOLOR" : con.CELLUNTOUCHCOLOR,
+            "BACKGROUNDCOLOR" : con.BACKGROUNDCOLOR
+        }
+        
+        json.dump(saveData, file, indent=4)
+    
 
 asyncio.run(main())

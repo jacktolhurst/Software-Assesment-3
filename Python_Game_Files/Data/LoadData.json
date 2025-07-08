@@ -1,0 +1,22 @@
+{
+    "CELLALIVECOLOR": [
+        0,
+        0,
+        0
+    ],
+    "CELLDEADCOLOR": [
+        0,
+        0,
+        0
+    ],
+    "CELLUNTOUCHCOLOR": [
+        200,
+        60,
+        60
+    ],
+    "BACKGROUNDCOLOR": [
+        50,
+        0,
+        0
+    ]
+}

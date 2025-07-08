@@ -132,7 +132,7 @@ class MainMenu():
         con.CELLSIZE = 20
         con.CELLGAP = 0.99
         
-        with open(con.SETTINGSSAVEPATH, 'r') as file:
+        with open(con.ATTRIBUTESSAVEPATH, 'r') as file:
             data = json.load(file)
         presets = list(data.items())
         name, preset = random.choice(presets)

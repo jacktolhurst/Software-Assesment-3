@@ -23,16 +23,7 @@ class Settings():
     def Start(self):
         self.looping = True
         
-        self.UIs["ColorPickerBackground"] = UI(Quad, Vector2(20,20), Vector2(60,20), (100,100,100))
-        self.UIs["ColorPickerCurrColor"] = UI(Quad, self.UIs["ColorPickerBackground"].GetPosPercentCenter()-Vector2(self.UIs["ColorPickerBackground"].GetSizePercent().x/2,0), Vector2(10,10), (0,0,0))
-        self.UIs["ColorPickerCurrColor"].MoveAdd((self.UIs["ColorPickerCurrColor"].GetSizePercent()*-0.5) + Vector2((self.UIs["ColorPickerCurrColor"].GetSizePercent().x/2)+1,0))
-        
-        self.UIs["RedSliderBackground"], self.UIs["RedSliderCursor"] = self.CreateSlider(self.UIs["ColorPickerBackground"].GetPosPercent()+Vector2(15,1), Vector2(3,self.UIs["ColorPickerBackground"].GetSizePercent().y-2), (75,50,50))
-        self.UIs["GreenSliderBackground"], self.UIs["GreenSliderCursor"] = self.CreateSlider(self.UIs["ColorPickerBackground"].GetPosPercent()+Vector2(20,1), Vector2(3,self.UIs["ColorPickerBackground"].GetSizePercent().y-2), (50,75,50))
-        self.UIs["BlueSliderBackground"], self.UIs["BlueSliderCursor"] = self.CreateSlider(self.UIs["ColorPickerBackground"].GetPosPercent()+Vector2(25,1), Vector2(3,self.UIs["ColorPickerBackground"].GetSizePercent().y-2), (50,50,75))
-        
-        self.UIs["ExitText"] = Text("Exit", Vector2(UI.GetEdgeXPercentage(),UI.GetEdgeYPercentage()) - Vector2(2.5,3), 15, (0,0,0), bgColor=(255,0,0,255))
-        self.UIs["ExitText"].MoveAdd(UI.RealSizeToPercent(Vector2(*self.UIs["ExitText"].GetRect().size))*-1)
+        self.ResetScreen()
         
         self.Update()
     
@@ -80,7 +71,10 @@ class Settings():
             else:
                 selectedSlider = None
             
-            self.UIs["ColorPickerCurrColor"].ChangeColor(self.ColorPicker([{self.UIs["RedSliderCursor"],self.UIs["RedSliderBackground"]},{self.UIs["GreenSliderCursor"],self.UIs["GreenSliderBackground"]},{self.UIs["BlueSliderCursor"],self.UIs["BlueSliderBackground"]}]))
+            newColor = self.PosToColor([{self.UIs["CellColorPickerRedSliderCursor"],self.UIs["CellColorPickerRedSliderBackground"]},{self.UIs["CellColorPickerGreenSliderCursor"],self.UIs["CellColorPickerGreenSliderBackground"]},{self.UIs["CellColorPickerBlueSliderCursor"],self.UIs["CellColorPickerBlueSliderBackground"]}])
+            
+            self.UIs["CellColorPickerCurrColor"].ChangeColor(newColor)
+            con.CELLALIVECOLOR = newColor
             
             self.DrawEverything()
     
@@ -91,7 +85,7 @@ class Settings():
         
         pygame.display.update()
     
-    def ColorPicker(self, RGBSliders):
+    def PosToColor(self, RGBSliders) -> tuple[int,int,int]:
         curr = []
         for slider, bg in RGBSliders:
             offset = slider.GetPosReal().y - bg.GetPosReal().y
@@ -101,17 +95,40 @@ class Settings():
             curr.append(int(ratio * 255))
         return tuple(curr)
     
+    def ColorToPos(self, color:tuple[int,int,int], RGBSliders):
+        for value, (slider, bg) in zip(color, RGBSliders):
+            norm = value / 255.0
+            ratio = 1.0 - norm
+            travel = bg.GetSizeReal().y - slider.GetSizeReal().y
+            offset = ratio * travel
+            y = bg.GetPosReal().y + offset
+            slider.MoveSetRealY(y)
+        
+    
     def CreateSlider(self, pos:Vector2, size:Vector2, color:tuple) -> UI:
         background = UI(Quad, pos, size, color)
-        slider = UI(Circle, Vector2(background.GetPosPercent().x, background.GetPosPercentCenter().y), Vector2(background.GetSizePercent().x, background.GetSizePercent().x), (255,255,255))
-        slider.MoveAdd(Vector2(0,slider.GetSizePercent().y)*-0.5)
+        slider = UI(Circle, background.GetPosPercent(), Vector2(background.GetSizePercent().x, background.GetSizePercent().x), (255,255,255))
         
         self.slidersUIs[slider] = background
         
         return background, slider
         
     def ResetScreen(self):
-        pass
+        self.UIs["CellColorPickerBackground"] = UI(Quad, Vector2(20,20), Vector2(30,20), (100,100,100))
+        self.UIs["CellColorPickerText"] = Text("Cell Color:", self.UIs["CellColorPickerBackground"].GetPosPercent()+Vector2(1,1), 10, (255,255,255))
+        self.UIs["CellColorPickerCurrColorBackground"] = UI(Quad, self.UIs["CellColorPickerBackground"].GetPosPercentCenter()-Vector2(self.UIs["CellColorPickerBackground"].GetSizePercent().x/2,0), Vector2(12,12), (50,50,50))
+        self.UIs["CellColorPickerCurrColorBackground"].MoveAdd((self.UIs["CellColorPickerCurrColorBackground"].GetSizePercent()*-0.5) + Vector2((self.UIs["CellColorPickerCurrColorBackground"].GetSizePercent().x/2)+1,self.UIs["CellColorPickerText"].GetRectSize().y-1))
+        self.UIs["CellColorPickerCurrColor"] = UI(Quad, self.UIs["CellColorPickerCurrColorBackground"].GetPosPercentCenter(), self.UIs["CellColorPickerCurrColorBackground"].GetSizePercent()-Vector2(2,2), (0,0,0))
+        self.UIs["CellColorPickerCurrColor"].MoveAdd(self.UIs["CellColorPickerCurrColor"].GetSizePercent()*-0.5)
+        
+        self.UIs["CellColorPickerRedSliderBackground"], self.UIs["CellColorPickerRedSliderCursor"] = self.CreateSlider(self.UIs["CellColorPickerBackground"].GetPosPercent()+Vector2(15,1), Vector2(3,self.UIs["CellColorPickerBackground"].GetSizePercent().y-2), (75,50,50))
+        self.UIs["CellColorPickerGreenSliderBackground"], self.UIs["CellColorPickerGreenSliderCursor"] = self.CreateSlider(self.UIs["CellColorPickerBackground"].GetPosPercent()+Vector2(20,1), Vector2(3,self.UIs["CellColorPickerBackground"].GetSizePercent().y-2), (50,75,50))
+        self.UIs["CellColorPickerBlueSliderBackground"], self.UIs["CellColorPickerBlueSliderCursor"] = self.CreateSlider(self.UIs["CellColorPickerBackground"].GetPosPercent()+Vector2(25,1), Vector2(3,self.UIs["CellColorPickerBackground"].GetSizePercent().y-2), (50,50,75))
+        
+        self.ColorToPos(con.CELLALIVECOLOR, [(self.UIs["CellColorPickerRedSliderCursor"],self.UIs["CellColorPickerRedSliderBackground"]),(self.UIs["CellColorPickerGreenSliderCursor"],self.UIs["CellColorPickerGreenSliderBackground"]),(self.UIs["CellColorPickerBlueSliderCursor"],self.UIs["CellColorPickerBlueSliderBackground"]),])
+        
+        self.UIs["ExitText"] = Text("Exit", Vector2(UI.GetEdgeXPercentage(),UI.GetEdgeYPercentage()) - Vector2(2.5,3), 15, (0,0,0), bgColor=(255,0,0,255))
+        self.UIs["ExitText"].MoveAdd(UI.RealSizeToPercent(Vector2(*self.UIs["ExitText"].GetRect().size))*-1)
         
     def Stop(self):
         if self.looping:

@@ -64,16 +64,5 @@
         "survivalMax": 4,
         "overpopulationThreshold": 3,
         "reproductionCount": 3
-    },
-    "Name": {
-        "gridSize": [
-            100.0,
-            100.0
-        ],
-        "underPopulationThreshold": 2,
-        "survivalMin": 3,
-        "survivalMax": 4,
-        "overpopulationThreshold": 3,
-        "reproductionCount": 3
     }
 }

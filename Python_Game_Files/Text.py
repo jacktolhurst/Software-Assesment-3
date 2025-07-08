@@ -1,6 +1,7 @@
 import pygame
 import Constants as con
 from pygame.math import Vector2
+from UI import UI
 
 class Text():
     def __init__(self, textStr:str, relativePos:Vector2, relativeSize:int, color:tuple, *, font:str='freesansbold.ttf', bgColor:tuple=(0,0,0,0), maxStrLength:int=1000, numOnly:bool=False, state:bool=True, zDist:int=1, underItems:list=[], defaultStr:str=""):
@@ -109,9 +110,15 @@ class Text():
     
     def GetRect(self) -> pygame.Rect:
         return self.rect
+    
+    def GetRectSize(self) -> Vector2:
+        return UI.RealPosToPercent(Vector2(*self.rect.size))
 
     def GetBgRect(self) -> pygame.Rect:
         return self.bgRect
+
+    def GetBgRectSize(self) -> Vector2:
+        return UI.RealPosToPercent(Vector2(*self.bgRect.size))
 
     def GetBgSurf(self) -> pygame.Surface:
         return self.bgSurf

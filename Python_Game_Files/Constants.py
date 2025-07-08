@@ -5,8 +5,8 @@ SCREEN = None
 SCREENRECT = None
 CURRSCREEN = None
 
-# WINDOWWIDTH, WINDOWHEIGHT = 3840, 2160
-WINDOWWIDTH, WINDOWHEIGHT = 640, 480
+WINDOWWIDTH, WINDOWHEIGHT = 3840, 2160
+# WINDOWWIDTH, WINDOWHEIGHT = 640, 480
 
 CELLSIZE = 20
 CELLGAP = 0.99
@@ -25,4 +25,5 @@ ARROWCURSOR = pygame.cursors.Cursor(pygame.SYSTEM_CURSOR_ARROW)
 IBEAMCURSOR = pygame.cursors.Cursor(pygame.SYSTEM_CURSOR_IBEAM)
 HANDCURSOR  = pygame.cursors.Cursor(pygame.SYSTEM_CURSOR_HAND)
 
-SETTINGSSAVEPATH = 'Python_Game_Files/Data/SavedAttributes.json'
+ATTRIBUTESSAVEPATH = 'Python_Game_Files/Data/SavedAttributes.json'
+LOADDATASAVEPATH = 'Python_Game_Files/Data/LoadData.json'

@@ -25,7 +25,7 @@ class SettingsMenu():
                 self.gridAttributes = currentGridAttributes
             
             try:
-                with open(con.SETTINGSSAVEPATH, 'r') as file:
+                with open(con.ATTRIBUTESSAVEPATH, 'r') as file:
                     self.gridAttributesData = json.load(file)
             except:
                 self.gridAttributesData = {}
@@ -91,7 +91,7 @@ class SettingsMenu():
                             if self.UIs["SaveAndQuitText"].CheckCollidePoint(mousePos):
                                 self.Stop()
                             elif self.UIs["SaveAttributesButton"].CheckCollidePoint(mousePos):
-                                with open(con.SETTINGSSAVEPATH, 'w') as file:
+                                with open(con.ATTRIBUTESSAVEPATH, 'w') as file:
 
                                     dataName = str(self.UIs["InputEnterName"].GetText())
                                     data = self.gridAttributes.ToDict()
@@ -113,7 +113,7 @@ class SettingsMenu():
                                         saveName = name
                                         break
                                     
-                                with open(con.SETTINGSSAVEPATH, 'r') as file:
+                                with open(con.ATTRIBUTESSAVEPATH, 'r') as file:
                                     data = json.load(file)
 
                                     for name, valueData in data.items():
@@ -149,14 +149,14 @@ class SettingsMenu():
                                 clickedElementName = None
                         
                             if clickedElementName:
-                                with open(con.SETTINGSSAVEPATH, 'r') as file:
+                                with open(con.ATTRIBUTESSAVEPATH, 'r') as file:
                                     self.gridAttributesData = json.load(file)
                         
                                 keysToRemove = [key for key in self.gridAttributesData.keys() if clickedElementName.lower() in key.lower()]
                                 for key in keysToRemove:
                                     self.gridAttributesData.pop(key)
                         
-                                with open(con.SETTINGSSAVEPATH, 'w') as file:
+                                with open(con.ATTRIBUTESSAVEPATH, 'w') as file:
                                     json.dump(self.gridAttributesData, file, indent=4)
 
                                 self.RecreateGridUIs()
