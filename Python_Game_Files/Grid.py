@@ -19,7 +19,6 @@ class Grid():
         totalCols = int(screenWidth // stride)
         totalRows = int(screenHeight // stride)
 
-        # subtract the border on *both* sides
         usableCols = max(0, totalCols - 2)
         usableRows = max(0, totalRows - 2)
 
