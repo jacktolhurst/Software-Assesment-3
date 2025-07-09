@@ -11,6 +11,8 @@ class Handler():
         self.screenWidth, self.screenHeight = pygame.display.get_surface().get_size()
     
     def DrawUI(self, main, UIList):
+        Handler.CheckColourFormat()
+        
         if self.screenWidth != pygame.display.get_surface().get_size()[0] or self.screenHeight != pygame.display.get_surface().get_size()[1]:
             self.screenWidth, self.screenHeight = pygame.display.get_surface().get_size()
             con.WINDOW_WIDTH = con.SCREENRECT.w = self.screenWidth
@@ -47,6 +49,17 @@ class Handler():
     def QuitGame(self):
         pygame.quit()
         sys.exit()
+        
+    @staticmethod
+    def CheckColourFormat():
+        if Handler.IsTupleClose(tuple(con.BACKGROUNDCOLOR), (0,0,0), 200):
+            con.TEXTCOLOR = (255,255,255)
+            con.SELECTEDUICOLOR = (10,10,10,255)
+            con.INPUTUICOLOR = (30,30,30,255)
+        else:
+            con.TEXTCOLOR = (0,0,0)
+            con.SELECTEDUICOLOR = (50,50,50,255)
+            con.INPUTUICOLOR = ((70,70,70,255))
     
     @staticmethod
     def TupleMagnitude(pos: tuple[float, float]) -> float:
@@ -63,5 +76,5 @@ class Handler():
         return Vector2(Handler.Clamp(arg.x, minArg.x, maxArg.x),Handler.Clamp(arg.y, minArg.y, maxArg.y))
     
     @staticmethod
-    def IsTupleClose(t1, t2, tolerance=1):
+    def IsTupleClose(t1, t2, tolerance=1) -> bool:
         return all(math.isclose(a, b, abs_tol=tolerance) for a, b in zip(t1, t2))

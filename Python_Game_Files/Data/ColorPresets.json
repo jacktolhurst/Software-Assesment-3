@@ -46,7 +46,7 @@
     "Matrix": {
         "CELLALIVECOLOR": [
             0,
-            124,
+            180,
             0
         ],
         "CELLDEADCOLOR": [
@@ -56,7 +56,7 @@
         ],
         "CELLUNTOUCHCOLOR": [
             0,
-            38,
+            56,
             0
         ],
         "BACKGROUNDCOLOR": [

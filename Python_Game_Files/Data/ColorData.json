@@ -1,22 +1,22 @@
 {
     "CELLALIVECOLOR": [
-        0,
-        0,
-        0
+        245,
+        216,
+        77
     ],
     "CELLDEADCOLOR": [
-        255,
-        255,
-        255
+        50,
+        0,
+        35
     ],
     "CELLUNTOUCHCOLOR": [
-        177,
-        175,
-        172
+        158,
+        0,
+        96
     ],
     "BACKGROUNDCOLOR": [
-        255,
-        255,
-        255
+        80,
+        24,
+        20
     ]
 }

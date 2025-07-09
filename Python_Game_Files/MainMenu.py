@@ -34,6 +34,7 @@ class MainMenu():
     def Start(self):
         self.looping = True
         
+        
         self.ResetScreen()
         
         self.Update()
@@ -71,9 +72,11 @@ class MainMenu():
                         elif self.UIs["PlayForeground"].CheckCollidePoint(mousePos):
                             self.sandBoxLevel = SandBoxLVL()
                             self.CreateGrid()
+                            self.ResetScreen()
                         elif self.UIs["SettingsForeground"].CheckCollidePoint(mousePos):
                             self.settings = Settings()
                             self.CreateGrid()
+                            self.ResetScreen()
                         elif self.UIs["ExitText"].CheckCollidePoint(mousePos):
                             self.Stop()
                 if event.type == QUIT:
@@ -149,6 +152,8 @@ class MainMenu():
             self.CreateRandomCells(int(self.bgGrid.size.x * 10))
         
     def ResetScreen(self):
+        con.HANDLER.CheckColourFormat()
+        
         self.UIs["RestartSymbolBackground"] = UI(Quad, Vector2(0,0), Vector2(10,10), (100,100,100))
         self.UIs["RestartSymbolBackground"].MoveSet(Vector2(2, (UI.GetEdgeYPercentage()-self.UIs["RestartSymbolBackground"].GetSizePercent().y)-3))
         self.UIs["RestartSymbolForeground"] = UI(Quad, self.UIs["RestartSymbolBackground"].GetPosPercent()+Vector2(1,1), self.UIs["RestartSymbolBackground"].GetSizePercent()-Vector2(2,2), (50,50,50))
@@ -176,7 +181,7 @@ class MainMenu():
         # * THIS IS FUCKING MAGICAL CODE THAT FIGURES THE CENTRE OF A TEXT ELEMENT, DO NOT CHANGE.
         # sorry for swearing.
         
-        self.UIs["RuleNameText"] = Text(self.presetName, Vector2(2,2), 8, (255,255,255))
+        self.UIs["RuleNameText"] = Text(self.presetName, Vector2(2,2), 8, con.TEXTCOLOR)
         
         self.UIs["ExitText"] = Text("Exit", Vector2(UI.GetEdgeXPercentage(),UI.GetEdgeYPercentage()) - Vector2(2.5,3), 15, (0,0,0), bgColor=(255,0,0,255))
         self.UIs["ExitText"].MoveAdd(UI.RealSizeToPercent(Vector2(*self.UIs["ExitText"].GetRect().size))*-1)

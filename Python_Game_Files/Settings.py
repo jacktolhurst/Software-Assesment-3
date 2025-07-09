@@ -40,6 +40,7 @@ class Settings():
     def Update(self):
         inputText = None
         selectedSlider = None
+        lastFrameSelectedSlider = None
         
         while self.looping:
             mousePos = pygame.mouse.get_pos()
@@ -142,7 +143,7 @@ class Settings():
                                 elif name == "BACKGROUNDCOLOR":
                                     con.BACKGROUNDCOLOR = color
                                 
-
+                            con.HANDLER.CheckColourFormat()
                             self.ResetScreen()
 
                         else:
@@ -193,6 +194,12 @@ class Settings():
             else:
                 selectedSlider = None
             
+            self.ApplySliderToDisplay(self.displayVariableList)
+            
+            if selectedSlider is None and lastFrameSelectedSlider:
+                con.HANDLER.CheckColourFormat()
+                self.ResetScreen()
+            
             if inputText is None:
                 for under, uiList in self.underAndItems.items():
                     for ui in uiList:
@@ -206,9 +213,11 @@ class Settings():
                 for under in self.underAndItems.keys():
                     under.SetState(False)
             
-            self.ApplySliderToDisplay(self.displayVariableList)
-            
             self.DrawEverything()
+            
+            
+            
+            lastFrameSelectedSlider = selectedSlider
     
     def DrawEverything(self):
         con.SCREEN.fill(con.BACKGROUNDCOLOR)
@@ -270,7 +279,7 @@ class Settings():
         
         for name in self.colorPresetsData.keys():
             underItem = Text("Right Click to delete.", Vector2(0,0), 5, (120,120,120), bgColor=(70,70,70,255), zDist=2)
-            element = Text(name, Vector2(UI.GetEdgeXPercentage()-20,15+(5*len(self.savedRulesUI))), 15, (255,255,255), bgColor=(20,30,40,255), underItems=[underItem])
+            element = Text(name, Vector2((UI.GetEdgeXPercentage() - (UI.GetEdgeXPercentage()-(self.UIs["SaveButton"].GetPosPercent().x+self.UIs["SaveButton"].GetBgRectSize().x)))+30,15+(5*len(self.savedRulesUI))), 15, con.TEXTCOLOR, bgColor=con.INPUTUICOLOR, underItems=[underItem])
             self.savedRulesUI[name] = element
             self.UIs[name] = element
             self.underAndItems = self.GetUnderItems()
@@ -337,22 +346,26 @@ class Settings():
         return (pickedColorMain, variableReference, listOfRef)
         
     def ResetScreen(self):
-        if con.HANDLER.IsTupleClose(tuple(con.BACKGROUNDCOLOR), (0,0,0), 200):
-            con.TEXTCOLOR = (255,255,255)
-        else:
-            con.TEXTCOLOR = (0,0,0)
+        self.UIs.clear()
+        self.slidersUIs.clear()
+        self.displayVariableList.clear()
+        self.underAndItems.clear()
+        self.inputUIs.clear()
+        self.savedRulesUI.clear()
         
-        self.displayVariableList.append(self.CreateRGBSlider("CellColor", Vector2(5,5), "Cell Colour:", con.CELLALIVECOLOR))
-        self.displayVariableList.append(self.CreateRGBSlider("DeadCellColor", Vector2(40,5), "Dead Cell Colour:", con.CELLDEADCOLOR))
-        self.displayVariableList.append(self.CreateRGBSlider("WallColor", Vector2(5,30), "Wall Colour:", con.CELLUNTOUCHCOLOR))
-        self.displayVariableList.append(self.CreateRGBSlider("BackgroundColor", Vector2(40,30), "Background Colour:", con.BACKGROUNDCOLOR))
+        self.UIs["ColorPickerTitle"] = Text("Colours:", Vector2(22.5,0), 30, con.TEXTCOLOR)
+            
+        self.displayVariableList.append(self.CreateRGBSlider("CellColor", Vector2(5,10), "Cell Colour:", con.CELLALIVECOLOR))
+        self.displayVariableList.append(self.CreateRGBSlider("DeadCellColor", Vector2(40,10), "Dead Cell Colour:", con.CELLDEADCOLOR))
+        self.displayVariableList.append(self.CreateRGBSlider("WallColor", Vector2(5,35), "Wall Colour:", con.CELLUNTOUCHCOLOR))
+        self.displayVariableList.append(self.CreateRGBSlider("BackgroundColor", Vector2(40,35), "Background Colour:", con.BACKGROUNDCOLOR))
         
         infoEnterName = Text("The name of the preset.", Vector2(0,0), 5, (120,120,120), bgColor=(70,70,70,255), zDist=2)
-        self.UIs["EnterNameText"] = Text("Preset Name:", Vector2(5,55), 15, con.TEXTCOLOR, underItems=[infoEnterName])
-        self.UIs["InputEnterName"] = Text("Name", self.UIs["EnterNameText"].GetPosPercent() + Vector2(self.UIs["EnterNameText"].GetRectSize().x+2,0), 15, con.TEXTCOLOR, bgColor=(20,30,40,255), maxStrLength=12, underItems=[infoEnterName], defaultStr="Name")
+        self.UIs["EnterNameText"] = Text("Preset Name:", Vector2(5,60), 15, con.TEXTCOLOR, underItems=[infoEnterName])
+        self.UIs["InputEnterName"] = Text("Name", self.UIs["EnterNameText"].GetPosPercent() + Vector2(self.UIs["EnterNameText"].GetRectSize().x+2,0), 15, con.TEXTCOLOR, bgColor=con.INPUTUICOLOR, maxStrLength=12, underItems=[infoEnterName], defaultStr="Name")
         
         infoSave = Text("Save the values to a preset.", Vector2(0,0), 5, (120,120,120), bgColor=(70,70,70,255), zDist=2)
-        self.UIs["SaveButton"] = Text("Save Preset", Vector2(22,65), 20, con.TEXTCOLOR, bgColor=(20,30,40,255), underItems=[infoSave])
+        self.UIs["SaveButton"] = Text("Save Preset", Vector2(22,70), 20, con.TEXTCOLOR, bgColor=con.INPUTUICOLOR, underItems=[infoSave])
         
         self.UIs["ExitText"] = Text("Exit", Vector2(UI.GetEdgeXPercentage(),UI.GetEdgeYPercentage()) - Vector2(2.5,3), 15, (0,0,0), bgColor=(255,0,0,255))
         self.UIs["ExitText"].MoveAdd(UI.RealSizeToPercent(Vector2(*self.UIs["ExitText"].GetRect().size))*-1)

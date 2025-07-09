@@ -214,6 +214,8 @@ class SandBoxLVL():
             return underItems
     
     def ResetScreen(self):
+        con.HANDLER.CheckColourFormat()
+        
         self.UIs["SymbolBackground"] = UI(Quad, Vector2(1,1), Vector2(34,12), (100,100,100))
         self.UIs["PlaySymbolBackground"] = UI(Quad, Vector2(2,2), Vector2(10,10), (50,50,50))
         self.UIs["PlaySymbol"] = UI(TriangleRight, self.UIs["PlaySymbolBackground"].GetPosPercent()+Vector2(1.5,1.5), self.UIs["PlaySymbolBackground"].GetSizePercent()-Vector2(3,3), (0,255,0))
@@ -233,11 +235,11 @@ class SandBoxLVL():
         self.UIs["SettingscircleOuter"] = UI(Circle, self.UIs["SettingsBackgroundOuter"].GetPosPercent()+Vector2(2,2), self.UIs["SettingsBackgroundOuter"].GetSizePercent()-Vector2(4,4), (75,75,75))
         self.UIs["SettingscircleInner"] = UI(Circle, self.UIs["SettingsBackgroundOuter"].GetPosPercent()+Vector2(3,3), self.UIs["SettingsBackgroundOuter"].GetSizePercent()-Vector2(6,6), (50,50,50))
         
-        self.UIs["SliderText"] = Text("TickSpeed", Vector2(53,87), 10, (255,255,255))
-        self.UIs["FPSCount"] = Text("FPS", Vector2(1,95), 10, (255,255,255))
+        self.UIs["SliderText"] = Text("TickSpeed", Vector2(53,87), 10, con.TEXTCOLOR)
+        self.UIs["FPSCount"] = Text("FPS", Vector2(1,95), 10, con.TEXTCOLOR)
         self.UIs["UnstableWarning"] = Text("Unstable!", Vector2(85,87), 10, (255,0,0))
         
-        self.UIs["GenerationCount"] = Text("Generation: 0", Vector2(1,13), 10, (255,255,255)) 
+        self.UIs["GenerationCount"] = Text("Generation: 0", Vector2(1,13), 10, con.TEXTCOLOR) 
         self.UIs["ExitText"] = Text("Exit", Vector2(UI.GetEdgeXPercentage(),UI.GetEdgeYPercentage()) - Vector2(2.5,3), 15, (0,0,0), bgColor=(255,0,0,255))
         self.UIs["ExitText"].MoveAdd(UI.RealSizeToPercent(Vector2(*self.UIs["ExitText"].GetRect().size))*-1)
         
