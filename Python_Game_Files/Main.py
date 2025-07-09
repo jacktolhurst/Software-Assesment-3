@@ -19,13 +19,16 @@ con.SCREENRECT = pygame.Rect(0,0,con.WINDOWWIDTH, con.WINDOWHEIGHT)
 con.HANDLER = Handler()
 
 async def main ():
-    with open(con.LOADDATASAVEPATH, 'r') as file:
-        data = json.load(file)
+    try:
+        with open(con.LOADDATASAVEPATH, 'r') as file:
+            data = json.load(file)
 
-        con.CELLALIVECOLOR = data["CELLALIVECOLOR"]
-        con.CELLDEADCOLOR = data["CELLDEADCOLOR"]
-        con.CELLUNTOUCHCOLOR = data["CELLUNTOUCHCOLOR"]
-        con.BACKGROUNDCOLOR = data["BACKGROUNDCOLOR"]
+            con.CELLALIVECOLOR = data["CELLALIVECOLOR"]
+            con.CELLDEADCOLOR = data["CELLDEADCOLOR"]
+            con.CELLUNTOUCHCOLOR = data["CELLUNTOUCHCOLOR"]
+            con.BACKGROUNDCOLOR = data["BACKGROUNDCOLOR"]
+    except:
+        pass
     
     mainMenu = MainMenu()
     

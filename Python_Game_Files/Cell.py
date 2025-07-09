@@ -27,12 +27,12 @@ class Cell():
     def SetState(self, state:State):
         self.state = state
         if self.state == State.ALIVE:
-            self.color = con.CELLALIVECOLOR
+            self.color = tuple(con.CELLALIVECOLOR)
         elif self.state == State.UNTOUCH:
             rand = random.randrange(-10,10)
-            self.color = (con.HANDLER.Clamp(con.CELLUNTOUCHCOLOR[0]+rand,0,255),con.HANDLER.Clamp(con.CELLUNTOUCHCOLOR[1]+rand,0,255),con.HANDLER.Clamp(con.CELLUNTOUCHCOLOR[2]+rand,0,255))
+            self.color = (con.HANDLER.Clamp(tuple(con.CELLUNTOUCHCOLOR)[0]+rand,0,255),con.HANDLER.Clamp(tuple(con.CELLUNTOUCHCOLOR)[1]+rand,0,255),con.HANDLER.Clamp(tuple(con.CELLUNTOUCHCOLOR)[2]+rand,0,255))
         else:
-            self.color = con.CELLDEADCOLOR
+            self.color = tuple(con.CELLDEADCOLOR)
 
     def CheckMouseCollide(self, mousePos):
         return self.rect.collidepoint(mousePos)
