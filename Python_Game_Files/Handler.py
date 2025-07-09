@@ -61,3 +61,7 @@ class Handler():
     @staticmethod
     def Vector2Clamp(arg:Vector2, minArg:Vector2, maxArg:Vector2) -> Vector2:
         return Vector2(Handler.Clamp(arg.x, minArg.x, maxArg.x),Handler.Clamp(arg.y, minArg.y, maxArg.y))
+    
+    @staticmethod
+    def IsTupleClose(t1, t2, tolerance=1):
+        return all(math.isclose(a, b, abs_tol=tolerance) for a, b in zip(t1, t2))

@@ -65,16 +65,17 @@ class MainMenu():
                     if event.key == pygame.K_q:
                         self.Stop()
                 if event.type == pygame.MOUSEBUTTONUP:
-                    if self.UIs["RestartSymbolForeground"].CheckCollidePoint(mousePos):
-                        self.CreateGrid()
-                    elif self.UIs["PlayForeground"].CheckCollidePoint(mousePos):
-                        self.sandBoxLevel = SandBoxLVL()
-                        self.CreateGrid()
-                    elif self.UIs["SettingsForeground"].CheckCollidePoint(mousePos):
-                        self.settings = Settings()
-                        self.CreateGrid()
-                    elif self.UIs["ExitText"].CheckCollidePoint(mousePos):
-                        self.Stop()
+                    if event.button == 1:
+                        if self.UIs["RestartSymbolForeground"].CheckCollidePoint(mousePos):
+                            self.CreateGrid()
+                        elif self.UIs["PlayForeground"].CheckCollidePoint(mousePos):
+                            self.sandBoxLevel = SandBoxLVL()
+                            self.CreateGrid()
+                        elif self.UIs["SettingsForeground"].CheckCollidePoint(mousePos):
+                            self.settings = Settings()
+                            self.CreateGrid()
+                        elif self.UIs["ExitText"].CheckCollidePoint(mousePos):
+                            self.Stop()
                 if event.type == QUIT:
                         con.HANDLER.QuitGame()
             

@@ -162,7 +162,7 @@ class GridAttributes():
     
     def ToDict(self):
         return {
-            "gridSize": [self.gridSize.x, self.gridSize.y],  # Serialize Vector2 as a list
+            "gridSize": [self.gridSize.x, self.gridSize.y],
             "underPopulationThreshold": self.underPopulationThreshold,
             "survivalMin": self.survivalMin,
             "survivalMax": self.survivalMax,

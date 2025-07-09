@@ -18,6 +18,7 @@ CELLALIVECOLOR = [255,255,255]
 CELLDEADCOLOR = [0,0,0]
 CELLUNTOUCHCOLOR = [200,60,60]
 BACKGROUNDCOLOR = [50,0,0]
+TEXTCOLOR = (255,255,255)
 
 SELECTEDUICOLOR = (10,10,10,255)
 
@@ -27,3 +28,4 @@ HANDCURSOR  = pygame.cursors.Cursor(pygame.SYSTEM_CURSOR_HAND)
 
 ATTRIBUTESSAVEPATH = 'Python_Game_Files/Data/AttributePresets.json'
 LOADDATASAVEPATH = 'Python_Game_Files/Data/ColorData.json'
+COLORPRESETSSAVEPATH = 'Python_Game_Files/Data/ColorPresets.json'

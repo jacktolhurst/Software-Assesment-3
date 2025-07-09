@@ -98,29 +98,31 @@ class SandBoxLVL():
                         self.Stop()
                         
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    if self.UIs["SliderNotch"].CheckCollidePoint(mousePos):
-                        touchingSlider = True
+                    if event.button == 1:
+                        if self.UIs["SliderNotch"].CheckCollidePoint(mousePos):
+                            touchingSlider = True
                     
                 if event.type == pygame.MOUSEBUTTONUP:
-                    if self.UIs["PlaySymbolBackground"].CheckCollidePoint(mousePos):
-                        self.isPlaying = not self.isPlaying
-                    elif self.UIs["SkipSymbolBackground"].CheckCollidePoint(mousePos):
-                        self.skipGeneration = True
-                        self.isPlaying = True
-                    elif self.UIs["RestartSymbolBackground"].CheckCollidePoint(mousePos):
-                        self.Restart()
-                        pygame.time.wait(10)
-                        return
-                    elif self.UIs["SettingsBackgroundInner"].CheckCollidePoint(mousePos):
-                        settingsMenu = SettingsMenu(self.grid.GetGridAttributes())
-                        self.gridAttributes = settingsMenu.Start()
-                        settingsMenu = None
-                        self.Restart()
-                    elif self.UIs["ExitText"].CheckCollidePoint(mousePos):
-                        self.Stop()
-                    
-                    if event.button == 1: 
-                        touchingSlider = False
+                    if event.button == 1:
+                        if self.UIs["PlaySymbolBackground"].CheckCollidePoint(mousePos):
+                            self.isPlaying = not self.isPlaying
+                        elif self.UIs["SkipSymbolBackground"].CheckCollidePoint(mousePos):
+                            self.skipGeneration = True
+                            self.isPlaying = True
+                        elif self.UIs["RestartSymbolBackground"].CheckCollidePoint(mousePos):
+                            self.Restart()
+                            pygame.time.wait(10)
+                            return
+                        elif self.UIs["SettingsBackgroundInner"].CheckCollidePoint(mousePos):
+                            settingsMenu = SettingsMenu(self.grid.GetGridAttributes())
+                            self.gridAttributes = settingsMenu.Start()
+                            settingsMenu = None
+                            self.Restart()
+                        elif self.UIs["ExitText"].CheckCollidePoint(mousePos):
+                            self.Stop()
+                        
+                        if event.button == 1: 
+                            touchingSlider = False
                 
                 if event.type == QUIT:
                     con.HANDLER.QuitGame()
