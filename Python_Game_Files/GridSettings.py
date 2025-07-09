@@ -182,14 +182,14 @@ class SettingsMenu():
                     if int(self.UIs["InputSurvivalMin"].GetText()) <= int(self.UIs["InputUnderPopulation"].GetText()):
                         self.UIs["InputSurvivalMin"].ChangeText(str(int(int(self.UIs["InputUnderPopulation"].GetText()))))
                     if int(self.UIs["InputSurvivalMax"].GetText()) <= int(self.UIs["InputSurvivalMin"].GetText()):
-                        self.UIs["InputSurvivalMax"].ChangeText(str(int(self.UIs["InputSurvivalMin"].GetText())+1))
+                        self.UIs["InputSurvivalMax"].ChangeText(str(int(self.UIs["InputSurvivalMin"].GetText())))
                 
                 self.DrawEverything()
                 
                 self.clock.tick(120)
         
         def DrawEverything(self):
-            con.SCREEN.fill((0,0,255))
+            con.SCREEN.fill(con.BACKGROUNDCOLOR)
             
             con.HANDLER.DrawUI(self, self.UIs)
             

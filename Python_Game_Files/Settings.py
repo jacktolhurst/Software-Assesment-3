@@ -121,29 +121,32 @@ class Settings():
         
         titleText = Text(title, mainBackground.GetPosPercent()+Vector2(1,1), 10, (255,255,255))
         self.UIs[leadingStr+"TitleText"] = titleText
+        titleTextEndPoint = titleText.GetPosPercent()+(UI.RealPosToPercent(Vector2(titleText.GetRect().size)))
+        
+        mainBackground.SizeSet(Vector2(con.HANDLER.Clamp((titleTextEndPoint.x - mainBackground.GetPosPercent().x) + 1, mainBackground.GetSizePercent().x, 100), mainBackground.GetSizePercent().y))
         
         pickedColorBackground = UI(Quad,mainBackground.GetPosPercentCenter()-Vector2(mainBackground.GetSizePercent().x/2,0), Vector2(12,12), (50,50,50))
         pickedColorBackground.MoveAdd((pickedColorBackground.GetSizePercent()*-0.5) + Vector2((pickedColorBackground.GetSizePercent().x/2)+1,titleText.GetRectSize().y-1))
         self.UIs[leadingStr+"PickedColorBackground"] = pickedColorBackground
+        pickedColorBackgroundEndPoint = pickedColorBackground.GetPosPercent()+(UI.RealPosToPercent(Vector2(pickedColorBackground.GetRect().size)))
         
         pickedColorMain = UI(Quad, pickedColorBackground.GetPosPercentCenter(), pickedColorBackground.GetSizePercent()-Vector2(2,2), (0,0,0))
         pickedColorMain.MoveAdd(pickedColorMain.GetSizePercent()*-0.5)
         self.UIs[leadingStr+"PickedColorMain"] = pickedColorMain
         
-        
-        redSliderBackground = UI(Quad, mainBackground.GetPosPercent()+Vector2(16,1),Vector2(3,mainBackground.GetSizePercent().y-2), (75,50,50))
+        redSliderBackground = UI(Quad, Vector2(pickedColorBackgroundEndPoint.x+2,(mainBackground.GetPosPercent().y+(titleText.GetSizePercent()/2))-0.5),Vector2(3,mainBackground.GetSizePercent().y-6), (75,50,50))
         redSliderCursor = UI(Circle, redSliderBackground.GetPosPercent(), Vector2(redSliderBackground.GetSizePercent().x, redSliderBackground.GetSizePercent().x), (255,255,255))
         self.slidersUIs[redSliderCursor] = redSliderBackground
         self.UIs[leadingStr+"RedSliderBackground"] = redSliderBackground
         self.UIs[leadingStr+"RedSliderCursor"] = redSliderCursor
         
-        greenSliderBackground = UI(Quad, mainBackground.GetPosPercent()+Vector2(21,1),Vector2(3,mainBackground.GetSizePercent().y-2), (50,75,50))
+        greenSliderBackground = UI(Quad, Vector2(pickedColorBackgroundEndPoint.x+7,(mainBackground.GetPosPercent().y+(titleText.GetSizePercent()/2))-0.5),Vector2(3,mainBackground.GetSizePercent().y-6), (50,75,50))
         greenSliderCursor = UI(Circle, greenSliderBackground.GetPosPercent(), Vector2(greenSliderBackground.GetSizePercent().x, greenSliderBackground.GetSizePercent().x), (255,255,255))
         self.slidersUIs[greenSliderCursor] = greenSliderBackground
         self.UIs[leadingStr+"GreenSliderBackground"] = greenSliderBackground
         self.UIs[leadingStr+"GreenSliderCursor"] = greenSliderCursor
         
-        blueSliderBackground = UI(Quad, mainBackground.GetPosPercent()+Vector2(26,1),Vector2(3,mainBackground.GetSizePercent().y-2), (50,50,75))
+        blueSliderBackground = UI(Quad, Vector2(pickedColorBackgroundEndPoint.x+12,(mainBackground.GetPosPercent().y+(titleText.GetSizePercent()/2))-0.5),Vector2(3,mainBackground.GetSizePercent().y-6), (50,50,75))
         blueSliderCursor = UI(Circle, blueSliderBackground.GetPosPercent(), Vector2(blueSliderBackground.GetSizePercent().x, blueSliderBackground.GetSizePercent().x), (255,255,255))
         self.slidersUIs[blueSliderCursor] = blueSliderBackground
         self.UIs[leadingStr+"BlueSliderBackground"] = blueSliderBackground
@@ -151,12 +154,16 @@ class Settings():
         
         listOfRef = [(redSliderCursor,redSliderBackground),(greenSliderCursor,greenSliderBackground),(blueSliderCursor,blueSliderBackground)]
         
+        
         self.ColorToPos(tuple(variableReference), listOfRef)
         
         return (pickedColorMain, variableReference, listOfRef)
         
     def ResetScreen(self):
-        self.displayVariableList.append(self.CreateRGBSlider("CellColor", Vector2(10,10), "Cell Colour:", con.CELLALIVECOLOR))
+        self.displayVariableList.append(self.CreateRGBSlider("CellColor", Vector2(10,5), "Cell Colour:", con.CELLALIVECOLOR))
+        self.displayVariableList.append(self.CreateRGBSlider("DeadCellColor", Vector2(10,30), "Dead Cell Colour:", con.CELLDEADCOLOR))
+        self.displayVariableList.append(self.CreateRGBSlider("WallColor", Vector2(10,55), "Wall Colour:", con.CELLUNTOUCHCOLOR))
+        self.displayVariableList.append(self.CreateRGBSlider("BackgroundColor", Vector2(10,80), "Background Colour:", con.BACKGROUNDCOLOR))
         
         self.UIs["ExitText"] = Text("Exit", Vector2(UI.GetEdgeXPercentage(),UI.GetEdgeYPercentage()) - Vector2(2.5,3), 15, (0,0,0), bgColor=(255,0,0,255))
         self.UIs["ExitText"].MoveAdd(UI.RealSizeToPercent(Vector2(*self.UIs["ExitText"].GetRect().size))*-1)

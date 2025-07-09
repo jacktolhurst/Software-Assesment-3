@@ -108,6 +108,9 @@ class Text():
     def GetPosPercent(self) -> Vector2:
         return self.originalRelativePos
     
+    def GetPosReal(self) -> Vector2:
+        return UI.PercentPosToReal(self.originalRelativePos)
+    
     def GetRect(self) -> pygame.Rect:
         return self.rect
     
