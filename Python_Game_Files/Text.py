@@ -23,6 +23,7 @@ class Text():
         
         self.fontStr = font
         self.font = None
+        self.textLines = []
         self.text = None
         self.rect = None
         self.bgRect = None
@@ -30,7 +31,6 @@ class Text():
         
         self.textStr = "Err"
         self.ChangeText(textStr)
-        
         
         self.ResetRect()
     
@@ -75,7 +75,9 @@ class Text():
                     self.textStr = newTextStr
             else:
                 self.textStr = newTextStr
-    
+
+        self.textLines = self.textStr.split('\n')
+        
         self.ResetRect()
     
     def SetState(self, newState):
@@ -131,29 +133,34 @@ class Text():
 
     def ResetRect(self):                
         self.screenWidth, self.screenHeight = pygame.display.get_surface().get_size()
-    
-        fx = self.originalRelativePos.x  / 100.0
-        fy = self.originalRelativePos.y  / 100.0
-
+        fx = self.originalRelativePos.x / 100.0
+        fy = self.originalRelativePos.y / 100.0
         base = min(self.screenWidth, self.screenHeight)
-
         absX = fx * base
         absY = fy * base
         pos = Vector2(absX, absY)
-        
-        relativeSize = int((((self.originalRelativeSize/2))+((self.originalRelativeSize/2)*self.screenHeight))/200) 
-        
+        relativeSize = int((((self.originalRelativeSize / 2)) + ((self.originalRelativeSize / 2) * self.screenHeight)) / 200)
+
         self.font = pygame.font.Font(self.fontStr, relativeSize)
-        self.text = self.font.render(self.textStr, True, self.color)
+        renderedLines = [self.font.render(line, True, self.color) for line in self.textLines]
+
+        totalHeight = sum(text.get_height() for text in renderedLines)
+        maxWidth = max(text.get_width() for text in renderedLines)
+
+        self.text = pygame.Surface((maxWidth, totalHeight), pygame.SRCALPHA)
+        yOffset = 0
+        for text_surface in renderedLines:
+            self.text.blit(text_surface, (0, yOffset))
+            yOffset += text_surface.get_height()
+
         self.rect = self.text.get_rect()
         self.rect.topleft = pos
-        
-        textW, textH = self.font.size(self.textStr)   
-        
-        minWidth = int(base * 0.035) 
-        self.bgRect = pygame.Rect(pos.x-3, pos.y-4, max(textW + 4, minWidth), textH + 4)
-        self.bgSurf = pygame.Surface(pygame.Rect(self.bgRect).size, pygame.SRCALPHA)
+
+        minWidth = int(base * 0.035)
+        self.bgRect = pygame.Rect(pos.x - 3, pos.y - 4, max(maxWidth + 4, minWidth), totalHeight + 4)
+        self.bgSurf = pygame.Surface(self.bgRect.size, pygame.SRCALPHA)
         self.bgSurf.fill(self.bgColor)
+
     
     def Draw(self):
         if self.state:
