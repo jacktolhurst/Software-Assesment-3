@@ -222,7 +222,7 @@ class SettingsMenu():
             
             for name in self.gridAttributesData.keys():
                 underItem = Text("Right Click to delete.", Vector2(0,0), 5, (120,120,120), bgColor=(70,70,70,255), zDist=2)
-                element = Text(name, Vector2(UI.GetEdgeXPercentage()-25,15+(5*len(self.savedRulesUI))), 15, (255,255,255), bgColor=(20,30,40,255), underItems=[underItem])
+                element = Text(name, Vector2(UI.GetEdgeXPercentage()-25,15+(5*len(self.savedRulesUI))), 15, con.TEXTCOLOR, bgColor=con.INPUTUICOLOR, underItems=[underItem])
                 self.savedRulesUI[name] = element
                 self.UIs[name] = element
                 self.underAndItems = self.GetUnderItems()

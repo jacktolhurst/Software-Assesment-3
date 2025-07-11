@@ -62,7 +62,7 @@ class About():
         pygame.display.update()
     
     def ResetScreen(self):
-        self.UIs["test"] = Text("This is the first line \n This is the second line \n This is the third line", Vector2(10,10), 30, (255,255,255))
+        self.UIs["HowToPlay"] = Text("How To Play:", Vector2(22.5,0), 20, con.TEXTCOLOR)
         
         self.UIs["ExitText"] = Text("Exit", Vector2(UI.GetEdgeXPercentage(),UI.GetEdgeYPercentage()) - Vector2(2.5,3), 15, (0,0,0), bgColor=(255,0,0,255))
         self.UIs["ExitText"].MoveAdd(UI.RealSizeToPercent(Vector2(*self.UIs["ExitText"].GetRect().size))*-1)

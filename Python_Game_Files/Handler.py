@@ -1,4 +1,5 @@
 import sys
+import numpy
 import pygame
 import itertools
 import Constants as con
@@ -78,3 +79,11 @@ class Handler():
     @staticmethod
     def IsTupleClose(t1, t2, tolerance=1) -> bool:
         return all(math.isclose(a, b, abs_tol=tolerance) for a, b in zip(t1, t2))
+    
+    @staticmethod
+    def IsColorPresetClose(p1: dict, p2: dict, tolerance=5) -> bool:
+        keys = ["CELLALIVECOLOR", "CELLDEADCOLOR", "CELLUNTOUCHCOLOR", "BACKGROUNDCOLOR"]
+        return all(
+            key in p1 and key in p2 and Handler.IsTupleClose(p1[key], p2[key], tolerance)
+            for key in keys
+        )
