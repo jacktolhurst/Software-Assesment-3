@@ -86,27 +86,43 @@ class Settings():
                             inputText.ChangeText(inputText.GetText() + event.unicode)
                     else:
                         if event.key == pygame.K_q:
-                            self.Stop()
+                            self.Stop() 
                 if event.type == pygame.MOUSEBUTTONUP:
                     if event.button == 1:
                         if self.UIs["ExitText"].CheckCollidePoint(mousePos):
                             self.Stop()
                         elif self.UIs["SaveButton"].CheckCollidePoint(mousePos):
-                            with open(con.COLORPRESETSSAVEPATH, 'r') as f:
-                                self.colorPresetsData = json.load(f)
-                            
-                            with open(con.COLORPRESETSSAVEPATH, 'w') as file:
+                            newName = self.UIs["InputEnterName"].GetText()
+                            if newName != "Name":
+                                self.UIs["SaveBlock"].SetState(False)
                                 
-                                self.colorPresetsData[self.UIs["InputEnterName"].GetText()] = {
-                                    "CELLALIVECOLOR":    con.CELLALIVECOLOR.copy(),
-                                    "CELLDEADCOLOR":     con.CELLDEADCOLOR.copy(),
-                                    "CELLUNTOUCHCOLOR":  con.CELLUNTOUCHCOLOR.copy(),
-                                    "BACKGROUNDCOLOR":   con.BACKGROUNDCOLOR.copy()
-                                }
+                                with open(con.COLORPRESETSSAVEPATH, 'r') as f:
+                                    self.colorPresetsData = json.load(f)
 
-                                json.dump(self.colorPresetsData, file, indent=4)
+                                with open(con.COLORPRESETSSAVEPATH, 'w') as file:
+                                    
+                                    newData = {
+                                        "CELLALIVECOLOR":    con.CELLALIVECOLOR.copy(),
+                                        "CELLDEADCOLOR":     con.CELLDEADCOLOR.copy(),
+                                        "CELLUNTOUCHCOLOR":  con.CELLUNTOUCHCOLOR.copy(),
+                                        "BACKGROUNDCOLOR":   con.BACKGROUNDCOLOR.copy()
+                                        }
+                                    
+                                    oldKey = None
+                                    for name, data in self.colorPresetsData.items():
+                                        if newData == data:
+                                            oldKey = name
+                                            break
+                                    if oldKey:
+                                        del self.colorPresetsData[oldKey]
+                                    
+                                    self.colorPresetsData[newName] = newData
 
-                                self.RecreateGridUIs()
+                                    json.dump(self.colorPresetsData, file, indent=4)
+
+                                    self.RecreateGridUIs()
+                            else:
+                                self.UIs["SaveBlock"].SetState(True)
                 
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if event.button == 1:
@@ -213,6 +229,11 @@ class Settings():
                 for under in self.underAndItems.keys():
                     under.SetState(False)
             
+            if self.UIs["InputEnterName"].GetText() == "Name":
+                    self.UIs["SaveButton"].ChangeBgColor((70,70,70))
+            else:
+                self.UIs["SaveButton"].ChangeBgColor(con.INPUTUICOLOR)
+            
             self.DrawEverything()
             
             
@@ -279,7 +300,7 @@ class Settings():
         
         for name in self.colorPresetsData.keys():
             underItem = Text("Right Click to delete.", Vector2(0,0), 5, (120,120,120), bgColor=(70,70,70,255), zDist=2)
-            element = Text(name, Vector2((UI.GetEdgeXPercentage() - (UI.GetEdgeXPercentage()-(self.UIs["SaveButton"].GetPosPercent().x+self.UIs["SaveButton"].GetBgRectSize().x)))+30,15+(5*len(self.savedRulesUI))), 15, con.TEXTCOLOR, bgColor=con.INPUTUICOLOR, underItems=[underItem])
+            element = Text(name, Vector2((UI.GetEdgeXPercentage() - (UI.GetEdgeXPercentage()-(self.UIs["SaveButton"].GetPosPercent().x+self.UIs["SaveButton"].GetBgRectSize().x)))+25,10+(5*len(self.savedRulesUI))), 15, con.TEXTCOLOR, bgColor=con.INPUTUICOLOR, underItems=[underItem])
             self.savedRulesUI[name] = element
             self.UIs[name] = element
             self.underAndItems = self.GetUnderItems()
@@ -354,6 +375,7 @@ class Settings():
         self.savedRulesUI.clear()
         
         self.UIs["ColorPickerTitle"] = Text("Colours:", Vector2(22.5,0), 30, con.TEXTCOLOR)
+        self.UIs["PresetsTitle"] = Text("Presets:", Vector2(75,2), 20, con.TEXTCOLOR)
             
         self.displayVariableList.append(self.CreateRGBSlider("CellColor", Vector2(5,10), "Cell Colour:", con.CELLALIVECOLOR))
         self.displayVariableList.append(self.CreateRGBSlider("DeadCellColor", Vector2(40,10), "Dead Cell Colour:", con.CELLDEADCOLOR))
@@ -366,6 +388,7 @@ class Settings():
         
         infoSave = Text("Save the values to a preset.", Vector2(0,0), 5, (120,120,120), bgColor=(70,70,70,255), zDist=2)
         self.UIs["SaveButton"] = Text("Save Preset", Vector2(22,70), 20, con.TEXTCOLOR, bgColor=con.INPUTUICOLOR, underItems=[infoSave])
+        self.UIs["SaveBlock"] = Text("You cannot name a preset \"Name\"", self.UIs["SaveButton"].GetPosPercent()-Vector2(6,4), 10, (255,0,0), state=False)
         
         self.UIs["ExitText"] = Text("Exit", Vector2(UI.GetEdgeXPercentage(),UI.GetEdgeYPercentage()) - Vector2(2.5,3), 15, (0,0,0), bgColor=(255,0,0,255))
         self.UIs["ExitText"].MoveAdd(UI.RealSizeToPercent(Vector2(*self.UIs["ExitText"].GetRect().size))*-1)

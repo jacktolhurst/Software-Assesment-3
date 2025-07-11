@@ -128,7 +128,7 @@ class Text():
 
     def GetUnderItem(self):
         return self.underItems
-    
+
     def ResetRect(self):                
         self.screenWidth, self.screenHeight = pygame.display.get_surface().get_size()
     

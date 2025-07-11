@@ -43,28 +43,6 @@
             85
         ]
     },
-    "Matrix": {
-        "CELLALIVECOLOR": [
-            0,
-            180,
-            0
-        ],
-        "CELLDEADCOLOR": [
-            0,
-            0,
-            0
-        ],
-        "CELLUNTOUCHCOLOR": [
-            0,
-            56,
-            0
-        ],
-        "BACKGROUNDCOLOR": [
-            0,
-            0,
-            0
-        ]
-    },
     "Light Mode": {
         "CELLALIVECOLOR": [
             0,
@@ -85,6 +63,72 @@
             255,
             255,
             255
+        ]
+    },
+    "Pond": {
+        "CELLALIVECOLOR": [
+            83,
+            255,
+            255
+        ],
+        "CELLDEADCOLOR": [
+            0,
+            80,
+            188
+        ],
+        "CELLUNTOUCHCOLOR": [
+            41,
+            41,
+            80
+        ],
+        "BACKGROUNDCOLOR": [
+            0,
+            0,
+            95
+        ]
+    },
+    "Hell": {
+        "CELLALIVECOLOR": [
+            255,
+            0,
+            0
+        ],
+        "CELLDEADCOLOR": [
+            71,
+            0,
+            0
+        ],
+        "CELLUNTOUCHCOLOR": [
+            71,
+            12,
+            0
+        ],
+        "BACKGROUNDCOLOR": [
+            142,
+            54,
+            0
+        ]
+    },
+    "Matrix": {
+        "CELLALIVECOLOR": [
+            0,
+            180,
+            0
+        ],
+        "CELLDEADCOLOR": [
+            0,
+            0,
+            0
+        ],
+        "CELLUNTOUCHCOLOR": [
+            0,
+            56,
+            0
+        ],
+        "BACKGROUNDCOLOR": [
+            0,
+            0,
+            0
         ]
     }
 }

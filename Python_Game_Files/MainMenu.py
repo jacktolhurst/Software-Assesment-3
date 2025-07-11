@@ -9,6 +9,7 @@ from Text import *
 from Grid import *
 from SandboxLevel import SandBoxLVL
 from Settings import Settings
+from About import About
 
 class MainMenu():
     def __init__(self):
@@ -28,6 +29,7 @@ class MainMenu():
         
         self.sandBoxLevel = None
         self.settings = None
+        self.about = None
 
         self.Start()
     
@@ -77,6 +79,10 @@ class MainMenu():
                             self.settings = Settings()
                             self.CreateGrid()
                             self.ResetScreen()
+                        elif self.UIs["AboutForeground"].CheckCollidePoint(mousePos):
+                            self.about = About()
+                            self.CreateGrid()
+                            self.ResetScreen()
                         elif self.UIs["ExitText"].CheckCollidePoint(mousePos):
                             self.Stop()
                 if event.type == QUIT:
@@ -89,6 +95,7 @@ class MainMenu():
             
             if elapsedGridChangeTime >= 10000 + randomAddedTime:
                 self.CreateGrid()
+                self.bgGrid.Update()
                 
                 randomAddedTime = random.randint(-1000,1000)
                 lastGridChangeTime = currTime

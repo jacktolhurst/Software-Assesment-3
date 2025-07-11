@@ -91,20 +91,32 @@ class SettingsMenu():
                             if self.UIs["SaveAndQuitText"].CheckCollidePoint(mousePos):
                                 self.Stop()
                             elif self.UIs["SaveAttributesButton"].CheckCollidePoint(mousePos):
-                                with open(con.ATTRIBUTESSAVEPATH, 'w') as file:
+                                newName = self.UIs["InputEnterName"].GetText()
+                                if newName != "Name":
+                                    self.UIs["SaveBlock"].SetState(False)
+                                    
+                                    with open(con.ATTRIBUTESSAVEPATH, 'w') as file:
 
-                                    dataName = str(self.UIs["InputEnterName"].GetText())
-                                    data = self.gridAttributes.ToDict()
+                                        dataName = str(self.UIs["InputEnterName"].GetText())
+                                        newData = self.gridAttributes.ToDict()
+                                        
+                                        oldKey = None
+                                        for name, data in self.gridAttributesData.items():
+                                            if newData == data:
+                                                oldKey = name
+                                                break
+                                        if oldKey:
+                                            del self.gridAttributesData[oldKey]
 
-                                    self.gridAttributesData[dataName] = data
+                                        self.gridAttributesData[dataName] = newData
 
-                                    json.dump(self.gridAttributesData, file, indent=4)
+                                        json.dump(self.gridAttributesData, file, indent=4)
 
-                                    self.RecreateGridUIs()
-                                
-                                self.UIs["InputEnterName"].ChangeText("Name")
-                                
-                                self.Stop()
+                                        self.RecreateGridUIs()
+
+                                    self.UIs["InputEnterName"].ChangeText("Name")
+                                else:
+                                    self.UIs["SaveBlock"].SetState(True)
                                 
                             elif any(element.CheckCollidePoint(mousePos) for element in self.savedRulesUI.values()):
                                 saveName = None
@@ -185,6 +197,11 @@ class SettingsMenu():
                         self.UIs["InputSurvivalMin"].ChangeText(str(int(int(self.UIs["InputUnderPopulation"].GetText()))))
                     if int(self.UIs["InputSurvivalMax"].GetText()) <= int(self.UIs["InputSurvivalMin"].GetText()):
                         self.UIs["InputSurvivalMax"].ChangeText(str(int(self.UIs["InputSurvivalMin"].GetText())))
+                
+                if self.UIs["InputEnterName"].GetText() == "Name":
+                    self.UIs["SaveAttributesButton"].ChangeBgColor((70,70,70))
+                else:
+                    self.UIs["SaveAttributesButton"].ChangeBgColor(con.INPUTUICOLOR)
                 
                 self.DrawEverything()
                 
@@ -293,6 +310,7 @@ class SettingsMenu():
             
             infoSave = Text("Save the values to a preset.", Vector2(0,0), 5, (120,120,120), bgColor=(70,70,70,255), zDist=2)
             self.UIs["SaveAttributesButton"] = Text("Save Preset", Vector2(inputOffsetX/2-4,self.UIs["EnterNameText"].GetPosPercent().y+10), 20, con.TEXTCOLOR, bgColor=con.INPUTUICOLOR, underItems=[infoSave])
+            self.UIs["SaveBlock"] = Text("You cannot name a preset \"Name\"", self.UIs["SaveAttributesButton"].GetPosPercent()-Vector2(6,4), 10, (255,0,0), state=False)
             
             self.UIs["SaveAndQuitText"] = Text("Apply and Exit", Vector2(UI.GetEdgeXPercentage()-20, UI.GetEdgeYPercentage()-5), 10, (0,0,0), bgColor=(0,255,0,255))
             
