@@ -1,13 +1,47 @@
-from flask import Flask, request, redirect, render_template
-import Methods as method
+import pygame
+import asyncio
+import json
+import Constants as con
+from pygame.locals import *
+from pygame.math import *
+from Handler import Handler
+from MainMenu import MainMenu
 
-app = Flask(__name__)
+pygame.init()
 
-@app.route("/")
-def HomePage():
-    return render_template("/home.html")
+clock = pygame.time.Clock()
 
-if __name__ == "__main__":
-    app.config["TEMPLATES_AUTO_RELOAD"] = True
-    app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 0
-    app.run(debug=True, host="0.0.0.0", port=3000)
+pygame.display.set_caption('The Games of Life')
+con.SCREEN = pygame.display.set_mode((con.WINDOWWIDTH, con.WINDOWHEIGHT), FULLSCREEN)
+# con.SCREEN = pygame.display.set_mode((con.WINDOWWIDTH, con.WINDOWHEIGHT), pygame.RESIZABLE)
+con.SCREENRECT = pygame.Rect(0,0,con.WINDOWWIDTH, con.WINDOWHEIGHT)
+con.HANDLER = Handler()
+con.HANDLER.CheckColourFormat()
+
+async def main ():
+    try:
+        with open(con.LOADDATASAVEPATH, 'r') as file:
+            data = json.load(file)
+
+            con.CELLALIVECOLOR = data["CELLALIVECOLOR"]
+            con.CELLDEADCOLOR = data["CELLDEADCOLOR"]
+            con.CELLUNTOUCHCOLOR = data["CELLUNTOUCHCOLOR"]
+            con.BACKGROUNDCOLOR = data["BACKGROUNDCOLOR"]
+    except:
+        pass
+    
+    mainMenu = MainMenu()
+    
+    with open(con.LOADDATASAVEPATH, 'w') as file:
+        
+        saveData = {
+            "CELLALIVECOLOR" : con.CELLALIVECOLOR,
+            "CELLDEADCOLOR" : con.CELLDEADCOLOR,
+            "CELLUNTOUCHCOLOR" : con.CELLUNTOUCHCOLOR,
+            "BACKGROUNDCOLOR" : con.BACKGROUNDCOLOR
+        }
+        
+        json.dump(saveData, file, indent=4)
+    
+
+asyncio.run(main())
