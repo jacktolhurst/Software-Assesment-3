@@ -41,9 +41,6 @@ class SettingsMenu():
                 
                 self.Update()
                 
-                pygame.mouse.set_cursor(*pygame.cursors.broken_x)
-                
-                
                 self.EnterDataToGridAttributes()
                 
                 return self.gridAttributes

@@ -11,9 +11,9 @@
             0
         ],
         "CELLUNTOUCHCOLOR": [
-            41,
-            41,
-            41
+            50,
+            50,
+            50
         ],
         "BACKGROUNDCOLOR": [
             0,
@@ -65,50 +65,6 @@
             255
         ]
     },
-    "Pond": {
-        "CELLALIVECOLOR": [
-            83,
-            255,
-            255
-        ],
-        "CELLDEADCOLOR": [
-            0,
-            80,
-            188
-        ],
-        "CELLUNTOUCHCOLOR": [
-            41,
-            41,
-            80
-        ],
-        "BACKGROUNDCOLOR": [
-            0,
-            0,
-            95
-        ]
-    },
-    "Hell": {
-        "CELLALIVECOLOR": [
-            255,
-            0,
-            0
-        ],
-        "CELLDEADCOLOR": [
-            71,
-            0,
-            0
-        ],
-        "CELLUNTOUCHCOLOR": [
-            71,
-            12,
-            0
-        ],
-        "BACKGROUNDCOLOR": [
-            142,
-            54,
-            0
-        ]
-    },
     "Matrix": {
         "CELLALIVECOLOR": [
             1,
@@ -128,6 +84,116 @@
         "BACKGROUNDCOLOR": [
             0,
             0,
+            0
+        ]
+    },
+    "Fire": {
+        "CELLALIVECOLOR": [
+            255,
+            1,
+            1
+        ],
+        "CELLDEADCOLOR": [
+            71,
+            1,
+            1
+        ],
+        "CELLUNTOUCHCOLOR": [
+            50,
+            50,
+            50
+        ],
+        "BACKGROUNDCOLOR": [
+            142,
+            54,
+            0
+        ]
+    },
+    "Water": {
+        "CELLALIVECOLOR": [
+            83,
+            255,
+            255
+        ],
+        "CELLDEADCOLOR": [
+            1,
+            80,
+            188
+        ],
+        "CELLUNTOUCHCOLOR": [
+            50,
+            50,
+            50
+        ],
+        "BACKGROUNDCOLOR": [
+            0,
+            0,
+            95
+        ]
+    },
+    "Grass": {
+        "CELLALIVECOLOR": [
+            1,
+            203,
+            1
+        ],
+        "CELLDEADCOLOR": [
+            79,
+            119,
+            1
+        ],
+        "CELLUNTOUCHCOLOR": [
+            50,
+            50,
+            50
+        ],
+        "BACKGROUNDCOLOR": [
+            0,
+            29,
+            0
+        ]
+    },
+    "Plasma": {
+        "CELLALIVECOLOR": [
+            255,
+            1,
+            255
+        ],
+        "CELLDEADCOLOR": [
+            96,
+            1,
+            255
+        ],
+        "CELLUNTOUCHCOLOR": [
+            50,
+            50,
+            50
+        ],
+        "BACKGROUNDCOLOR": [
+            37,
+            0,
+            64
+        ]
+    },
+    "Yellow": {
+        "CELLALIVECOLOR": [
+            255,
+            255,
+            1
+        ],
+        "CELLDEADCOLOR": [
+            255,
+            255,
+            1
+        ],
+        "CELLUNTOUCHCOLOR": [
+            255,
+            255,
+            0
+        ],
+        "BACKGROUNDCOLOR": [
+            255,
+            255,
             0
         ]
     }

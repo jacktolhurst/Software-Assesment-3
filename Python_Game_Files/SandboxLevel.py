@@ -1,6 +1,7 @@
 import numpy
 import pygame
 import random
+import math
 from pygame.locals import *
 from pygame.math import *
 import Constants as con
@@ -94,6 +95,18 @@ class SandBoxLVL():
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_p:
                         self.isPlaying = not self.isPlaying
+                    if event.key == pygame.K_s:
+                        settingsMenu = SettingsMenu(self.grid.GetGridAttributes())
+                        self.gridAttributes = settingsMenu.Start()
+                        settingsMenu = None
+                    if event.key == pygame.K_c:
+                        self.grid.SetCell(Vector2(math.ceil(self.grid.GetGridAttributes().gridSize.x/2),math.ceil(self.grid.GetGridAttributes().gridSize.y/2)), State.ALIVE)
+                    if event.key == pygame.K_r:
+                        self.Restart()
+                        pygame.time.wait(10)
+                        return
+                    if event.key == pygame.K_u:
+                        self.grid.SetCell(Vector2(random.randint(0,int(self.grid.GetGridAttributes().gridSize.x)),random.randint(0,int(self.grid.GetGridAttributes().gridSize.y))), State.ALIVE)
                     if event.key == pygame.K_q:
                         self.Stop()
                         

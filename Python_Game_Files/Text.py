@@ -124,6 +124,9 @@ class Text():
 
     def GetBgRectSize(self) -> Vector2:
         return UI.RealPosToPercent(Vector2(*self.bgRect.size))
+    
+    def GetBgRectCentrePercent(self) -> Vector2:
+        return UI.RealPosToPercent(Vector2(*self.bgRect.center))
 
     def GetBgSurf(self) -> pygame.Surface:
         return self.bgSurf
