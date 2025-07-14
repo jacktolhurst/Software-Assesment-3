@@ -1,5 +1,4 @@
 import pygame
-import asyncio
 import json
 import Constants as con
 from pygame.locals import *
@@ -18,7 +17,7 @@ con.SCREENRECT = pygame.Rect(0,0,con.WINDOWWIDTH, con.WINDOWHEIGHT)
 con.HANDLER = Handler()
 con.HANDLER.CheckColourFormat()
 
-async def main ():
+def main ():
     try:
         with open(con.LOADDATASAVEPATH, 'r') as file:
             data = json.load(file)
@@ -44,4 +43,4 @@ async def main ():
         json.dump(saveData, file, indent=4)
     
 
-asyncio.run(main())
+main()

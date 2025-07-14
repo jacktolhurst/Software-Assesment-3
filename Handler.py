@@ -1,5 +1,6 @@
 import sys
-import numpy
+import os
+import json
 import pygame
 import itertools
 import Constants as con
@@ -10,6 +11,10 @@ from Text import *
 class Handler():
     def __init__(self):
         self.screenWidth, self.screenHeight = pygame.display.get_surface().get_size()
+        
+        con.ATTRIBUTESSAVEPATH = con.GetResourcePath(con.ATTRIBUTESSAVEPATH)
+        con.LOADDATASAVEPATH = con.GetResourcePath(con.LOADDATASAVEPATH)
+        con.COLORPRESETSSAVEPATH = con.GetResourcePath(con.COLORPRESETSSAVEPATH)
     
     def DrawUI(self, main, UIList):
         Handler.CheckColourFormat()
@@ -87,3 +92,9 @@ class Handler():
             key in p1 and key in p2 and Handler.IsTupleClose(p1[key], p2[key], tolerance)
             for key in keys
         )
+    
+    @staticmethod
+    def GetResourcePath(relPath):
+        if hasattr(sys, '_MEIPASS'):
+            return os.path.join(sys._MEIPASS, relPath)
+        return os.path.join(os.path.abspath("."), relPath)
