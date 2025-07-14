@@ -12,9 +12,9 @@ class Handler():
     def __init__(self):
         self.screenWidth, self.screenHeight = pygame.display.get_surface().get_size()
         
-        con.ATTRIBUTESSAVEPATH = con.GetResourcePath(con.ATTRIBUTESSAVEPATH)
-        con.LOADDATASAVEPATH = con.GetResourcePath(con.LOADDATASAVEPATH)
-        con.COLORPRESETSSAVEPATH = con.GetResourcePath(con.COLORPRESETSSAVEPATH)
+        con.ATTRIBUTESSAVEPATH = Handler.GetResourcePath(con.ATTRIBUTESSAVEPATH)
+        con.LOADDATASAVEPATH = Handler.GetResourcePath(con.LOADDATASAVEPATH)
+        con.COLORPRESETSSAVEPATH = Handler.GetResourcePath(con.COLORPRESETSSAVEPATH)
     
     def DrawUI(self, main, UIList):
         Handler.CheckColourFormat()
