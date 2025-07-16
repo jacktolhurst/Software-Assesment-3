@@ -174,27 +174,5 @@
             0,
             64
         ]
-    },
-    "Yellow": {
-        "CELLALIVECOLOR": [
-            255,
-            255,
-            1
-        ],
-        "CELLDEADCOLOR": [
-            255,
-            255,
-            1
-        ],
-        "CELLUNTOUCHCOLOR": [
-            255,
-            255,
-            0
-        ],
-        "BACKGROUNDCOLOR": [
-            255,
-            255,
-            0
-        ]
     }
 }
