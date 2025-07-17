@@ -28,6 +28,6 @@ HANDCURSOR  = pygame.cursors.Cursor(pygame.SYSTEM_CURSOR_HAND)
 
 CURRENTDIR = Path(__file__).parent
 
-ATTRIBUTESSAVEPATH = CURRENTDIR / 'Data\AttributePresets.json'
-LOADDATASAVEPATH = CURRENTDIR / 'Data\ColorData.json'
-COLORPRESETSSAVEPATH = CURRENTDIR / 'Data\ColorPresets.json'
+ATTRIBUTESSAVEPATH   = CURRENTDIR / 'Data/AttributePresets.json'
+LOADDATASAVEPATH     = CURRENTDIR / 'Data/ColorData.json'
+COLORPRESETSSAVEPATH = CURRENTDIR / 'Data/ColorPresets.json'
