@@ -1,7 +1,7 @@
 import numpy
 import pygame
 import random
-import math
+import  math
 from pygame.locals import *
 from pygame.math import *
 import Constants as con
