@@ -89,13 +89,13 @@ class MainMenu():
                         con.HANDLER.QuitGame()
             
             if elapsedUpdateTime >= (1000 / self.tickSpeed):
+                self.UIs["Test"] = Text(str(currTime), Vector2(50,50), 40, (255,255,255), bgColor=(20,10,10), zDist=0)
                 self.bgGrid.Update()
                 
                 lastUpdateTime = currTime
             
             if elapsedGridChangeTime >= 10000 + randomAddedTime:
                 self.CreateGrid()
-                self.bgGrid.Update()
                 
                 randomAddedTime = random.randint(-1000,1000)
                 lastGridChangeTime = currTime
