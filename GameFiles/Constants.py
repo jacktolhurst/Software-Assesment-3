@@ -1,12 +1,12 @@
 import pygame
 from pygame.math import *
+from pathlib import Path
 
 SCREEN = None
 SCREENRECT = None
 CURRSCREEN = None
 
 WINDOWWIDTH, WINDOWHEIGHT = 3840, 2160
-# WINDOWWIDTH, WINDOWHEIGHT = 640, 480
 
 CELLSIZE = 20
 CELLGAP = 0.99
@@ -26,6 +26,8 @@ ARROWCURSOR = pygame.cursors.Cursor(pygame.SYSTEM_CURSOR_ARROW)
 IBEAMCURSOR = pygame.cursors.Cursor(pygame.SYSTEM_CURSOR_IBEAM)
 HANDCURSOR  = pygame.cursors.Cursor(pygame.SYSTEM_CURSOR_HAND)
 
-ATTRIBUTESSAVEPATH = 'GameFiles\Data\AttributePresets.json'
-LOADDATASAVEPATH = 'GameFiles\Data\ColorData.json'
-COLORPRESETSSAVEPATH = 'GameFiles\Data\ColorPresets.json'
+CURRENTDIR = Path(__file__).parent
+
+ATTRIBUTESSAVEPATH = CURRENTDIR / 'Data\AttributePresets.json'
+LOADDATASAVEPATH = CURRENTDIR / 'Data\ColorData.json'
+COLORPRESETSSAVEPATH = CURRENTDIR / 'Data\ColorPresets.json'
