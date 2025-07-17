@@ -26,6 +26,6 @@ ARROWCURSOR = pygame.cursors.Cursor(pygame.SYSTEM_CURSOR_ARROW)
 IBEAMCURSOR = pygame.cursors.Cursor(pygame.SYSTEM_CURSOR_IBEAM)
 HANDCURSOR  = pygame.cursors.Cursor(pygame.SYSTEM_CURSOR_HAND)
 
-ATTRIBUTESSAVEPATH = 'Data\AttributePresets.json'
-LOADDATASAVEPATH = 'Data\ColorData.json'
-COLORPRESETSSAVEPATH = 'Data\ColorPresets.json'
+ATTRIBUTESSAVEPATH = 'GameFiles\Data\AttributePresets.json'
+LOADDATASAVEPATH = 'GameFiles\Data\ColorData.json'
+COLORPRESETSSAVEPATH = 'GameFiles\Data\ColorPresets.json'
