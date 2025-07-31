@@ -11,3 +11,15 @@
 This project primarily uses Pygame to run. External JSON files are needed for preset saves, etc.
 
 To run the game, locate the `Main.py` file in the `GameFiles` directory.
+
+Required Imports:
+> Pygame
+> math
+> json
+> numpy
+> random
+> os
+> sys
+> itertools
+> pathlib
+> enum
